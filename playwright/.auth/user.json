@@ -1,0 +1,55 @@
+{
+  "cookies": [
+    {
+      "name": ".AspNetCore.Antiforgery.MGGMsiy3qqo",
+      "value": "CfDJ8BwM0adEi2hDl9kJSb4OEJwpE9wZiiqas3w36P1a8Hs6pxvv_CJD4iqfICwuSe2th35t7NRFfPu2y2JZ2XVwpjQfo_ruxKv3ilV3uBjluhwTh5kB2msDqvPaxgqkBhNVkeJ4bUkRv0WoniVCbHh7ehg",
+      "domain": "localhost",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Strict"
+    },
+    {
+      "name": "idsrv.session",
+      "value": "51AE75E27CEB76D19777CDFD66F845C7",
+      "domain": "localhost",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "idsrv",
+      "value": "CfDJ8BwM0adEi2hDl9kJSb4OEJx5HgsqiFt_11mnM_6n_krr-JSTKm9fb00IAoLOZlNGz_9YVSgxJILpMdvEK-4bChFEWdnO7mIX_B8GSvOFaek-jhlu-0UBf8Hg3iP9V54VpRaTs7R6M0VA6G04owaKnEgWfvKgGzJJRdtzMQGfoiNYvQWS-zszrLAAE_sLlz0vauIlrvNISbUSaT4WzAW0AnkCw3tRDx-77qwStXxRrp-3Lmvyz7wARfI39Oz8eN5fuoOP-ebV7nUuElLhQddXVOHuLCyNBuMnxEt_FnFupYgLuC1Mmrw2v5YC1c-tt1XE8Ci2IHzwX072uZJ3VZis2SIZ8CA5nMTjEKVN_IhfspBJhFTSslX1DrfhKyzFvlu2iz3CkaFB73ipH88Wa9o_o7-MGyxhmt3nTcvg8SwkuIFcNp00Z5sWtqxB-koa9kZjwcmUixrC0vg1pukZfQb-IMnzr5g8bGdBOQWzWQ5bkvoKDvXOPDDwiGfWX9NU2zNQBEV4WYpV-SdHnq9myMKzay_Av2k6QIxNe0uObXbWO7_X7kZlWyNmORCbFybyQNzf0FoHckV8ieEZdXeoD8rgM7f20ld-uvqfyTt1yg8BF71KOkSrA-O0BUx0VkRv1yTSlabv2DDSubPW1lBOfy-81Ms",
+      "domain": "localhost",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "userSession",
+      "value": "Fe26.2**da8db20b7dfe830382c47da4bdde6206fa227e855a909a67d794e142d8fd04d3*ygKtkCIpCSnbXRi6saT_xg*9BIXj360VuT7D281cPB3Kf4U-tF5sxNSNYGTvczzX5eRN6NFGbEhxVDK3yIwF6aFs6AZeCG2OVGUpjNg7dVhbx7VDLtPWVS0Ki6PLVb7ybE7piRDD82SS15rb5NHWrnt8Y2eQ-oRbI49IDaGQ7065Hxg3ai6C7ZM1b9ErixNo-o**3fa4baad75f8111f4cc66d63251e8947af5cc23f285a5c1dc224cb6c002f63ba*sC8C7WD3P99rgjF6gwbbdj-me1dAj-6Tl3PqLsDhFlw",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1755675622.168841,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Strict"
+    },
+    {
+      "name": "formsSession",
+      "value": "Fe26.2**805716f559a824bfc4f724dd958fa39dd8df0144c9895daf7fa8473c17963cf3*14ddPDUR9i04qHNl8G68bw*2hlfagSXlu8UAvm-YYj0Msht7I5hWGwCCtXLTQUZhlWu0WfbqaKsCkPFYiWmYd_Y**4a564a9729d7295fcf202c9af246c62687fc5dd4ae7dab76e3f6a606c58030dd*j1_HQ8YYe_W0Wz03gCGgmeAcftZaD3JdwX05fHAwb5I",
+      "domain": "localhost",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": []
+}
