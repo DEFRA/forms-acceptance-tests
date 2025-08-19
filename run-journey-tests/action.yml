@@ -15,9 +15,12 @@ runs:
           cp example.env .env
           ./run-harness.sh
 
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@v4
       with:
         repository: DEFRA/forms-acceptance-tests@playwright-tests
+
+    - uses: actions/setup-node@v4
+      with:
         node-version: 20
         cache: npm
     - name: Setup the tests
