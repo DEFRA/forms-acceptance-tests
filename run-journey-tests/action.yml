@@ -12,14 +12,14 @@ runs:
       with:
         node-version: 20
         cache: npm
-    - name: Setup the tests
-      run: npm i
-      shell: bash
     - name: Start environment
       shell: bash
       run: |
           cd test-harness
           ./run-harness.sh
+    - name: Setup the tests
+      run: npm i
+      shell: bash
     - name: Run the tests
       shell: bash
       run: |
