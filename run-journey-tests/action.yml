@@ -1,4 +1,5 @@
 name: Run Journey Tests on GitHub
+description: Run Journey Tests on GitHub
 
 runs:
   using: "composite"
