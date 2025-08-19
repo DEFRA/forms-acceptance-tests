@@ -9,7 +9,8 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "strict": true
+    "strict": true,
+    "types": ["axe-playwright"]
   },
   "exclude": ["${configDir}/dist", "${configDir}/node_modules", "node_modules"]
 }
