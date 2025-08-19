@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test'
+import { defineConfig } from '@playwright/test'
 
 export default defineConfig({
   globalSetup: require.resolve('./global-setup'),
@@ -9,7 +9,7 @@ export default defineConfig({
     {
       name: 'chromium',
       use: {
-        ...devices['Desktop Chrome'],
+        channel: 'chrome',
         storageState: 'playwright/.auth/user.json',
         baseURL: process.env.BASE_URL ?? 'http://localhost:3000'
       }
