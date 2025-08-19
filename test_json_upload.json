@@ -1,0 +1,25 @@
+{
+  "name": "Automated test - Playwright form 0.36575776",
+  "engine": "V2",
+  "startPage": "/summary",
+  "pages": [
+    {
+      "title": "Summary",
+      "path": "/summary",
+      "controller": "SummaryPageController",
+      "next": [],
+      "components": [],
+      "id": "0be77cdc-ddf7-4c1b-b33d-a50c83c532b3"
+    }
+  ],
+  "conditions": [],
+  "sections": [
+    {
+      "name": "section",
+      "title": "Section title",
+      "hideTitle": false
+    }
+  ],
+  "lists": [],
+  "schema": 2
+}
