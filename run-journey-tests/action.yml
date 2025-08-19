@@ -17,7 +17,7 @@ runs:
 
     - uses: actions/checkout@v4
       with:
-        repository: DEFRA/forms-acceptance-tests@playwright-tests
+        repository: DEFRA/forms-acceptance-tests
 
     - uses: actions/setup-node@v4
       with:
