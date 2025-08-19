@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { FormPage } from '../../pages/FormPage';
-import { AddEditPagesPage } from '../../pages/AddEditPagesPage';
-import { UploadPage } from '../../pages/UploadPage';
+import { FormPage } from '../../pages/FormPage.js';
+import { AddEditPagesPage } from '../../pages/AddEditPagesPage.js';
+import { UploadPage } from '../../pages/UploadPage.js';
 import * as fs from 'fs'
 
 // This test assumes authentication is handled by storageState
