@@ -6,7 +6,7 @@ runs:
   steps:
     - uses: actions/checkout@v4
       with:
-        repository: DEFRA/cdp-development-tools@main
+        repository: DEFRA/cdp-development-tools
 
     - uses: actions/setup-node@v4
       with:
