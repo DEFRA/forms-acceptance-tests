@@ -7,9 +7,10 @@ export default defineConfig({
 
   projects: [
     {
-      name: 'Chrome',
+      name: 'Google Chrome',
       use: {
         ...devices['Desktop Chrome'],
+        channel: 'chrome',
         storageState: 'playwright/.auth/user.json',
         baseURL: process.env.BASE_URL ?? 'http://localhost:3000'
       }
