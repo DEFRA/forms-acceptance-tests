@@ -43,8 +43,12 @@ runs:
     - name: debug
       if: always()
       run: |
-        docker compose logs > logs.txt
-        docker ps
+        containers=`docker ps | awk '{print $1}' | grep -v "CONTAINER"`
+        for container in ${containers};
+        do
+          echo CONTAINER ${container}
+          docker logs ${container} >> logs.txt
+        done
       shell: bash
     - name: Upload allure report
       if: always()
