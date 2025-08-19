@@ -6,7 +6,18 @@ runs:
   steps:
     - uses: actions/checkout@v4
       with:
-        repository: DEFRA/cdp-development-tools
+        repository: DEFRA/forms-development-tools
+
+    - name: Start environment
+      shell: bash
+      run: |
+          cd test-harness
+          cp example.env .env
+          ./run-harness.sh
+
+    - uses: actions/checkout@v4
+      with:
+        repository: DEFRA/forms-acceptance-tests
 
     - uses: actions/setup-node@v4
       with:
@@ -15,11 +26,6 @@ runs:
     - name: Setup the tests
       run: npm i
       shell: bash
-    - name: Start environment
-      shell: bash
-      run: |
-          cd test-harness
-          ./run-harness.sh
     - name: Run the tests
       shell: bash
       run: |
