@@ -14,6 +14,9 @@ runs:
           cd test-harness
           cp example.env .env
           ./run-harness.sh
+          cmd="curl -v http://localhost:3000 --stderr -"
+          result=`$cmd | grep "Test:"`
+          echo $result
 
     - uses: actions/checkout@v4
       with:
