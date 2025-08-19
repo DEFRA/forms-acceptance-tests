@@ -29,6 +29,12 @@ runs:
     - name: Setup the tests
       run: npm i
       shell: bash
+    - name: Test endpoint
+      shell: bash
+      run: |
+          cmd="curl -v http://localhost:3000 --stderr -"
+          result=`$cmd | grep "Test:"`
+          echo $result
     - name: Run the tests
       shell: bash
       run: |
