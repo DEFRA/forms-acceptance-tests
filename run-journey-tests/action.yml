@@ -14,9 +14,7 @@ runs:
           cd test-harness
           cp example.env .env
           ./run-harness.sh
-          cmd="curl -v http://localhost:3000 --stderr -"
-          result=`$cmd | grep "Test:"`
-          echo $result
+          curl -v http://localhost:3000
 
     - uses: actions/checkout@v4
       with:
@@ -31,10 +29,7 @@ runs:
       shell: bash
     - name: Test endpoint
       shell: bash
-      run: |
-          cmd="curl -v http://localhost:3000 --stderr -"
-          result=`$cmd | grep "Test:"`
-          echo $result
+      run: curl -v http://localhost:3000
     - name: Run the tests
       shell: bash
       run: |
