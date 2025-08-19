@@ -14,6 +14,11 @@ runs:
           cd test-harness
           cp example.env .env
           ./run-harness.sh
+
+    - name: Curl test 1
+      shell: bash
+      run: |
+          sleep 15s
           curl -v http://localhost:3000
 
     - uses: actions/checkout@v4
