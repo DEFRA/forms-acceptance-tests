@@ -9,7 +9,7 @@ import * as fs from 'fs'
 // Helper to download a form and parse JSON
 async function downloadAndParseJson(page, downloadAction) {
     const [download] = await Promise.all([
-        page.waitForEvent('download'),
+        page.waitForTimeout(3000),
         downloadAction()
     ]);
     const downloadPath = await download.path();
