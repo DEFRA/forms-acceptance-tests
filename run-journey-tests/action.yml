@@ -15,12 +15,6 @@ runs:
           cp example.env .env
           ./run-harness.sh
 
-    - name: Curl test 1
-      shell: bash
-      run: |
-          sleep 15s
-          curl -v http://localhost:3000
-
     - uses: actions/checkout@v4
       with:
         repository: DEFRA/forms-acceptance-tests
@@ -32,9 +26,6 @@ runs:
     - name: Setup the tests
       run: npm i
       shell: bash
-    - name: Test endpoint
-      shell: bash
-      run: curl -v http://localhost:3000
     - name: Run the tests
       shell: bash
       run: |
