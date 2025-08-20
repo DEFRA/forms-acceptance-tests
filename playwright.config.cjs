@@ -13,8 +13,7 @@ export default defineConfig({
         channel: 'chrome',
         storageState: 'playwright/.auth/user.json',
         baseURL: process.env.BASE_URL ?? 'http://localhost:3000',
-        acceptDownloads: true,
-        headless: false
+        acceptDownloads: true
       }
     }
     // Opt out of parallel tests on CI.
