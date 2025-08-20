@@ -12,7 +12,8 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         channel: 'chrome',
         storageState: 'playwright/.auth/user.json',
-        baseURL: process.env.BASE_URL ?? 'http://localhost:3000'
+        baseURL: process.env.BASE_URL ?? 'http://localhost:3000',
+        acceptDownloads: true
       }
     }
     // Opt out of parallel tests on CI.
