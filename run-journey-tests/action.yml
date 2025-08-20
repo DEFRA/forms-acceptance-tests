@@ -43,10 +43,13 @@ runs:
     - name: debug
       if: always()
       run: |
+        docker ps >> logs.txt
         containers=`docker ps | awk '{print $1}' | grep -v "CONTAINER"`
         for container in ${containers};
         do
-          echo CONTAINER ${container}
+          echo "=====================" >> logs.txt
+          echo CONTAINER ${container} >> logs.txt
+          echo "=====================" >> logs.txt
           docker logs ${container} >> logs.txt
         done
       shell: bash
