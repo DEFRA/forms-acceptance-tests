@@ -32,10 +32,6 @@ runs:
       shell: bash
       run: |
         cd forms-designer
-        echo "PWD designer"
-        pwd
-        echo "ls designer"
-        ls -lrt
         npm i
         cp designer/.automated-tests.env designer/.env
         npm run build
@@ -61,15 +57,12 @@ runs:
     - name: Setup the tests
       run: |
         cd forms-acceptance-tests
-        echo "PWD playwright"
-        pwd
-        echo "ls playwright"
-        ls -lrt
         npm i
       shell: bash
     - name: Run the tests
       shell: bash
       run: |
+        cd forms-acceptance-tests
         npm run test:playwright
         npm run report
     - name: debug
@@ -77,7 +70,7 @@ runs:
       run: |
         docker ps >> logs.txt
         if [ "${{ inputs.formsDesignerCommitHash }}" != "" ]; then
-          cat designer-log.txt >> logs.txt
+          cat forms-designer/designer-log.txt >> logs.txt
         fi
         containers=`docker ps | awk '{print $1}' | grep -v "CONTAINER"`
         for container in ${containers};
