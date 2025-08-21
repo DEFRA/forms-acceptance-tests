@@ -35,6 +35,7 @@ runs:
       shell: bash
       run: |
         npm i
+        cp .automated-tests.env .env
         npm run build
         npm run dev
 
