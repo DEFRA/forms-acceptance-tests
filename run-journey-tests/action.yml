@@ -37,7 +37,9 @@ runs:
         npm i
         cp designer/.automated-tests.env designer/.env
         npm run build
-        npm run dev > designer-log.txt 2>&1 &
+        echo "forms-designer" > designer-log.txt
+        echo "==============" >> designer-log.txt
+        npm run dev &> designer-log.txt &
 
     - name: Wait for designer to start serving requests
       if: ${{ inputs.formsDesignerCommitHash }}
@@ -69,8 +71,6 @@ runs:
       run: |
         docker ps >> logs.txt
         if [ "${{ inputs.formsDesignerCommitHash }}" != "" ]; then
-          echo "forms-designer" >> logs.txt
-          echo "==============" >> logs.txt
           cat designer-log.txt >> logs.txt
         fi
         containers=`docker ps | awk '{print $1}' | grep -v "CONTAINER"`
