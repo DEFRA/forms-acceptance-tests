@@ -20,6 +20,25 @@ runs:
           ./run-harness.sh $RUN_PARAM
 
     - uses: actions/checkout@v4
+      if: ${{ inputs.formsDesignerCommitHash }}
+      with:
+        repository: DEFRA/forms-designer
+        ref: ${{ inputs.formsDesignerCommitHash }}
+        fetch-depth: 0
+    - uses: actions/setup-node@v4
+      if: ${{ inputs.formsDesignerCommitHash }}
+      with:
+        node-version: 20
+        cache: npm
+    - name: Build and run
+      if: ${{ inputs.formsDesignerCommitHash }}
+      shell: bash
+      run: |
+        npm i
+        npm run build
+        npm run dev
+
+    - uses: actions/checkout@v4
       with:
         repository: DEFRA/forms-acceptance-tests
 
