@@ -12,7 +12,7 @@ runs:
     - name: Start environment
       shell: bash
       run: |
-          cd test-harness
+          cd forms-development-tools/test-harness
           cp example.env .env
           RUN_PARAM=""
           if [ "${{ inputs.formsDesignerCommitHash }}" != "" ]; then
@@ -36,6 +36,7 @@ runs:
       if: ${{ inputs.formsDesignerCommitHash }}
       shell: bash
       run: |
+        cd forms-designer
         echo "PWD designer"
         pwd
         echo "ls designer"
@@ -68,6 +69,7 @@ runs:
         cache: npm
     - name: Setup the tests
       run: |
+        cd forms-acceptance-tests
         echo "PWD playwright"
         pwd
         echo "ls playwright"
