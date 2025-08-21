@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       formsDesignerCommitHash:
-        description: 'forms-designer commit hash'     
+        description: 'forms-designer commit hash (optional)'     
         required: false
         type: string
   workflow_call:
@@ -18,3 +18,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: DEFRA/forms-acceptance-tests/run-journey-tests@main
+        with:
+          formsDesignerCommitHash: ${{ inputs.formsDesignerCommitHash }}

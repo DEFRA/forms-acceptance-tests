@@ -13,7 +13,10 @@ runs:
       run: |
           cd test-harness
           cp example.env .env
-          RUN_PARAM=`if [ "${{inputs.formsDesignerCommitHash}}" != "" ]; then echo omit-designer fi`
+          RUN_PARAM=""
+          if [ "${{ inputs.formsDesignerCommitHash }}" != "" ]; then
+            RUN_PARAM="omit-designer"
+          fi
           ./run-harness.sh $RUN_PARAM
 
     - uses: actions/checkout@v4
