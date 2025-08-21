@@ -6,6 +6,11 @@ permissions:
 
 on:
   workflow_dispatch:
+    inputs:
+      formsDesignerCommitHash:
+        description: 'forms-designer commit hash'     
+        required: false
+        type: string
   workflow_call:
 jobs:
   build:
