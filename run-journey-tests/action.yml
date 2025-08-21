@@ -27,11 +27,6 @@ runs:
         ref: ${{ inputs.formsDesignerCommitHash }}
         fetch-depth: 0
         path: 'forms-designer'
-    - uses: actions/setup-node@v4
-      if: ${{ inputs.formsDesignerCommitHash }}
-      with:
-        node-version: 20
-        cache: npm
     - name: Build and run
       if: ${{ inputs.formsDesignerCommitHash }}
       shell: bash
