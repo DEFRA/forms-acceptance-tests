@@ -37,7 +37,16 @@ runs:
         npm i
         cp designer/.automated-tests.env designer/.env
         npm run build
-        npm run dev
+        npm run dev &
+
+    - name: Wait for designer to start serving requests
+      if: ${{ inputs.formsDesignerCommitHash }}
+      shell: bash
+      run : |
+        until curl --output /dev/null --silent --head --fail http://localhost3000; do
+          printf '.'
+          sleep 5
+        done
 
     - uses: actions/checkout@v4
       with:
