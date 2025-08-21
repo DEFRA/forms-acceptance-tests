@@ -71,7 +71,7 @@ runs:
         if [ "${{ inputs.formsDesignerCommitHash }}" != "" ]; then
           echo "forms-designer" >> logs.txt
           echo "==============" >> logs.txt
-          designer-log.txt >> logs.txt
+          cat designer-log.txt >> logs.txt
         fi
         containers=`docker ps | awk '{print $1}' | grep -v "CONTAINER"`
         for container in ${containers};
