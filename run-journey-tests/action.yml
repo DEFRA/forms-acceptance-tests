@@ -35,9 +35,11 @@ runs:
       shell: bash
       run: |
         npm i
+        echo "PWD designer"
+        pwd
         cp designer/.automated-tests.env designer/.env
         npm run build
-        npm run dev &
+        npm run dev > designer-log.txt 2>&1 &
 
     - name: Wait for designer to start serving requests
       if: ${{ inputs.formsDesignerCommitHash }}
@@ -62,11 +64,15 @@ runs:
     - name: Run the tests
       shell: bash
       run: |
+        echo "PWD playwright"
+        pwd
         npm run test:playwright
         npm run report
     - name: debug
       if: always()
       run: |
+        echo "PWD debug"
+        pwd
         docker ps >> logs.txt
         containers=`docker ps | awk '{print $1}' | grep -v "CONTAINER"`
         for container in ${containers};
