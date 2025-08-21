@@ -43,6 +43,13 @@ Start the Forms test harness by doing the following:
 - `cd test-harness`
 - `./run-harness.sh`
 
+You can supply an optional parameter to `./run-harness.sh` to prevent forms-designer from being launched. This would be if you wanted to run your own forms-designer say from a branch other than main.
+To prevent forms-designer from being started, use:
+
+```
+./run-harness.sh omit-designer
+```
+
 Once it has started (usually takes around 10 seconds once all Docker images have been downloaded), you can run the acceptance tests in this repository by doing
 
 ```bash
@@ -54,8 +61,9 @@ npm run test
 The acceptance tests can be run as a Github workflow.
 
 - Navigate to https://github.com/DEFRA/forms-acceptance-tests/actions/workflows/journey-tests.yml
-- Click the 'Run worklfow' button on the top right of the table
+- Click the 'Run workflow' button on the top right of the table
 - Select the default 'main' branch
+- Optionally, enter a commit hash for forms-designer (if you want forms-designer to by built from that commit as opposed to using the latest Docker image)
 - Click 'Run workflow'
 
 This starts the workflow job and the progress can be followed by viewing the log. The workflow usually take about 3 - 4 mins to complete.

@@ -43,7 +43,7 @@ runs:
       if: ${{ inputs.formsDesignerCommitHash }}
       shell: bash
       run : |
-        until curl --output /dev/null --silent --head --fail http://localhost3000; do
+        until curl --output /dev/null --silent --head --fail http://localhost:3000; do
           printf '.'
           sleep 5
         done
