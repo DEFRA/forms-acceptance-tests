@@ -34,6 +34,10 @@ runs:
       if: ${{ inputs.formsDesignerCommitHash }}
       shell: bash
       run: |
+        echo "PWD designer"
+        pwd
+        echo "ls designer"
+        ls -lrt
         npm i
         cp designer/.automated-tests.env designer/.env
         npm run build
@@ -59,7 +63,12 @@ runs:
         node-version: 20
         cache: npm
     - name: Setup the tests
-      run: npm i
+      run: |
+        echo "PWD playwright"
+        pwd
+        echo "ls playwright"
+        ls -lrt
+        npm i
       shell: bash
     - name: Run the tests
       shell: bash
