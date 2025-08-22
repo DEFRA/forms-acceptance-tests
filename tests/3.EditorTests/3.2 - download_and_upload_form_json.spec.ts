@@ -32,7 +32,7 @@ function readAndParseJsonFile(filePath) {
     return json;
 }
 
-test.skip('3.2.1 - Download form as JSON (both ways)', async ({ page, context }) => {
+test('3.2.1 - Download form as JSON (both ways)', async ({ page, context }) => {
     // Create a form
     const formPage = new FormPage(page);
     const addEditPagesPage = new AddEditPagesPage(page);
@@ -60,7 +60,7 @@ test.skip('3.2.1 - Download form as JSON (both ways)', async ({ page, context })
     expect(json2).toEqual(json1);
 });
 
-test.skip('3.2.2 - Upload a form JSON file and verify', async ({ page }) => {
+test('3.2.2 - Upload a form JSON file and verify', async ({ page }) => {
     // Create a form
     const formPage = new FormPage(page);
     const addEditPagesPage = new AddEditPagesPage(page);
