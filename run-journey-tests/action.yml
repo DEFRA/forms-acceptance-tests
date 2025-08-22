@@ -68,6 +68,8 @@ runs:
         echo "Report PWD"
         pwd
         ls -al
+        echo "ALLURE_REPORT"
+        ls -al allure-report
     - name: debug
       if: always()
       run: |
