@@ -65,11 +65,6 @@ runs:
         cd forms-acceptance-tests
         npm run test:playwright
         npm run report
-        echo "Report PWD"
-        pwd
-        ls -al
-        echo "ALLURE_REPORT"
-        ls -al allure-report
     - name: debug
       if: always()
       run: |
