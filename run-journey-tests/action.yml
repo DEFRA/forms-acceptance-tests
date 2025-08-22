@@ -72,6 +72,9 @@ runs:
     - name: debug
       if: always()
       run: |
+        echo "Docker Image Versions"
+        echo "=====================" >> logs.txt
+        cat forms-development-tools/image-versions.txt >> logs.txt
         docker ps >> logs.txt
         if [ "${{ inputs.formsDesignerCommitHash }}" != "" ]; then
           echo "==============" >> logs.txt
