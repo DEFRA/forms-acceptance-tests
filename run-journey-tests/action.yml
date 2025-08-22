@@ -18,6 +18,8 @@ runs:
             RUN_PARAM="exclude=forms-designer"
           fi
           ./run-harness.sh $RUN_PARAM
+          PWD
+          ls -al
 
     - uses: actions/checkout@v4
       if: ${{ inputs.formsDesignerCommitHash }}
@@ -66,6 +68,7 @@ runs:
     - name: report
       if: always()
       run: |
+        cd forms-acceptance-tests
         npm run report
       shell: bash
     - name: debug
@@ -73,7 +76,9 @@ runs:
       run: |
         echo "Docker Image Versions"
         echo "=====================" >> logs.txt
-        cat forms-development-tools/image-versions.txt >> logs.txt
+        ls -al forms-development-tools
+        ls -al forms-development-tools/test-harness
+        cat forms-development-tools/test-harness/image-versions.txt >> logs.txt
         docker ps >> logs.txt
         if [ "${{ inputs.formsDesignerCommitHash }}" != "" ]; then
           echo "==============" >> logs.txt
