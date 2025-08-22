@@ -74,7 +74,7 @@ runs:
     - name: debug
       if: always()
       run: |
-        echo "Docker Image Versions"
+        echo "Docker Image Versions" >> logs.txt
         echo "=====================" >> logs.txt
         ls -al forms-development-tools
         ls -al forms-development-tools/test-harness
