@@ -16,7 +16,7 @@ runs:
           cp example.env .env
           RUN_PARAM=""
           if [ "${{ inputs.formsDesignerCommitHash }}" != "" ]; then
-            RUN_PARAM="omit-designer"
+            RUN_PARAM="exclude=forms-designer"
           fi
           ./run-harness.sh $RUN_PARAM
 
@@ -64,7 +64,11 @@ runs:
       run: |
         cd forms-acceptance-tests
         npm run test:playwright
+    - name: report
+      if: always()
+      run: |
         npm run report
+      shell: bash
     - name: debug
       if: always()
       run: |
