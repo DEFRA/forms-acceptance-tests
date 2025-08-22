@@ -65,6 +65,9 @@ runs:
         cd forms-acceptance-tests
         npm run test:playwright
         npm run report
+        echo "Report PWD"
+        pwd
+        ls -al
     - name: debug
       if: always()
       run: |
