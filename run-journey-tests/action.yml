@@ -66,6 +66,7 @@ runs:
     - uses: actions/checkout@v4
       with:
         repository: DEFRA/forms-acceptance-tests
+        ref: ${{ github.ref }}
         path: 'forms-acceptance-tests'
 
 
