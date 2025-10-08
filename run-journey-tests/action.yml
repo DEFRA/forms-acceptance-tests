@@ -24,6 +24,11 @@ runs:
             echo "Creating missing .env file"
             touch .env
           fi
+          # Create secrets.env file if it doesn't exist
+          if [ ! -f secrets.env ]; then
+            echo "Creating missing secrets.env file"
+            touch secrets.env
+          fi
           RUN_PARAM=""
           if [ "${{ inputs.formsDesignerCommitHash }}" != "" ]; then
             RUN_PARAM="exclude=forms-designer"
