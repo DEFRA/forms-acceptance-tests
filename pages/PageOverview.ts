@@ -64,7 +64,18 @@ export class PageOverview {
         return this.page.locator('text=Changes saved successfully')
     }
     async clickChangeLinkForQuestionByName(questionName: string) {
+        // Wait for the page to be fully loaded
+        await this.page.waitForLoadState('networkidle');
+
+        // Wait for the success banner to appear and disappear (if present)
+        const successBanner = this.page.locator('text=Changes saved successfully');
+        if (await successBanner.isVisible({ timeout: 1000 }).catch(() => false)) {
+            await successBanner.waitFor({ state: 'visible', timeout: 5000 });
+        }
+
+        // Now find and click the Change link
         const changeLink = this.page.locator(`dd.govuk-summary-list__value >> text=${questionName} >> .. >> dd.govuk-summary-list__actions >> a.govuk-link`, { hasText: 'Change' });
+        await changeLink.waitFor({ state: 'visible', timeout: 10000 });
         await changeLink.click();
     }
 
