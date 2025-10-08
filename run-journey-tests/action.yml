@@ -13,6 +13,11 @@ runs:
       shell: bash
       run: |
           cd forms-development-tools/test-harness
+          # Create .env file if it doesn't exist
+          if [ ! -f .env ]; then
+            echo "Creating missing .env file"
+            touch .env
+          fi
           RUN_PARAM=""
           if [ "${{ inputs.formsDesignerCommitHash }}" != "" ]; then
             RUN_PARAM="exclude=forms-designer"
@@ -69,12 +74,22 @@ runs:
         cd forms-acceptance-tests
         npm run report
       shell: bash
+    - name: Create allure report directory if missing
+      if: always()
+      run: |
+        cd forms-acceptance-tests
+        mkdir -p allure-report
+      shell: bash
     - name: debug
       if: always()
       run: |
         echo "Docker Image Versions" >> logs.txt
         echo "=====================" >> logs.txt
-        cat forms-development-tools/test-harness/image-versions.txt >> logs.txt
+        if [ -f forms-development-tools/test-harness/image-versions.txt ]; then
+          cat forms-development-tools/test-harness/image-versions.txt >> logs.txt
+        else
+          echo "image-versions.txt not found" >> logs.txt
+        fi
         echo " " >> logs.txt
         docker ps >> logs.txt
         if [ "${{ inputs.formsDesignerCommitHash }}" != "" ]; then
@@ -98,6 +113,7 @@ runs:
       with:
         name: allure-report
         path: ./forms-acceptance-tests/allure-report
+        if-no-files-found: warn
     - name: Upload docker compose logs
       if: always()
       uses: actions/upload-artifact@v4
