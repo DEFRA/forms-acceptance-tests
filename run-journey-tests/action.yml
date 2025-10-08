@@ -1,6 +1,12 @@
 name: Run Journey Tests on GitHub
 description: Run Journey Tests on GitHub
 
+inputs:
+  formsDesignerCommitHash:
+    description: 'Commit hash for forms-designer repository'
+    required: false
+    default: ''
+
 runs:
   using: "composite"
   steps:
@@ -59,10 +65,10 @@ runs:
 
 
     - name: Setup the tests
+      shell: bash
       run: |
         cd forms-acceptance-tests
         npm i
-      shell: bash
     - name: Run the tests
       shell: bash
       run: |
@@ -70,16 +76,16 @@ runs:
         npm run test:playwright
     - name: report
       if: always()
+      shell: bash
       run: |
         cd forms-acceptance-tests
         npm run report
-      shell: bash
     - name: Create allure report directory if missing
       if: always()
+      shell: bash
       run: |
         cd forms-acceptance-tests
         mkdir -p allure-report
-      shell: bash
     - name: debug
       if: always()
       run: |
