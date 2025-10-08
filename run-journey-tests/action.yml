@@ -1,6 +1,12 @@
 name: Run Journey Tests on GitHub
 description: Run Journey Tests on GitHub
 
+inputs:
+  formsDesignerCommitHash:
+    description: 'Commit hash for forms-designer repository'
+    required: false
+    default: ''
+
 runs:
   using: "composite"
   steps:
@@ -13,6 +19,16 @@ runs:
       shell: bash
       run: |
           cd forms-development-tools/test-harness
+          # Create .env file if it doesn't exist
+          if [ ! -f .env ]; then
+            echo "Creating missing .env file"
+            touch .env
+          fi
+          # Create secrets.env file if it doesn't exist
+          if [ ! -f secrets.env ]; then
+            echo "Creating missing secrets.env file"
+            touch secrets.env
+          fi
           RUN_PARAM=""
           if [ "${{ inputs.formsDesignerCommitHash }}" != "" ]; then
             RUN_PARAM="exclude=forms-designer"
@@ -54,10 +70,10 @@ runs:
 
 
     - name: Setup the tests
+      shell: bash
       run: |
         cd forms-acceptance-tests
         npm i
-      shell: bash
     - name: Run the tests
       shell: bash
       run: |
@@ -65,16 +81,26 @@ runs:
         npm run test:playwright
     - name: report
       if: always()
+      shell: bash
       run: |
         cd forms-acceptance-tests
         npm run report
+    - name: Create allure report directory if missing
+      if: always()
       shell: bash
+      run: |
+        cd forms-acceptance-tests
+        mkdir -p allure-report
     - name: debug
       if: always()
       run: |
         echo "Docker Image Versions" >> logs.txt
         echo "=====================" >> logs.txt
-        cat forms-development-tools/test-harness/image-versions.txt >> logs.txt
+        if [ -f forms-development-tools/test-harness/image-versions.txt ]; then
+          cat forms-development-tools/test-harness/image-versions.txt >> logs.txt
+        else
+          echo "image-versions.txt not found" >> logs.txt
+        fi
         echo " " >> logs.txt
         docker ps >> logs.txt
         if [ "${{ inputs.formsDesignerCommitHash }}" != "" ]; then
@@ -98,6 +124,7 @@ runs:
       with:
         name: allure-report
         path: ./forms-acceptance-tests/allure-report
+        if-no-files-found: warn
     - name: Upload docker compose logs
       if: always()
       uses: actions/upload-artifact@v4
