@@ -17,6 +17,6 @@ jobs:
     name: Run Journey Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: DEFRA/forms-acceptance-tests/run-journey-tests@main
+      - uses: DEFRA/forms-acceptance-tests/run-journey-tests@fix-create-env-file
         with:
           formsDesignerCommitHash: ${{ inputs.formsDesignerCommitHash }}
