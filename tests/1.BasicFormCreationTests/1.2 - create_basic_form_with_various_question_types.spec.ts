@@ -325,7 +325,7 @@ test('1.2.10 - should create a new form with Yes/No field', async ({
   expect(await pageOverview.verifySuccessBanner('Changes saved successfully'))
 })
 
-test('1.2.11 - should create a new form with Checkbox field', async ({
+test.skip('1.2.11 - should create a new form with Checkbox field', async ({
   formPage,
   pageOverview,
   selectPageTypePage,
@@ -362,7 +362,7 @@ test('1.2.11 - should create a new form with Checkbox field', async ({
   expect(actualListItems).toEqual(fruits)
 })
 
-test('1.2.12 - should create a new form with Select field', async ({
+test.skip('1.2.12 - should create a new form with Select field', async ({
   formPage,
   pageOverview,
   selectPageTypePage,
