@@ -65,7 +65,19 @@ export class GuidancePage {
         return this.exitPageCheckbox.isChecked();
     }
 
-    async verifyStructure() {
+    async verifyStructureBeforeSaving() {
+        await expect(this.mainHeading).toBeVisible();
+        await expect(this.pageHeadingInput).toBeVisible();
+        await expect(this.pageHeadingHint).toBeVisible();
+        await expect(this.guidanceTextInput).toBeVisible();
+        await expect(this.guidanceTextHint).toBeVisible();
+        await expect(this.exitPageCheckbox).toBeVisible();
+        await expect(this.exitPageLabel).toHaveText('Mark as Exit Page');
+        await expect(this.exitPageHint).toHaveText('Users who reach this page will be unable to continue filling out the form');
+        await expect(this.saveButton).toBeVisible();
+    }
+
+    async verifyStructureAfterSaving() {
         await expect(this.mainHeading).toBeVisible();
         await expect(this.pageHeadingInput).toBeVisible();
         await expect(this.pageHeadingHint).toBeVisible();

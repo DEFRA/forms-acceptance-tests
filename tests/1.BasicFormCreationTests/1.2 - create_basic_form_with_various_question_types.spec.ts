@@ -435,7 +435,7 @@ test('1.2.12 - should create a new form with guidance page', async ({
   await formPage.addNewPageButton.click()
   await selectPageTypePage.choosePageType('guidance')
 
-  await guidancePage.verifyStructure()
+  await guidancePage.verifyStructureBeforeSaving()
   await guidancePage.fillPageHeading('Guidance page')
   // Assert the page heading is set correctly
   await expect(guidancePage.pageHeadingInput).toHaveValue('Guidance page')
@@ -448,6 +448,7 @@ test('1.2.12 - should create a new form with guidance page', async ({
   await guidancePage.setExitPage(false)
   await guidancePage.save()
   await pageOverview.successBannerIsDisplayed()
+  await guidancePage.verifyStructureAfterSaving()
 
   await expect(guidancePage.pageHeadingInput).toHaveValue('Guidance page')
   await expect(guidancePage.guidanceTextInput).toHaveValue(guidanceText)
