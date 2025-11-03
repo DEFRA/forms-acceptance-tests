@@ -163,6 +163,7 @@ export class PageOverview {
 
   async goToCreateNewCondition() {
     await this.conditionsManagerLink.click()
+    await this.createNewConditionLink.waitFor({ state: 'visible' })
     await this.createNewConditionLink.click()
   }
 
