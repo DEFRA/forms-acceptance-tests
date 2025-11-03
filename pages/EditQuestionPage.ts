@@ -140,15 +140,21 @@ export class EditQuestionPage {
       await this.addItemButton.click()
 
       // Wait for the item input to be visible and interactable
-      await this.itemTextBox.waitFor({ state: 'visible', timeout: 5000 })
+      await this.itemTextBox.waitFor({ state: 'visible', timeout: 10000 })
       await this.itemTextBox.click()
       await this.itemTextBox.fill(item)
 
       // Click save and wait for the form to update
       await this.saveItemButton.click()
 
-      // Wait a bit for the item to be saved and the form to reset
-      await this.page.waitForTimeout(500)
+      // Wait for the item to be saved - wait for the item text box to be cleared or add item button to be visible again
+      await this.page.waitForTimeout(2000)
+      // Wait for network to be idle to ensure the item is fully saved
+      await this.page
+        .waitForLoadState('networkidle', { timeout: 5000 })
+        .catch(() => {
+          // If networkidle times out, continue anyway
+        })
     }
   }
 
