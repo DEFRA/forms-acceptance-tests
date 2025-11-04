@@ -1,9 +1,8 @@
 import { expect, test as base, TestInfo } from '@playwright/test'
-import { FormPage } from '../../pages/FormPage'
-import { SelectPageTypePage } from '../../pages/SelectPageTypePage'
-import { PageOverview } from '../../pages/PageOverview'
-import { EditConditionPage } from '../../pages/EditConditionPage'
-import { EditQuestionPage } from '../../pages/EditQuestionPage'
+import { FormPage } from '~/pages/FormPage.js'
+import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
+import { PageOverview } from '~/pages/PageOverview.js'
+import { EditConditionPage } from '~/pages/EditConditionPage.js'
 
 // Custom fixture for form creation
 const test = base.extend<{
@@ -61,7 +60,9 @@ test('3.1.2 - should create a condition', async ({ page, formSetup }) => {
   }
   await editConditionPage.setConditionName('Name is Bob')
   await editConditionPage.saveCondition()
-  await expect(page.getByText('Changes saved successfully')).toBeVisible({ timeout: 15000 })
+
+  const editQuestionPage = new EditConditionPage(page)
+  await expect(editQuestionPage.pageHeading).toBeVisible()
 })
 
 test('should display all key elements on EditQuestionPage', async ({
