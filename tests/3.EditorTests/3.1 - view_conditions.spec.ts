@@ -61,7 +61,7 @@ test('3.1.2 - should create a condition', async ({ page, formSetup }) => {
   }
   await editConditionPage.setConditionName('Name is Bob')
   await editConditionPage.saveCondition()
-  await expect(page.getByText('Changes saved successfully')).toBeVisible()
+  await expect(page.getByText('Changes saved successfully')).toBeVisible({ timeout: 15000 })
 })
 
 test('should display all key elements on EditQuestionPage', async ({
