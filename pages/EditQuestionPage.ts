@@ -9,6 +9,7 @@ export class EditQuestionPage {
   readonly hintTextInput: Locator
   readonly optionalCheckbox: Locator
   readonly shortDescriptionInput: Locator
+  readonly declarationTextInput: Locator
   readonly minLengthInput: Locator
   readonly maxLengthInput: Locator
   readonly regexInput: Locator
@@ -38,6 +39,7 @@ export class EditQuestionPage {
     this.hintTextInput = page.getByLabel('Hint text (optional)')
     this.optionalCheckbox = page.getByLabel('Make this question optional')
     this.shortDescriptionInput = page.getByLabel('Short description')
+    this.declarationTextInput = page.getByLabel('Declaration text')
     this.minLengthInput = page.getByLabel('Minimum character length (optional)')
     this.maxLengthInput = page.getByLabel('Maximum character length (optional)')
     this.regexInput = page.getByLabel('Regex (optional)')
@@ -94,6 +96,10 @@ export class EditQuestionPage {
     await this.minLengthInput.fill(minLength)
     await this.maxLengthInput.fill(maxLength)
     await this.regexInput.fill(regex)
+  }
+
+  async enterDeclarationText(declarationText: string) {
+    await this.declarationTextInput.fill(declarationText);
   }
 
   async setClasses(classes: string) {

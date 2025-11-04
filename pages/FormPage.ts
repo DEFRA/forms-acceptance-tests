@@ -16,12 +16,13 @@ export class FormPage {
     readonly shortAnswerRadio: Locator;
     readonly questionInput: Locator;
     readonly shortDescriptionInput: Locator;
+    readonly declarationTextInput: Locator;
     readonly addAnotherQuestionButton: Locator;
     readonly errorBox: Locator;
     readonly formName: Locator;
     readonly continueBtn: Locator;
-    readonly orgRadio: Locator;
-    readonly alertMessage: Locator;
+    // readonly orgRadio: Locator;
+    // readonly alertMessage: Locator;
     readonly successBanner: Locator;
     readonly migrateButton: Locator;
     readonly enterEmailAddressLink: Locator;
@@ -33,7 +34,7 @@ export class FormPage {
     readonly enterOnlineContactLinkForSupportLink: Locator;
     readonly enterWhatHappensNextLink: Locator;
     readonly enterLinkToPrivacyNoticeLink: Locator;
-    readonly phoneEmailSupportInput: Locator;
+    // readonly phoneEmailSupportInput: Locator;
     readonly emailAddressForSupportInput: Locator;
     readonly supportPhoneInput: Locator;
     readonly changeSubmissionGuidance: Locator;
@@ -57,6 +58,7 @@ export class FormPage {
         this.shortAnswerRadio = page.getByRole('radio', { name: 'Short answer (a single line)' });
         this.questionInput = page.locator('#question');
         this.shortDescriptionInput = page.getByRole('textbox', { name: 'Short description' });
+        this.declarationTextInput = page.getByRole('textbox', { name: 'Declaration text' });
         this.addAnotherQuestionButton = page.getByRole('button', { name: 'Add another question' });
         this.formName = page.getByRole('textbox', { name: 'Enter a name for your form' });
         this.continueBtn = page.getByRole('button', { name: 'Continue' });

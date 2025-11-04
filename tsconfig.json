@@ -10,7 +10,10 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "types": ["axe-playwright"]
+    "types": ["axe-playwright"],
+    "paths": {
+      "~/*": ["./*"]
+    }
   },
   "exclude": ["${configDir}/dist", "${configDir}/node_modules", "node_modules"]
 }

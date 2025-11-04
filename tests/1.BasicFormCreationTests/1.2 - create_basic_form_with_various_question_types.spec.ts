@@ -1,11 +1,11 @@
 import { test as baseTest, expect } from '@playwright/test'
-import { FormPage } from '../../pages/FormPage'
-import { SelectPageTypePage } from '../../pages/SelectPageTypePage'
-import { SelectQuestionTypePage } from '../../pages/SelectQuestionTypePage'
-import { PageOverview } from '../../pages/PageOverview'
+import { FormPage } from '~/pages/FormPage.js'
+import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
+import { SelectQuestionTypePage } from '~/pages/SelectQuestionTypePage.js'
+import { PageOverview } from '~/pages/PageOverview.js'
 import { faker } from '@faker-js/faker/locale/en'
-import { EditQuestionPage } from '../../pages/EditQuestionPage'
-import { GuidancePage } from '../../pages/GuidancePage'
+import { EditQuestionPage } from '~/pages/EditQuestionPage.js'
+import { GuidancePage } from '~/pages/GuidancePage.js'
 
 // Declare the types of your fixtures
 type MyFixtures = {
@@ -151,7 +151,7 @@ test('1.2.3 - should create a new form with number field', async ({
   await formPage.createWrittenAnswer('How old are you?', 'age')
 
   // Verify success banner
-  // expect(await pageOverview.verifySuccessBanner('Changes saved successfully'));
+  // expect(await pageOverview.verifySuccessBanner('Changes saved successfully'))
 })
 
 test('1.2.4 - should create a new form with full date field', async ({
@@ -399,7 +399,41 @@ test.skip('1.2.12 - should create a new form with Select field', async ({
   expect(actualListItems).toEqual(options)
 })
 
-test('1.2.12 - should create a new form with guidance page', async ({
+test('1.2.13 - should create a new form with Declaration', async ({
+  formPage,
+  pageOverview,
+  selectPageTypePage,
+  selectQuestionTypePage,
+  editQuestionPage
+}) => {
+  test.setTimeout(30000)
+  // Add a new page
+  await formPage.addNewPageButton.click()
+
+  // Select Question Page type
+  await selectPageTypePage.choosePageType('question')
+
+  // Select Written Answer question type
+  await selectQuestionTypePage.selectQuestionType('declaration')
+  await selectQuestionTypePage.clickSaveAndContinue()
+
+  // Configure the question
+  await formPage.createWrittenAnswer('This is a declaration', 'declaration')
+  const error = await formPage.getErrorMessage()
+  expect(error).toContain('Enter declaration text')
+
+  //enter declaration text
+  await editQuestionPage.enterDeclarationText('You must agree to this declaration')
+  await editQuestionPage.clickSaveAndContinue()
+  await pageOverview.successBannerIsDisplayed()
+  await pageOverview.clickChangeLinkForQuestionByName('This is a declaration')
+
+  //assert declaration text
+  await editQuestionPage.getPageHeadingText()
+  await expect(editQuestionPage.declarationTextInput).toHaveValue('You must agree to this declaration')
+})
+
+test('1.2.14 - should create a new form with guidance page', async ({
   formPage,
   pageOverview,
   selectPageTypePage,
