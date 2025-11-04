@@ -20,6 +20,7 @@ export class SelectQuestionTypePage {
             phoneNumber: page.getByRole('radio', { name: 'Phone number' }),
             fileUpload: page.getByRole('radio', { name: 'Supporting evidence' }),
             emailAddress: page.getByRole('radio', { name: 'Email address' }),
+            declaration: page.getByRole('radio', { name: 'Declaration' }),
             list: page.getByRole('radio', { name: 'A list of options that users can choose from' }),
             select: page.getByRole('radio', { name: 'A select box that users can choose from' }),
         };
