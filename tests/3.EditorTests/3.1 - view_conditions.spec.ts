@@ -1,4 +1,4 @@
-import { expect, test as base, TestInfo } from '@playwright/test'
+import { expect, test as base } from '@playwright/test'
 import { FormPage } from '~/pages/FormPage.js'
 import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
 import { PageOverview } from '~/pages/PageOverview.js'
@@ -61,8 +61,7 @@ test('3.1.2 - should create a condition', async ({ page, formSetup }) => {
   await editConditionPage.setConditionName('Name is Bob')
   await editConditionPage.saveCondition()
 
-  const editQuestionPage = new EditConditionPage(page)
-  await expect(editQuestionPage.pageHeading).toBeVisible()
+  await expect(page).toHaveURL(/editor-v2\/conditions/)
 })
 
 test('should display all key elements on EditQuestionPage', async ({

@@ -23,7 +23,7 @@ export class PageOverview {
   readonly conditionsTitle: Locator
   readonly noConditionsMessage: Locator
   readonly conditionsManagerLink: Locator
-  readonly andCreateText: Locator
+  // readonly andCreateText: Locator
   readonly createNewConditionLink: Locator
   readonly downloadFormButton: Locator
   readonly reorderPagesButton: Locator
