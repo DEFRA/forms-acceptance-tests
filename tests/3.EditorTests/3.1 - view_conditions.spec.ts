@@ -51,7 +51,13 @@ test('3.1.2 - should create a condition', async ({ page, formSetup }) => {
   await pageOverview.goToCreateNewCondition()
   const editConditionPage = new EditConditionPage(page)
   await editConditionPage.selectQuestion('Page 1: What is your name?')
+  // Wait for the page to be fully loaded
+  await page.waitForLoadState('networkidle')
+
   await editConditionPage.selectOperator('Is')
+  // Wait for the page to be fully loaded
+  await page.waitForLoadState('networkidle')
+
   const valueInput = page.locator('input[name="items[0][value]"]')
   if (await valueInput.isVisible()) {
     await valueInput.fill('Bob')
@@ -59,10 +65,7 @@ test('3.1.2 - should create a condition', async ({ page, formSetup }) => {
   await editConditionPage.setConditionName('Name is Bob')
   await editConditionPage.saveCondition()
 
-  // Wait for the page to be fully loaded
-  await page.waitForLoadState('networkidle')
-
-    await expect(page).toHaveURL(/editor-v2\/conditions/)
+  await expect(page).toHaveURL(/editor-v2\/conditions/)
 })
 
 test('should display all key elements on EditQuestionPage', async ({
