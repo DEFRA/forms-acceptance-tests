@@ -72,6 +72,10 @@ export const config = {
   bail: 0,
   waitforTimeout: 10000,
   waitforInterval: 200,
+  timeout: 30000,
+  expect: {
+    timeout: 15000
+  },
   connectionRetryTimeout: 120000,
   connectionRetryCount: 3,
 

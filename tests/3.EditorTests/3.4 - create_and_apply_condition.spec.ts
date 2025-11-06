@@ -10,7 +10,6 @@ import { link } from 'fs'
 test('should create a condition for Yes/No and apply it to page 2', async ({
   page
 }) => {
-  test.setTimeout(30000)
   // Step 1: Create a form
   const formPage = new FormPage(page)
   const selectPageTypePage = new SelectPageTypePage(page)
@@ -88,7 +87,6 @@ test('should create a condition for Yes/No and apply it to page 2', async ({
 test('should not allow creating two conditions with the same name', async ({
   page
 }) => {
-  test.setTimeout(30000)
   // Setup: Create a form and add a Yes/No question
   const formPage = new FormPage(page)
   const selectPageTypePage = new SelectPageTypePage(page)

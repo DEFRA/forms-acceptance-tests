@@ -69,8 +69,6 @@ test('1.2.1 - should create a new form with short answer field', async ({
   selectPageTypePage,
   editQuestionPage
 }) => {
-  test.setTimeout(30000)
-
   // Add a new page
   await formPage.addNewPageButton.click()
   // Select Question Page type
@@ -257,7 +255,6 @@ test('1.2.8 - should create a new form with File Upload field', async ({
   selectQuestionTypePage,
   pageOverview
 }) => {
-  test.setTimeout(30000)
   // Add a new page
   await formPage.addNewPageButton.click()
 
@@ -332,7 +329,6 @@ test.skip('1.2.11 - should create a new form with Checkbox field', async ({
   selectQuestionTypePage,
   editQuestionPage
 }) => {
-  test.setTimeout(30000)
   // Add a new page
   await formPage.addNewPageButton.click()
 
@@ -369,7 +365,6 @@ test.skip('1.2.12 - should create a new form with Select field', async ({
   selectQuestionTypePage,
   editQuestionPage
 }) => {
-  test.setTimeout(30000)
   // Add a new page
   await formPage.addNewPageButton.click()
 
@@ -406,7 +401,6 @@ test('1.2.13 - should create a new form with Declaration', async ({
   selectQuestionTypePage,
   editQuestionPage
 }) => {
-  test.setTimeout(30000)
   // Add a new page
   await formPage.addNewPageButton.click()
 
@@ -441,7 +435,6 @@ test('1.2.14 - should create a new form with guidance page', async ({
   editQuestionPage,
   guidancePage
 }) => {
-  test.setTimeout(30000)
   // Add a new page
   await formPage.addNewPageButton.click()
 

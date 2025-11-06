@@ -36,7 +36,6 @@ test('3.1.1 - Conditions Manager should display no conditions', async ({
   page,
   formSetup
 }, testInfo) => {
-  test.setTimeout(30000)
   const { formPage, pageOverview } = formSetup
   const successBanner = await formPage.successBannerIsDisplayed()
   await expect(successBanner).toBeVisible()
@@ -46,7 +45,6 @@ test('3.1.1 - Conditions Manager should display no conditions', async ({
 })
 
 test('3.1.2 - should create a condition', async ({ page, formSetup }) => {
-  test.setTimeout(30000)
   const { pageOverview } = formSetup
   await expect(pageOverview.manageConditionsButton).toBeVisible()
   await pageOverview.manageConditionsButton.click()

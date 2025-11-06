@@ -4,7 +4,6 @@ import { SelectPageTypePage } from '../../pages/SelectPageTypePage'
 test('3.3.1 - should error when adding a page with a duplicate name', async ({
   page
 }, testInfo) => {
-  test.setTimeout(30000)
   //create a form
   const formPage = new FormPage(page)
   const selectPageTypePage = new SelectPageTypePage(page)
