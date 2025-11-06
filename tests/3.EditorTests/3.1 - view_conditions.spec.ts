@@ -61,7 +61,10 @@ test('3.1.2 - should create a condition', async ({ page, formSetup }) => {
   await editConditionPage.setConditionName('Name is Bob')
   await editConditionPage.saveCondition()
 
-  await expect(page).toHaveURL(/editor-v2\/conditions/)
+  // Wait for the page to be fully loaded
+  await page.waitForLoadState('networkidle')
+
+    await expect(page).toHaveURL(/editor-v2\/conditions/)
 })
 
 test('should display all key elements on EditQuestionPage', async ({
