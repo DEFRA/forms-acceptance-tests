@@ -40,31 +40,29 @@ export class SelectPageTypePage extends PageBase {
 
     async clickSaveAndContinue() {
         await this.saveAndContinueButton.click()
-        await this.page.waitForLoadState()
-        await this.page.waitForLoadState()
+        await this.waitUntilReady()
     }
 
     async chooseQuestionPage() {
         await this.selectQuestionPage()
         await this.clickSaveAndContinue()
-        await this.page.waitForLoadState()
+        await this.waitUntilReady()
     }
 
     async chooseGuidancePage() {
         await this.selectGuidancePage()
         await this.clickSaveAndContinue()
-        await this.page.waitForLoadState()
+        await this.waitUntilReady()
     }
 
     async choosePageType(pageType: 'question' | 'guidance') {
-        console.log('choosePageType')
         const radioButton = pageType === 'question'
             ? this.questionPageRadio
             : this.guidancePageRadio
 
         await radioButton.check()
         await this.saveAndContinueButton.click()
-        await this.page.waitForLoadState()
+        await this.waitUntilReady()
     }
 
     async checkErrorIsDisplayed() {

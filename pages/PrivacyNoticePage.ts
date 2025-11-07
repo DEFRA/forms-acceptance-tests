@@ -25,8 +25,7 @@ export class PrivacyNoticePage extends PageBase {
 
     async clickSaveAndContinue() {
         await this.saveAndContinueButton.click()
-        await this.page.waitForLoadState()
-        await this.page.waitForLoadState()
+        await this.waitUntilReady()
     }
 
     async clickCancel() {

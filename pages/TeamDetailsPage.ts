@@ -26,8 +26,7 @@ export class TeamDetailsPage extends PageBase {
 
     async clickSaveAndContinue() {
         await this.saveAndContinueButton.click()
-        await this.page.waitForLoadState()
-        await this.page.waitForLoadState()
+        await this.waitUntilReady()
     }
 
     async expectOnPage() {

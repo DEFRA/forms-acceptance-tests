@@ -44,7 +44,6 @@ export class SelectQuestionTypePage extends PageBase {
     }
 
     async selectQuestionType(type: keyof typeof this.questionTypeLocators) {
-        console.log('selectQuestionType', type)
         const radioButton = this.questionTypeLocators[type]
         if (!radioButton) {
             throw new Error(`Unknown question type: ${type}`)
@@ -61,9 +60,7 @@ export class SelectQuestionTypePage extends PageBase {
     }
 
     async clickSaveAndContinue() {
-        console.log('clickSaveAndContinue')
         await this.saveAndContinueButton.click()
-        await this.page.waitForLoadState()
-        await this.page.waitForLoadState()
+        await this.waitUntilReady()
     }
 }

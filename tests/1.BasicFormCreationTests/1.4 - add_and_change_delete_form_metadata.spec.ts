@@ -34,7 +34,7 @@ test('1.4.1 - should add an email address for form submissions', async ({ page }
     const emailInput = page.getByRole('textbox', { name: /email address/i })
     await emailInput.fill(submissionsEmail)
     await formPage.saveAndContinueButton.click()
-    await page.waitForLoadState()
+    await formPage.waitUntilReady()
 
 
     // Verify the email was entered (e.g., appears on the page or in a summary)
@@ -60,7 +60,7 @@ test('1.4.2 - should update email address for form submissions', async ({ page }
     const emailInput = page.getByRole('textbox', { name: /email address/i })
     await emailInput.fill(submissionsEmail)
     await formPage.saveAndContinueButton.click()
-    await page.waitForLoadState()
+    await formPage.waitUntilReady()
 
 
     // Verify the email was entered (e.g., appears on the page or in a summary)
@@ -73,7 +73,7 @@ test('1.4.2 - should update email address for form submissions', async ({ page }
     // Update the email address
     await emailInput.fill('new-admin@test.gov.uk')
     await formPage.saveAndContinueButton.click()
-    await page.waitForLoadState()
+    await formPage.waitUntilReady()
 
     // Assert the new email is visible
     await expect(page.getByText('new-admin@test.gov.uk')).toBeVisible({ timeout: 10000 })
@@ -137,7 +137,7 @@ test('1.4.5 - should update phone number for support', async ({ page }) => {
     await formPage.enterPhoneNumberLink.click()
     await formPage.supportPhoneInput.fill(initialPhone)
     await formPage.saveAndContinueButton.click()
-    await page.waitForLoadState()
+    await formPage.waitUntilReady()
     await expect(page.getByText(initialPhone)).toBeVisible()
 
     // Update the phone number for support
@@ -145,7 +145,7 @@ test('1.4.5 - should update phone number for support', async ({ page }) => {
     await formPage.changePhoneNumberLink.click()
     await formPage.supportPhoneInput.fill(updatedPhone)
     await formPage.saveAndContinueButton.click()
-    await page.waitForLoadState()
+    await formPage.waitUntilReady()
     await expect(page.getByText(updatedPhone)).toBeVisible()
 })
 
@@ -167,7 +167,7 @@ test('1.4.6 - should add email address for support', async ({ page }) => {
     await page.getByRole('textbox', { name: 'Response time' }).fill('We aim to respond within 10 working days')
 
     await formPage.saveAndContinueButton.click()
-    await page.waitForLoadState()
+    await formPage.waitUntilReady()
     await expect(page.getByText(supportEmail)).toBeVisible()
     await expect(page.getByText('We aim to respond within 10 working days')).toBeVisible()
 })
@@ -189,7 +189,7 @@ test('1.4.7 - should update email address for support', async ({ page }) => {
     await page.getByRole('textbox', { name: 'Email address' }).fill(supportEmail)
     await page.getByRole('textbox', { name: 'Response time' }).fill('We aim to respond within 10 working days')
     await formPage.saveAndContinueButton.click()
-    await page.waitForLoadState()
+    await formPage.waitUntilReady()
     await expect(page.getByText(supportEmail)).toBeVisible()
     await expect(page.getByText('We aim to respond within 10 working days')).toBeVisible()
 
@@ -198,7 +198,7 @@ test('1.4.7 - should update email address for support', async ({ page }) => {
     await formPage.changeSupportEmailLink.click()
     await page.getByRole('textbox', { name: 'Email address' }).fill(updatedSupportEmail)
     await formPage.saveAndContinueButton.click()
-    await page.waitForLoadState()
+    await formPage.waitUntilReady()
     await expect(page.getByText(updatedSupportEmail)).toBeVisible()
 })
 
@@ -222,7 +222,7 @@ test('1.4.8 - should add online contact link for support', async ({ page }) => {
     await contactInput.fill(supportContactLink)
     await textToDescribeTheContact.fill(textForOnlineSupport)
     await formPage.saveAndContinueButton.click()
-    await page.waitForLoadState()
+    await formPage.waitUntilReady()
     await expect(page.getByText(supportContactLink)).toBeVisible()
     await expect(page.getByText(textForOnlineSupport)).toBeVisible()
 })
@@ -243,7 +243,7 @@ test('1.4.9 - should add what happens next', async ({ page }) => {
     const whatHappensNextInput = page.getByRole('textbox', { name: 'What will happen after a user' })
     await whatHappensNextInput.fill(whatHappensNextText)
     await formPage.saveAndContinueButton.click()
-    await page.waitForLoadState()
+    await formPage.waitUntilReady()
     await expect(page.getByText(whatHappensNextText)).toBeVisible()
 })
 
@@ -263,7 +263,7 @@ test('1.4.10 - should update what happens next', async ({ page }) => {
     const whatHappensNextInput = page.getByRole('textbox', { name: 'What will happen after a user' })
     await whatHappensNextInput.fill(whatHappensNextText)
     await formPage.saveAndContinueButton.click()
-    await page.waitForLoadState()
+    await formPage.waitUntilReady()
     await expect(page.getByText(whatHappensNextText)).toBeVisible()
 
     // Update what happens next
@@ -271,7 +271,7 @@ test('1.4.10 - should update what happens next', async ({ page }) => {
     await formPage.changeSubmissionGuidance.click()
     await whatHappensNextInput.fill(updatedWhatHappensNextText)
     await formPage.saveAndContinueButton.click()
-    await page.waitForLoadState()
+    await formPage.waitUntilReady()
     await expect(page.getByText(updatedWhatHappensNextText)).toBeVisible()
 })
 
@@ -315,7 +315,7 @@ test('1.4.12 - should amend team name', async ({ page }) => {
     const updatedTeamName = 'Updated Team Name'
     await teamDetailsPage.fillTeamDetails(updatedTeamName, 'test@test.gov.uk')
     await teamDetailsPage.clickSaveAndContinue()
-    await page.waitForLoadState()
+    await formPage.waitUntilReady()
 
     // Assert the updated team name is visible
     await expect(page.getByText(updatedTeamName)).toBeVisible()

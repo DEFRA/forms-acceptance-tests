@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { Locator, Page } from '@playwright/test'
+import { setTimeout } from 'timers/promises'
 
 export class PageBase {
   readonly page: Page
@@ -12,7 +13,7 @@ export class PageBase {
 
   async clickAddNewPage() {
     await this.addNewPageButton.click()
-    await this.page.waitForLoadState()
+    await this.waitUntilReady()
   }
 
   generateNewFormName(baseName?: string) {
@@ -22,11 +23,6 @@ export class PageBase {
 
   async waitUntilReady() {
     await this.page.waitForLoadState()
-    // Wait for network to be idle to ensure the item is fully saved
-    await this.page
-      .waitForLoadState('load', { timeout: 5000 })
-      .catch(() => {
-        // If networkidle times out, continue anyway
-    })
+    // await setTimeout(1000)
   }
 }

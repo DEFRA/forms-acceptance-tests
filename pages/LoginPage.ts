@@ -11,7 +11,7 @@ export class LoginPage extends PageBase{
     readonly userProfileLink: Locator
     readonly loginErrorMessage: Locator
     readonly signOut: Locator
-    // readonly continueBtn: Locator
+    readonly continueBtn: Locator
     // readonly use_another_account: Locator
 
 
@@ -25,18 +25,24 @@ export class LoginPage extends PageBase{
         this.signInButton = page.getByRole('button', { name: 'Login' })
         this.signOut = page.getByRole('link', { name: 'Sign out' })
         this.loginErrorMessage = page.getByText("We c1ouldn\'t find an acco1unt")
+        this.continueBtn = page.getByRole('button', { name: 'Continue' })
 
         this.userProfileLink = page.getByRole('link', { name: displayName })
     }
 
     async navigateToLoginPage() {
         await this.page.goto('http://localhost:3000/library')
-        await this.page.waitForLoadState()
+        await this.waitUntilReady()
     }
 
     async clickLogOut() {
         await this.signOut.click()
     }
+
+    async clickContinueButton() {
+        await this.continueBtn.click()
+    }
+
     async isInvalidUsernameErrorMessageDisplayed() {
         await this.page.getByText("We couldn't find an account with that username.").click()
     }

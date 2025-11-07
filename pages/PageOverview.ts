@@ -88,7 +88,7 @@ export class PageOverview extends PageBase {
 
   async clickChangeLinkForQuestionByName(questionName: string) {
     // Wait for the page to be fully loaded
-    await this.page.waitForLoadState()
+    await this.waitUntilReady()
 
     // Wait for the success banner to appear and disappear (if present)
     // const successBanner = this.page.locator('text=Changes saved successfully')
@@ -110,7 +110,6 @@ export class PageOverview extends PageBase {
   }
 
   async verifySuccessBanner(expectedMessage: string) {
-    console.log('verifySuccessBanner')
     const successBanner = this.page.locator(`text=${expectedMessage}`)
     await successBanner.waitFor({ state: 'visible', timeout: 5000 })
 

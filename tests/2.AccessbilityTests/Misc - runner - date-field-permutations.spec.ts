@@ -1,6 +1,6 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '@playwright/test'
 
-const url = 'https://forms-runner.dev.cdp-int.defra.cloud/form/preview/draft/jn-cph-live/date-to-be-removed';
+const url = 'https://forms-runner.dev.cdp-int.defra.cloud/form/preview/draft/jn-cph-live/date-to-be-removed'
 
 // Permutations: [day, month, year, shouldBeValid]
 const datePermutations: [string, string, string, boolean][] = [
@@ -40,39 +40,39 @@ const datePermutations: [string, string, string, boolean][] = [
     ['01', '01', '2024!', false],
     ['01', '@1', '2024', false],
     ['#1', '01', '2024', false],
-];
+]
 //better to move this to a unit test
 test.skip('Date field permutations (DD MM YYYY)', () => {
     for (const [i, [day, month, year, shouldBeValid]] of datePermutations.entries()) {
         test(
             `#${i + 1}: should ${shouldBeValid ? 'accept' : 'reject'} date input: '${day}-${month}-${year}'`,
             async ({ page }, testInfo) => {
-                await page.goto(url);
+                await page.goto(url)
 
-                await page.getByLabel('Day').fill('');
-                await page.getByLabel('Month').fill('');
-                await page.getByLabel('Year').fill('');
-                if (day) await page.getByLabel('Day').fill(day);
-                if (month) await page.getByLabel('Month').fill(month);
-                if (year) await page.getByLabel('Year').fill(year);
+                await page.getByLabel('Day').fill('')
+                await page.getByLabel('Month').fill('')
+                await page.getByLabel('Year').fill('')
+                if (day) await page.getByLabel('Day').fill(day)
+                if (month) await page.getByLabel('Month').fill(month)
+                if (year) await page.getByLabel('Year').fill(year)
 
-                await page.getByRole('button', { name: /Continue/i }).click();
+                await page.getByRole('button', { name: /Continue/i }).click()
 
-                const error = page.locator('.govuk-error-message, [role="alert"], .error-message').first();
+                const error = page.locator('.govuk-error-message, [role="alert"], .error-message').first()
                 try {
                     if (shouldBeValid) {
-                        await expect(error).toHaveCount(0);
+                        await expect(error).toHaveCount(0)
                     } else {
-                        await expect(error).toHaveCount(1);
+                        await expect(error).toHaveCount(1)
                     }
                 } catch (e) {
-                    const inputDetails = `Test failed for input: day='${day}', month='${month}', year='${year}', shouldBeValid=${shouldBeValid}`;
+                    const inputDetails = `Test failed for input: day='${day}', month='${month}', year='${year}', shouldBeValid=${shouldBeValid}`
                     if (testInfo.attach) {
-                        await testInfo.attach('input-details', { body: inputDetails, contentType: 'text/plain' });
+                        await testInfo.attach('input-details', { body: inputDetails, contentType: 'text/plain' })
                     }
-                    throw e;
+                    throw e
                 }
             }
-        );
+        )
     }
-}); 
+}) 

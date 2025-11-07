@@ -57,9 +57,9 @@ test('1.3.3 - should display error for missing email address', async ({ page }) 
   // Verify error for missing email address
   const errorMessage = ((await formPage.getErrorMessage()))
   expect(errorMessage).toContain('Enter a shared team email address')
-});
+})
 
-[
+;[
   { email: 'invalid-email', expected: 'Enter a shared team email address in the correct format' },
   { email: 'test@test.com', expected: 'Enter a shared team email address in the correct format' },
   { email: 'test@', expected: 'Enter a shared team email address in the correct format' },

@@ -1,6 +1,6 @@
 import { expect, test, TestInfo } from '@playwright/test'
-import { FormPage } from '../../pages/FormPage'
-import { SelectPageTypePage } from '../../pages/SelectPageTypePage'
+import { FormPage } from '~/pages/FormPage.js'
+import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
 
 test.beforeEach(async({ page }) => {
   await page.context().clearCookies({ name: 'formsSession' })

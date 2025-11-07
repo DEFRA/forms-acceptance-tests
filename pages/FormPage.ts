@@ -1,84 +1,84 @@
-import { Page, Locator } from '@playwright/test';
-import { PageBase } from '~/pages/PageBase.js';
+import { Page, Locator } from '@playwright/test'
+import { PageBase } from '~/pages/PageBase.js'
 
 export class FormPage extends PageBase {
     // Locators
-    readonly teamNameInput: Locator;
-    readonly teamEmailInput: Locator;
-    readonly saveAndContinueButton: Locator;
-    readonly saveChangesButton: Locator;
-    readonly editDraftButton: Locator;
-    // readonly editDraftButtonOldEditor: Locator;
-    readonly addNewPageButton: Locator;
-    readonly questionPageRadio: Locator;
-    readonly writtenAnswerRadio: Locator;
-    readonly shortAnswerRadio: Locator;
-    readonly questionInput: Locator;
-    readonly shortDescriptionInput: Locator;
-    readonly declarationTextInput: Locator;
-    readonly addAnotherQuestionButton: Locator;
-    readonly errorBox: Locator;
-    readonly formName: Locator;
-    readonly continueBtn: Locator;
-    // readonly orgRadio: Locator;
-    // readonly alertMessage: Locator;
-    readonly successBanner: Locator;
-    readonly migrateButton: Locator;
-    readonly enterEmailAddressLink: Locator;
-    readonly changeEmailAddressLink: Locator;
-    readonly changeSupportEmailLink: Locator;
-    readonly enterPhoneNumberLink: Locator;
-    readonly changePhoneNumberLink: Locator;
-    readonly enterEmailAddressForSupportLink: Locator;
-    readonly enterOnlineContactLinkForSupportLink: Locator;
-    readonly enterWhatHappensNextLink: Locator;
-    readonly enterLinkToPrivacyNoticeLink: Locator;
-    // readonly phoneEmailSupportInput: Locator;
-    readonly emailAddressForSupportInput: Locator;
-    readonly supportPhoneInput: Locator;
-    readonly changeSubmissionGuidance: Locator;
-    readonly backToAddEditPages: Locator;
-    readonly changeTeamNameLink: Locator;
-    readonly pageHeadingAndGuidanceCheckbox: Locator;
+    readonly teamNameInput: Locator
+    readonly teamEmailInput: Locator
+    readonly saveAndContinueButton: Locator
+    readonly saveChangesButton: Locator
+    readonly editDraftButton: Locator
+    // readonly editDraftButtonOldEditor: Locator
+    readonly addNewPageButton: Locator
+    readonly questionPageRadio: Locator
+    readonly writtenAnswerRadio: Locator
+    readonly shortAnswerRadio: Locator
+    readonly questionInput: Locator
+    readonly shortDescriptionInput: Locator
+    readonly declarationTextInput: Locator
+    readonly addAnotherQuestionButton: Locator
+    readonly errorBox: Locator
+    readonly formName: Locator
+    readonly continueBtn: Locator
+    // readonly orgRadio: Locator
+    // readonly alertMessage: Locator
+    readonly successBanner: Locator
+    readonly migrateButton: Locator
+    readonly enterEmailAddressLink: Locator
+    readonly changeEmailAddressLink: Locator
+    readonly changeSupportEmailLink: Locator
+    readonly enterPhoneNumberLink: Locator
+    readonly changePhoneNumberLink: Locator
+    readonly enterEmailAddressForSupportLink: Locator
+    readonly enterOnlineContactLinkForSupportLink: Locator
+    readonly enterWhatHappensNextLink: Locator
+    readonly enterLinkToPrivacyNoticeLink: Locator
+    // readonly phoneEmailSupportInput: Locator
+    readonly emailAddressForSupportInput: Locator
+    readonly supportPhoneInput: Locator
+    readonly changeSubmissionGuidance: Locator
+    readonly backToAddEditPages: Locator
+    readonly changeTeamNameLink: Locator
+    readonly pageHeadingAndGuidanceCheckbox: Locator
 
     constructor(page: Page) {
         super(page)
 
         // Initialise locators
-        this.teamNameInput = page.getByRole('textbox', { name: 'Name of team' });
-        this.teamEmailInput = page.getByRole('textbox', { name: 'Shared team email address' });
-        this.saveAndContinueButton = page.getByRole('button', { name: 'Save and continue' });
-        this.saveChangesButton = page.getByRole('button', { name: 'Save changes' });
-        // this.editDraftButtonOldEditor = page.getByRole('button', { name: 'Edit draft (legacy editor)' });
-        this.editDraftButton = page.getByRole('button', { name: 'Edit draft' });
-        this.addNewPageButton = page.getByRole('button', { name: 'Add new page' });
-        this.questionPageRadio = page.getByRole('radio', { name: 'Question page' });
-        this.writtenAnswerRadio = page.getByRole('radio', { name: 'Written answer' });
-        this.shortAnswerRadio = page.getByRole('radio', { name: 'Short answer (a single line)' });
-        this.questionInput = page.locator('#question');
-        this.shortDescriptionInput = page.getByRole('textbox', { name: 'Short description' });
-        this.declarationTextInput = page.getByRole('textbox', { name: 'Declaration text' });
-        this.addAnotherQuestionButton = page.getByRole('button', { name: 'Add another question' });
-        this.formName = page.getByRole('textbox', { name: 'Enter a name for your form' });
-        this.continueBtn = page.getByRole('button', { name: 'Continue' });
-        this.successBanner = page.getByLabel('Environment Agency');
-        this.errorBox = page.getByRole('alert');
-        this.migrateButton = page.getByRole('button', { name: 'Switch to new editor' });
-        this.enterEmailAddressLink = page.getByRole('link', { name: 'Enter email address', exact: true });
-        this.changeEmailAddressLink = page.getByRole('link', { name: /Change.*email address/i });
+        this.teamNameInput = page.getByRole('textbox', { name: 'Name of team' })
+        this.teamEmailInput = page.getByRole('textbox', { name: 'Shared team email address' })
+        this.saveAndContinueButton = page.getByRole('button', { name: 'Save and continue' })
+        this.saveChangesButton = page.getByRole('button', { name: 'Save changes' })
+        // this.editDraftButtonOldEditor = page.getByRole('button', { name: 'Edit draft (legacy editor)' })
+        this.editDraftButton = page.getByRole('button', { name: 'Edit draft' })
+        this.addNewPageButton = page.getByRole('button', { name: 'Add new page' })
+        this.questionPageRadio = page.getByRole('radio', { name: 'Question page' })
+        this.writtenAnswerRadio = page.getByRole('radio', { name: 'Written answer' })
+        this.shortAnswerRadio = page.getByRole('radio', { name: 'Short answer (a single line)' })
+        this.questionInput = page.locator('#question')
+        this.shortDescriptionInput = page.getByRole('textbox', { name: 'Short description' })
+        this.declarationTextInput = page.getByRole('textbox', { name: 'Declaration text' })
+        this.addAnotherQuestionButton = page.getByRole('button', { name: 'Add another question' })
+        this.formName = page.getByRole('textbox', { name: 'Enter a name for your form' })
+        this.continueBtn = page.getByRole('button', { name: 'Continue' })
+        this.successBanner = page.getByLabel('Environment Agency')
+        this.errorBox = page.getByRole('alert')
+        this.migrateButton = page.getByRole('button', { name: 'Switch to new editor' })
+        this.enterEmailAddressLink = page.getByRole('link', { name: 'Enter email address', exact: true })
+        this.changeEmailAddressLink = page.getByRole('link', { name: /Change.*email address/i })
         this.changeSupportEmailLink = page.getByRole('link', { name: 'Change   contact email' })
-        this.enterPhoneNumberLink = page.getByRole('link', { name: 'Enter phone number for support', exact: true });
-        this.changePhoneNumberLink = page.getByRole('link', { name: /Change.*contact phone/i });
-        this.enterEmailAddressForSupportLink = page.getByRole('link', { name: 'Enter email address for support', exact: true });
+        this.enterPhoneNumberLink = page.getByRole('link', { name: 'Enter phone number for support', exact: true })
+        this.changePhoneNumberLink = page.getByRole('link', { name: /Change.*contact phone/i })
+        this.enterEmailAddressForSupportLink = page.getByRole('link', { name: 'Enter email address for support', exact: true })
         this.enterWhatHappensNextLink = page.getByRole('link', { name: 'Enter what happens next' })
         this.changeSubmissionGuidance = page.getByRole('link', { name: 'Change submission guidance' })
         this.enterLinkToPrivacyNoticeLink = page.getByRole('link', { name: 'Enter link to privacy notice' })
 
-        this.enterOnlineContactLinkForSupportLink = page.getByRole('link', { name: 'Enter online contact link for support', exact: true });
-        this.supportPhoneInput = page.getByRole('textbox', { name: 'What’s the phone number and' });
+        this.enterOnlineContactLinkForSupportLink = page.getByRole('link', { name: 'Enter online contact link for support', exact: true })
+        this.supportPhoneInput = page.getByRole('textbox', { name: 'What’s the phone number and' })
         this.backToAddEditPages = page.getByRole('link', { name: 'Back to add and edit pages' })
-        this.emailAddressForSupportInput = page.getByRole('textbox', { name: /email address for support/i });
-        this.changeTeamNameLink = page.getByRole('link', { name: 'Change   teamName' });
+        this.emailAddressForSupportInput = page.getByRole('textbox', { name: /email address for support/i })
+        this.changeTeamNameLink = page.getByRole('link', { name: 'Change   teamName' })
 
         this.pageHeadingAndGuidanceCheckbox = page.getByRole('checkbox', { name: 'Add a page heading' })
     }
@@ -98,127 +98,126 @@ export class FormPage extends PageBase {
 
     async goTo() {
         await this.page.goto('/create/title')
-        await this.page.waitForLoadState()
+        await this.waitUntilReady()
     }
 
     async clickMigrate() {
-        await this.migrateButton.click();
+        await this.migrateButton.click()
     }
 
     async clickBackToAddEditPages() {
         await this.backToAddEditPages.click()
-        await this.page.waitForLoadState()
+        await this.waitUntilReady()
     }
 
     async selectRadioOption(value: string) {
         const radioOption = this.page.locator(`input[type="radio"][value="${value}"]`)
         await radioOption.check()
         await this.clickContinueBtn()
-        await this.page.waitForLoadState()
+        await this.waitUntilReady()
     }
 
     async clickContinueBtn() {
-        await this.continueBtn.click();
-        await this.page.waitForLoadState()
+        await this.continueBtn.click()
+        await this.waitUntilReady()
     }
 
     async enterFormName(formName: string) {
         await this.formName.fill(formName)
         await this.clickContinueBtn()
-        await this.page.waitForLoadState()
+        await this.waitUntilReady()
     }
 
     async fillTeamDetails(teamName: string, email: string) {
         await this.teamNameInput.fill(teamName)
         await this.teamEmailInput.fill(email)
         await this.saveAndContinueButton.click()
-        await this.page.waitForLoadState()
+        await this.waitUntilReady()
     }
 
     async editDraft() {
-        await this.editDraftButton.click();
-        await this.page.waitForLoadState()
+        await this.editDraftButton.click()
+        await this.waitUntilReady()
     }
 
     async goToConditionsPage() {
         await this.page.goto(this.page.url().replace('editor-v2/pages', '') + 'editor-v2/conditions')
-        await this.page.waitForLoadState()
+        await this.waitUntilReady()
     }
 
     async addNewQuestionPage(question: string, description: string) {
 
-        await this.writtenAnswerRadio.check();
-        await this.shortAnswerRadio.check();
-        await this.saveAndContinueButton.click();
-        await this.questionInput.fill(question);
-        await this.shortDescriptionInput.fill(description);
-        await this.saveAndContinueButton.click();
-        await this.page.waitForLoadState()
+        await this.writtenAnswerRadio.check()
+        await this.shortAnswerRadio.check()
+        await this.saveAndContinueButton.click()
+        await this.questionInput.fill(question)
+        await this.shortDescriptionInput.fill(description)
+        await this.saveAndContinueButton.click()
+        await this.waitUntilReady()
     }
 
     async createWrittenAnswer(question: string, description: string) {
-        console.log('createWrittenAnswer')
-        await this.questionInput.fill(question);
-        await this.shortDescriptionInput.fill(description);
-        await this.saveAndContinueButton.click();
-        await this.page.waitForLoadState()
+        await this.questionInput.fill(question)
+        await this.shortDescriptionInput.fill(description)
+        await this.saveAndContinueButton.click()
+        await this.waitUntilReady()
     }
 
 
     async createFileUpload(question: string, description: string,) {
         // Fill the question and description
-        await this.questionInput.fill(question);
-        await this.shortDescriptionInput.fill(description);
+        await this.questionInput.fill(question)
+        await this.shortDescriptionInput.fill(description)
 
         //select all file types
-        await this.page.getByRole('checkbox', { name: 'Documents' }).check();
-        await this.page.getByRole('checkbox', { name: 'PDF' }).check();
-        await this.page.getByRole('checkbox', { name: 'DOC', exact: true }).check();
-        await this.page.getByRole('checkbox', { name: 'DOCX' }).check();
-        await this.page.getByRole('checkbox', { name: 'ODT' }).check();
-        await this.page.getByRole('checkbox', { name: 'TXT' }).check();
+        await this.page.getByRole('checkbox', { name: 'Documents' }).check()
+        await this.page.getByRole('checkbox', { name: 'PDF' }).check()
+        await this.page.getByRole('checkbox', { name: 'DOC', exact: true }).check()
+        await this.page.getByRole('checkbox', { name: 'DOCX' }).check()
+        await this.page.getByRole('checkbox', { name: 'ODT' }).check()
+        await this.page.getByRole('checkbox', { name: 'TXT' }).check()
 
-        await this.page.getByRole('checkbox', { name: 'Images' }).check();
-        await this.page.getByRole('checkbox', { name: 'JPG' }).check();
-        await this.page.getByRole('checkbox', { name: 'PNG' }).check();
+        await this.page.getByRole('checkbox', { name: 'Images' }).check()
+        await this.page.getByRole('checkbox', { name: 'JPG' }).check()
+        await this.page.getByRole('checkbox', { name: 'PNG' }).check()
 
-        await this.page.getByRole('checkbox', { name: 'Tabular data' }).check();
-        await this.page.getByRole('checkbox', { name: 'XLS', exact: true }).check();
-        await this.page.getByRole('checkbox', { name: 'XLSX' }).check();
-        await this.page.getByRole('checkbox', { name: 'CSV' }).check();
-        await this.page.getByRole('checkbox', { name: 'ODS' }).check();
+        await this.page.getByRole('checkbox', { name: 'Tabular data' }).check()
+        await this.page.getByRole('checkbox', { name: 'XLS', exact: true }).check()
+        await this.page.getByRole('checkbox', { name: 'XLSX' }).check()
+        await this.page.getByRole('checkbox', { name: 'CSV' }).check()
+        await this.page.getByRole('checkbox', { name: 'ODS' }).check()
 
 
         // Click Save and Continue
-        await this.saveAndContinueButton.click();
+        await this.saveAndContinueButton.click()
     }
 
     async addAnotherQuestion() {
-        await this.addAnotherQuestionButton.click();
+        await this.addAnotherQuestionButton.click()
     }
 
     async checkErrorIsDisplayed() {
-        await this.errorBox.isVisible();
-        await this.errorBox.highlight();
+        await this.errorBox.isVisible()
+        await this.errorBox.highlight()
     }
 
     async previewForm() {
-        throw new Error('Method not implemented.');
+        throw new Error('Method not implemented.')
     }
 
     async getErrorMessage(): Promise<string> {
-        await this.errorBox.isVisible();
-        return (await this.errorBox.textContent()) ?? '';
+        await this.errorBox.isVisible()
+        return (await this.errorBox.textContent()) ?? ''
     }
 
     async clickChangeTeamNameLink() {
-        await this.changeTeamNameLink.click();
+        await this.changeTeamNameLink.click()
     }
 
     async setPageHeading(headingText: string) {
 
-        await this.pageHeadingAndGuidanceCheckbox.check();
-        await this.saveChangesButton.click();
+        await this.pageHeadingAndGuidanceCheckbox.check()
+        await this.saveChangesButton.click()
     }
 
 }

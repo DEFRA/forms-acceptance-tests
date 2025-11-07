@@ -79,29 +79,29 @@ test('should display all key elements on EditQuestionPage', async ({
   await expect(editQuestionPage.pageHeading).toBeVisible()
   await expect(editQuestionPage.selectQuestionButton).toBeVisible()
 
-  // await expect(editQuestionPage.questionInput).toBeVisible();
-  // await expect(editQuestionPage.hintTextInput).toBeVisible();
-  // await expect(editQuestionPage.optionalCheckbox).toBeVisible();
-  // await expect(editQuestionPage.shortDescriptionInput).toBeVisible();
-  // await expect(editQuestionPage.minLengthInput).toBeVisible();
-  // await expect(editQuestionPage.maxLengthInput).toBeVisible();
-  // await expect(editQuestionPage.regexInput).toBeVisible();
-  // await expect(editQuestionPage.classesInput).toBeVisible();
-  // await expect(editQuestionPage.saveAndContinueButton).toBeVisible();
-  // await expect(editQuestionPage.deleteQuestionLink).toBeVisible();
-  // await expect(editQuestionPage.previewPageButton).toBeVisible();
-  // await expect(editQuestionPage.previewErrorMessagesButton).toBeVisible();
-  // await expect(editQuestionPage.addItemButton).toBeVisible();
-  // await expect(editQuestionPage.itemTextBox).toBeVisible();
-  // await expect(editQuestionPage.saveItemButton).toBeVisible();
-  // await expect(editQuestionPage.radioHint).toBeVisible();
-  // await expect(editQuestionPage.advancedFeaturesLink).toBeVisible();
-  // await expect(editQuestionPage.uniqueIdentifierInput).toBeVisible();
+  // await expect(editQuestionPage.questionInput).toBeVisible()
+  // await expect(editQuestionPage.hintTextInput).toBeVisible()
+  // await expect(editQuestionPage.optionalCheckbox).toBeVisible()
+  // await expect(editQuestionPage.shortDescriptionInput).toBeVisible()
+  // await expect(editQuestionPage.minLengthInput).toBeVisible()
+  // await expect(editQuestionPage.maxLengthInput).toBeVisible()
+  // await expect(editQuestionPage.regexInput).toBeVisible()
+  // await expect(editQuestionPage.classesInput).toBeVisible()
+  // await expect(editQuestionPage.saveAndContinueButton).toBeVisible()
+  // await expect(editQuestionPage.deleteQuestionLink).toBeVisible()
+  // await expect(editQuestionPage.previewPageButton).toBeVisible()
+  // await expect(editQuestionPage.previewErrorMessagesButton).toBeVisible()
+  // await expect(editQuestionPage.addItemButton).toBeVisible()
+  // await expect(editQuestionPage.itemTextBox).toBeVisible()
+  // await expect(editQuestionPage.saveItemButton).toBeVisible()
+  // await expect(editQuestionPage.radioHint).toBeVisible()
+  // await expect(editQuestionPage.advancedFeaturesLink).toBeVisible()
+  // await expect(editQuestionPage.uniqueIdentifierInput).toBeVisible()
   await expect(editQuestionPage.cancelLink).toBeVisible()
-  // await expect(editQuestionPage.reorderLink).toBeVisible();
-  // await expect(editQuestionPage.doneLink).toBeVisible();
-  // await expect(editQuestionPage.pagePreviewLabel).toBeVisible();
-  // await expect(editQuestionPage.questionText).toBeVisible();
+  // await expect(editQuestionPage.reorderLink).toBeVisible()
+  // await expect(editQuestionPage.doneLink).toBeVisible()
+  // await expect(editQuestionPage.pagePreviewLabel).toBeVisible()
+  // await expect(editQuestionPage.questionText).toBeVisible()
 
-  // await expect(editQuestionPage.operatorDropdown).toBeVisible();
+  // await expect(editQuestionPage.operatorDropdown).toBeVisible()
 })

@@ -24,8 +24,7 @@ const test = baseTest.extend<MyFixtures>({
     await formPage.goTo()
     const form_name = formPage.generateNewFormName()
       
-    console.log('---form name ---')
-    console.log(form_name)
+    console.log('---form name ---', form_name)
     await formPage.enterFormName(form_name)
     await formPage.selectRadioOption('Environment Agency')
     await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
@@ -275,7 +274,7 @@ test('1.2.8 - should create a new form with File Upload field', async ({
     'We need proof of address'
   )
 
-  await pageOverview.page.waitForLoadState()
+  await pageOverview.waitUntilReady()
   // Verify success banner
   expect(await pageOverview.verifySuccessBanner('Changes saved successfully'))
 })
@@ -406,20 +405,15 @@ test('1.2.13 - should create a new form with Declaration', async ({
   selectQuestionTypePage,
   editQuestionPage
 }) => {
-  console.log('1.2.13 start')
   // Add a new page
   await formPage.clickAddNewPage()
-  console.log('1.2.13 clicked')
 
   // Select Question Page type
-  await selectPageTypePage.page.waitForLoadState()
-  console.log('1.2.13 selectPageTypePage loaded')
+  await selectPageTypePage.waitUntilReady()
   await selectPageTypePage.choosePageType('question')
-  console.log('1.2.13 selectPageTypePage selected question')
 
   // Select Written Answer question type
-  await selectQuestionTypePage.page.waitForLoadState()
-  console.log('1.2.13 selectQuestionTypePage loaded')
+  await selectQuestionTypePage.waitUntilReady()
   await selectQuestionTypePage.selectQuestionType('declaration')
   await selectQuestionTypePage.clickSaveAndContinue()
 
@@ -448,38 +442,27 @@ test('1.2.14 - should create a new form with guidance page', async ({
   guidancePage
 }) => {
   // Add a new page
-  console.log('1.2.14 start')
   await formPage.clickAddNewPage()
-  console.log('1.2.14 formPage loaded')
 
   // Select Question Page type
-  await selectPageTypePage.page.waitForLoadState()
-  console.log('1.2.14 selectPageTypePage loaded')
+  await selectPageTypePage.waitUntilReady()
   await selectPageTypePage.choosePageType('question')
-  console.log('1.2.14 selected radio')
 
   // Select List question type and Autocomplete (Select) subtype
   await selectQuestionTypePage.selectQuestionType('list')
-  console.log('1.2.14 selected list question type')
   await selectQuestionTypePage.selectSubtype('select')
-  console.log('1.2.14 selected select sub type')
   await selectQuestionTypePage.clickSaveAndContinue()
-  console.log('1.2.14 clicked save and continue')
 
   // Configure the question
   await formPage.createWrittenAnswer('Select your country', 'country')
-  console.log('1.2.14 createWrittenAnswer')
   const error = await formPage.getErrorMessage()
-  console.log('1.2.14 gotError')
   expect(error).toContain('At least 2 items are required for a list')
-  console.log('1.2.14 expect gotError')
   
   // Add options to item list
   const options = ['England', 'Scotland', 'Wales', 'Northern Ireland']
   await editQuestionPage.addListItems(options)
   await editQuestionPage.clickSaveAndContinue()
   await pageOverview.successBannerIsDisplayed()
-  console.log('1.2.14 added option')
 
   //click add to guidance page
   await formPage.clickBackToAddEditPages()
@@ -498,7 +481,7 @@ test('1.2.14 - should create a new form with guidance page', async ({
 
   await guidancePage.setExitPage(false)
   await guidancePage.save()
-  await guidancePage.page.waitForLoadState()
+  await guidancePage.waitUntilReady()
   await pageOverview.successBannerIsDisplayed()
   await guidancePage.verifyStructureAfterSaving()
 

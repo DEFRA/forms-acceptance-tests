@@ -1,12 +1,12 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test'
 import { PageBase } from '~/pages/PageBase.js'
 
 export class ManagerConditionsPage extends PageBase {
-    readonly heading: Locator;
-    readonly noConditionsMessage: Locator;
-    readonly conditionsManagerLink: Locator;
-    readonly andCreateText: Locator;
-    readonly createNewConditionLink: Locator;
+    readonly heading: Locator
+    readonly noConditionsMessage: Locator
+    readonly conditionsManagerLink: Locator
+    readonly andCreateText: Locator
+    readonly createNewConditionLink: Locator
 
     constructor(page: Page) {
         super(page)

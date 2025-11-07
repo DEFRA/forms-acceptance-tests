@@ -52,7 +52,7 @@ export class PageListingPage extends PageBase {
     }
 
     async getPageSummaryCardByTitle(title: string): Promise<Locator> {
-        return this.page.locator('.govuk-summary-card__title', { hasText: title }).first().locator('..').locator('..').locator('..');
+        return this.page.locator('.govuk-summary-card__title', { hasText: title }).first().locator('..').locator('..').locator('..')
     }
 
     async verifyStructure() {
