@@ -23,7 +23,7 @@ test('should be logged in and on the library page', async ({ page }) => {
 
 test('should create a form and then find it using the search', async ({ page }) => {
     const libraryPage = new LibraryPage(page);
-    const formName = 'Test search form ' + Math.random();
+    const formName = libraryPage.generateNewFormName('Test search form')
     await createForm(page, formName);
 
     // Go back to the library and search for the form
@@ -66,9 +66,9 @@ test('should return multiple results for a partial search', async ({ page }) => 
 
 
 test('should be case-insensitive', async ({ page }) => {
-    const libraryPage = new LibraryPage(page);
-    const formName = 'Case-Insensitive Test Form ' + Math.random();
-    await createForm(page, formName);
+    const libraryPage = new LibraryPage(page)
+    const formName = libraryPage.generateNewFormName('Case-Insensitive Test Form')
+    await createForm(page, formName)
 
     await libraryPage.goto();
 
@@ -82,9 +82,9 @@ test('should be case-insensitive', async ({ page }) => {
 });
 
 test('should clear the search and show all forms', async ({ page }) => {
-    const libraryPage = new LibraryPage(page);
-    const formNameA = 'Clear Search A ' + Math.random();
-    const formNameB = 'Clear Search B ' + Math.random();
+    const libraryPage = new LibraryPage(page)
+    const formNameA = libraryPage.generateNewFormName('Clear Search A')
+    const formNameB = libraryPage.generateNewFormName('Clear Search B')
 
     await createForm(page, formNameA);
     await createForm(page, formNameB);

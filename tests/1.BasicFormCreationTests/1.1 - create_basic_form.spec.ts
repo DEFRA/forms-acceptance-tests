@@ -1,7 +1,12 @@
 import { FormPage } from '~/pages/FormPage.js'
 import { expect, test } from '@playwright/test'
 import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
+import { beforeEach } from 'node:test'
 
+
+test.beforeEach(async({ page }) => {
+  await page.context().clearCookies({ name: 'formsSession' })
+})
 
 test('1.1.1 - should create a new form with short answer field', async ({ page }, testInfo) => {
 
@@ -9,7 +14,7 @@ test('1.1.1 - should create a new form with short answer field', async ({ page }
   const formPage = new FormPage(page)
   const selectPageTypePage = new SelectPageTypePage(page)
   formPage.goTo()
-  const form_name = 'Automated test - Playwright form ' + Math.random().toString().substring(0, 10)
+  const form_name = formPage.generateNewFormName()
 
   await formPage.enterFormName(form_name)
   await formPage.selectRadioOption('Environment Agency')
@@ -21,7 +26,7 @@ test('1.1.1 - should create a new form with short answer field', async ({ page }
 
   // Add a new question page
 
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
   await selectPageTypePage.verifyPageStructure()
   await selectPageTypePage.choosePageType('question')
   await formPage.addNewQuestionPage('What is your name?', 'Your name')
@@ -39,7 +44,7 @@ test('1.1.2 - Missing page heading error when adding second question', async ({ 
   const selectPageTypePage = new SelectPageTypePage(page)
 
   formPage.goTo()
-  const form_name = 'Automated test - Playwright form ' + Math.random().toString().substring(0, 10)
+  const form_name = formPage.generateNewFormName()
 
   await formPage.enterFormName(form_name)
   await formPage.selectRadioOption('Environment Agency')
@@ -49,7 +54,7 @@ test('1.1.2 - Missing page heading error when adding second question', async ({ 
   await formPage.editDraft()
 
   // Add a new question page
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
   await selectPageTypePage.chooseQuestionPage()
   await formPage.addNewQuestionPage('What is your name?', 'Your name')
 
@@ -66,7 +71,7 @@ test('1.1.3- Missing a page type "What kind of page do you need"', async ({ page
   const selectPageTypePage = new SelectPageTypePage(page)
 
   formPage.goTo()
-  const form_name = 'Automated test - Playwright form ' + Math.random().toString().substring(0, 10)
+  const form_name = formPage.generateNewFormName()
 
   await formPage.enterFormName(form_name)
   await formPage.selectRadioOption('Environment Agency')
@@ -76,7 +81,7 @@ test('1.1.3- Missing a page type "What kind of page do you need"', async ({ page
   await formPage.editDraft()
 
   // Add a new question page
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
   await selectPageTypePage.clickSaveAndContinue()
   //await selectQuestionType.checkErrorIsDisplayed()
 

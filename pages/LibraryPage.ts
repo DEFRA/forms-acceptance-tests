@@ -1,7 +1,7 @@
 import { Page, Locator } from '@playwright/test';
+import { PageBase } from '~/pages/PageBase.js';
 
-export class LibraryPage {
-    readonly page: Page;
+export class LibraryPage extends PageBase {
     readonly createNewFormButton: Locator;
     readonly searchInput: Locator;
     readonly deleteButton: Locator;
@@ -12,7 +12,7 @@ export class LibraryPage {
     readonly sortButton: Locator;
 
     constructor(page: Page) {
-        this.page = page;
+        super(page)
         this.createNewFormButton = page.getByRole('button', { name: 'Create a new form' });
         this.searchInput = page.getByRole('textbox', { name: 'Form name' })
         this.deleteButton = page.getByRole('link', { name: 'Delete draft' });
@@ -24,7 +24,8 @@ export class LibraryPage {
     }
 
     async goto() {
-        await this.page.goto('/library');
+        await this.page.goto('/library')
+        await this.page.waitForLoadState()
     }
 
     async searchForm(formName: string) {
@@ -34,6 +35,7 @@ export class LibraryPage {
 
     async clickCreateForm() {
         await this.createNewFormButton.click();
+        await this.page.waitForLoadState()
     }
 
     async clearFilters() {

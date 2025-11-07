@@ -1,6 +1,11 @@
 import { expect, test, TestInfo } from '@playwright/test'
 import { FormPage } from '../../pages/FormPage'
 import { SelectPageTypePage } from '../../pages/SelectPageTypePage'
+
+test.beforeEach(async({ page }) => {
+  await page.context().clearCookies({ name: 'formsSession' })
+})
+
 test('3.3.1 - should error when adding a page with a duplicate name', async ({
   page
 }, testInfo) => {
@@ -8,9 +13,7 @@ test('3.3.1 - should error when adding a page with a duplicate name', async ({
   const formPage = new FormPage(page)
   const selectPageTypePage = new SelectPageTypePage(page)
   formPage.goTo()
-  const form_name =
-    'Automated test - Playwright form ' +
-    Math.random().toString().substring(0, 10)
+  const form_name = formPage.generateNewFormName()
 
   await formPage.enterFormName(form_name)
   await formPage.selectRadioOption('Environment Agency')
@@ -21,7 +24,7 @@ test('3.3.1 - should error when adding a page with a duplicate name', async ({
 
   // Add a new question page
 
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
   await selectPageTypePage.choosePageType('question')
   await formPage.addNewQuestionPage('What is your name?', 'Your name')
   const successBanner1 = await formPage.successBannerIsDisplayed()
@@ -30,7 +33,7 @@ test('3.3.1 - should error when adding a page with a duplicate name', async ({
 
   // Add a new question page with a duplicate name
 
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
   await selectPageTypePage.choosePageType('question')
   await formPage.addNewQuestionPage(
     'What is your name?',

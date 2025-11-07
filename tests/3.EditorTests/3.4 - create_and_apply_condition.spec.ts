@@ -7,6 +7,10 @@ import { EditConditionPage } from '../../pages/EditConditionPage'
 import { ManagerConditionsPage } from '../../pages/ManagerConditionsPage'
 import { link } from 'fs'
 
+test.beforeEach(async({ page }) => {
+  await page.context().clearCookies({ name: 'formsSession' })
+})
+
 test('should create a condition for Yes/No and apply it to page 2', async ({
   page
 }) => {
@@ -16,15 +20,14 @@ test('should create a condition for Yes/No and apply it to page 2', async ({
   const selectQuestionTypePage = new SelectQuestionTypePage(page)
   const pageOverview = new PageOverview(page)
   await formPage.goTo()
-  const formName =
-    'Condition test form ' + Math.random().toString().substring(2, 8)
+  const formName = formPage.generateNewFormName('Condition test form')
   await formPage.enterFormName(formName)
   await formPage.selectRadioOption('Environment Agency')
   await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
   await formPage.editDraft()
 
   // Step 2: Add a Yes/No component to Page 1
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
   await selectPageTypePage.choosePageType('question')
   await selectQuestionTypePage.selectQuestionType('list')
   await selectQuestionTypePage.selectSubtype('yesNo')
@@ -35,7 +38,7 @@ test('should create a condition for Yes/No and apply it to page 2', async ({
   await formPage.clickBackToAddEditPages()
 
   // Step 3: Create Page 2 with any component
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
   await selectPageTypePage.choosePageType('question')
   await selectQuestionTypePage.selectQuestionType('writtenAnswer')
   await selectQuestionTypePage.selectSubtype('shortAnswer')
@@ -93,20 +96,19 @@ test('should not allow creating two conditions with the same name', async ({
   const selectQuestionTypePage = new SelectQuestionTypePage(page)
   const pageOverview = new PageOverview(page)
   await formPage.goTo()
-  const formName =
-    'Duplicate condition test ' + Math.random().toString().substring(2, 8)
+  const formName = formPage.generateNewFormName('Duplicate condition test')
   await formPage.enterFormName(formName)
   await formPage.selectRadioOption('Environment Agency')
   await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
   await formPage.editDraft()
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
   await selectPageTypePage.choosePageType('question')
   await selectQuestionTypePage.selectQuestionType('list')
   await selectQuestionTypePage.selectSubtype('yesNo')
   await selectQuestionTypePage.clickSaveAndContinue()
   await formPage.createWrittenAnswer('Are you over 18?', 'over 18')
   await formPage.clickBackToAddEditPages()
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
   await selectPageTypePage.choosePageType('question')
   await selectQuestionTypePage.selectQuestionType('writtenAnswer')
   await selectQuestionTypePage.selectSubtype('shortAnswer')

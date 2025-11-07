@@ -1,16 +1,15 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator } from '@playwright/test'
+import { PageBase } from '~/pages/PageBase.js'
 
-export class SelectQuestionTypePage {
-    readonly page: Page;
-
+export class SelectQuestionTypePage extends PageBase {
     // Locators for main question types
-    private readonly questionTypeLocators: Record<string, Locator>;
-    private readonly subtypeLocators: Record<string, Locator>;
+    private readonly questionTypeLocators: Record<string, Locator>
+    private readonly subtypeLocators: Record<string, Locator>
 
-    readonly saveAndContinueButton: Locator;
+    readonly saveAndContinueButton: Locator
 
     constructor(page: Page) {
-        this.page = page;
+        super(page)
 
         // Initialise locators for main question types 
         this.questionTypeLocators = {
@@ -23,7 +22,7 @@ export class SelectQuestionTypePage {
             declaration: page.getByRole('radio', { name: 'Declaration' }),
             list: page.getByRole('radio', { name: 'A list of options that users can choose from' }),
             select: page.getByRole('radio', { name: 'A select box that users can choose from' }),
-        };
+        }
 
         // Initialise locators for subtypes
         this.subtypeLocators = {
@@ -39,28 +38,32 @@ export class SelectQuestionTypePage {
             radios: page.getByRole('radio', { name: 'Radios' }),
             autocomplete: page.getByRole('radio', { name: 'Autocomplete' }),
             select: page.getByRole('radio', { name: 'Select' }),
-        };
+        }
 
-        this.saveAndContinueButton = page.getByRole('button', { name: 'Save and continue' });
+        this.saveAndContinueButton = page.getByRole('button', { name: 'Save and continue' })
     }
 
     async selectQuestionType(type: keyof typeof this.questionTypeLocators) {
-        const radioButton = this.questionTypeLocators[type];
+        console.log('selectQuestionType', type)
+        const radioButton = this.questionTypeLocators[type]
         if (!radioButton) {
-            throw new Error(`Unknown question type: ${type}`);
+            throw new Error(`Unknown question type: ${type}`)
         }
-        await radioButton.check();
+        await radioButton.check()
     }
 
     async selectSubtype(subtype: keyof typeof this.subtypeLocators) {
-        const radioButton = this.subtypeLocators[subtype];
+        const radioButton = this.subtypeLocators[subtype]
         if (!radioButton) {
-            throw new Error(`Unknown subtype: ${subtype}`);
+            throw new Error(`Unknown subtype: ${subtype}`)
         }
-        await radioButton.check();
+        await radioButton.check()
     }
 
     async clickSaveAndContinue() {
-        await this.saveAndContinueButton.click();
+        console.log('clickSaveAndContinue')
+        await this.saveAndContinueButton.click()
+        await this.page.waitForLoadState()
+        await this.page.waitForLoadState()
     }
 }

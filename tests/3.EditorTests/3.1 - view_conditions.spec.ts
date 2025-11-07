@@ -18,18 +18,20 @@ const test = base.extend<{
     const selectPageTypePage = new SelectPageTypePage(page)
     const pageOverview = new PageOverview(page)
     await formPage.goTo()
-    const formName =
-      'Automated test - Playwright form ' +
-      Math.random().toString().substring(0, 10)
+    const formName = formPage.generateNewFormName()
     await formPage.enterFormName(formName)
     await formPage.selectRadioOption('Environment Agency')
     await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
     await formPage.editDraft()
-    await formPage.addNewPageButton.click()
+    await formPage.clickAddNewPage()
     await selectPageTypePage.choosePageType('question')
     await formPage.addNewQuestionPage('What is your name?', 'Your name')
     await use({ formPage, selectPageTypePage, pageOverview, formName })
   }
+})
+
+test.beforeEach(async({ page }) => {
+  await page.context().clearCookies({ name: 'formsSession' })
 })
 
 test('3.1.1 - Conditions Manager should display no conditions', async ({
@@ -51,12 +53,8 @@ test('3.1.2 - should create a condition', async ({ page, formSetup }) => {
   await pageOverview.goToCreateNewCondition()
   const editConditionPage = new EditConditionPage(page)
   await editConditionPage.selectQuestion('Page 1: What is your name?')
-  // Wait for the page to be fully loaded
-  await page.waitForLoadState('networkidle')
 
   await editConditionPage.selectOperator('Is')
-  // Wait for the page to be fully loaded
-  await page.waitForLoadState('networkidle')
 
   const valueInput = page.locator('input[name="items[0][value]"]')
   if (await valueInput.isVisible()) {

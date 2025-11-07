@@ -7,7 +7,7 @@ import { ReOrderPages } from '../../pages/ReOrderPages';
 
 // Helper to add a page with a specific question type
 async function addPage(formPage: FormPage, selectPageTypePage: SelectPageTypePage, selectQuestionTypePage: SelectQuestionTypePage, pageType: 'question' | 'guidance', questionType?: string, subtype?: string, questionText?: string, description?: string) {
-    await formPage.addNewPageButton.click();
+    await formPage.clickAddNewPage();
     await selectPageTypePage.choosePageType(pageType);
     if (pageType === 'question' && questionType) {
         await selectQuestionTypePage.selectQuestionType(questionType);
@@ -23,6 +23,10 @@ async function addPage(formPage: FormPage, selectPageTypePage: SelectPageTypePag
     await formPage.clickBackToAddEditPages();
 }
 
+test.beforeEach(async({ page }) => {
+  await page.context().clearCookies({ name: 'formsSession' })
+})
+
 test.skip('should allow re-ordering of pages and display Save button', async ({ page }) => {
     const formPage = new FormPage(page);
     const selectPageTypePage = new SelectPageTypePage(page);
@@ -31,7 +35,7 @@ test.skip('should allow re-ordering of pages and display Save button', async ({ 
 
     // Step 1: Create a form
     await formPage.goTo();
-    const formName = 'Reorder Test Form ' + Math.random().toString().substring(0, 8);
+    const formName = formPage.generateNewFormName('Reorder Test Form ')
     await formPage.enterFormName(formName);
     await formPage.selectRadioOption('Environment Agency');
     await formPage.fillTeamDetails('Team A', 'test@test.gov.uk');

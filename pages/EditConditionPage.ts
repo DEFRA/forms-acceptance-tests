@@ -1,8 +1,7 @@
 import { Page, Locator } from '@playwright/test'
+import { PageBase } from '~/pages/PageBase.js'
 
-export class EditConditionPage {
-    readonly page: Page
-
+export class EditConditionPage extends PageBase {
     // Locators for form fields and actions
     readonly selectQuestionDropdown: Locator
     readonly selectQuestionButton: Locator
@@ -16,7 +15,7 @@ export class EditConditionPage {
     readonly valueInput: Locator
 
     constructor(page: Page) {
-        this.page = page
+        super(page)
         this.pageHeading = page.getByRole('heading', { name: /Manage conditions/i })
         this.selectQuestionDropdown = page.locator('select[name="items[0][componentId]"]')
         this.selectQuestionButton = page.locator('button[name="action"][value="confirmSelectComponentId"]')
@@ -37,11 +36,13 @@ export class EditConditionPage {
     async selectQuestion(label: string) {
         await this.selectQuestionDropdown.selectOption({ label })
         await this.selectQuestionButton.click()
+        await this.page.waitForLoadState()
     }
 
     async selectOperator(label: string) {
         await this.operatorDropdown.selectOption({ label })
         await this.selectOperatorButton.click()
+        await this.page.waitForLoadState()
     }
 
     async addAnotherCondition() {

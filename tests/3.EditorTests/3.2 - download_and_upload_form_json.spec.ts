@@ -32,6 +32,10 @@ function readAndParseJsonFile(filePath) {
     return json;
 }
 
+test.beforeEach(async({ page }) => {
+  await page.context().clearCookies({ name: 'formsSession' })
+})
+
 test.skip('3.2.1 - Download form as JSON (both ways)', async ({ page, context }) => {
     // Create a form
     const formPage = new FormPage(page);
@@ -39,7 +43,7 @@ test.skip('3.2.1 - Download form as JSON (both ways)', async ({ page, context })
     const uploadPage = new UploadPage(page);
 
     await formPage.goTo();
-    const formName = 'Automated test - Playwright form ' + Math.random().toString().substring(2, 10);
+    const formName = formPage.generateNewFormName()
     await formPage.enterFormName(formName);
     await formPage.selectRadioOption('Environment Agency');
     await formPage.fillTeamDetails('Team A', 'test@test.gov.uk');
@@ -67,7 +71,7 @@ test.skip('3.2.2 - Upload a form JSON file and verify', async ({ page }) => {
     const uploadPage = new UploadPage(page);
 
     await formPage.goTo();
-    const formName = 'Automated test - Playwright form ' + Math.random().toString().substring(2, 10);
+    const formName = formPage.generateNewFormName()
     await formPage.enterFormName(formName);
     await formPage.selectRadioOption('Environment Agency');
     await formPage.fillTeamDetails('Team A', 'test@test.gov.uk');

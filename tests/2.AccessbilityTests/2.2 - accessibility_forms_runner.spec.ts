@@ -4,6 +4,11 @@ import { runAccessibilityCheck } from './accessibilityChecker';
 
 const host_url = process.env.RUNNER_HOST_URL || 'http://localhost:3009';
 
+test.beforeEach(async({ page }) => {
+  await page.context().clearCookies({ name: 'formsSession' })
+})
+
+
 test.describe('@accessibility', () => {
   test.skip('2.2.1 - Forms Runner Accessibility', async ({ page }, testInfo) => {
     await page.goto(host_url + '/form/preview/draft/e2e-form/whats-your-name');

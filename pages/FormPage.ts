@@ -1,8 +1,7 @@
 import { Page, Locator } from '@playwright/test';
+import { PageBase } from '~/pages/PageBase.js';
 
-export class FormPage {
-    readonly page: Page;
-
+export class FormPage extends PageBase {
     // Locators
     readonly teamNameInput: Locator;
     readonly teamEmailInput: Locator;
@@ -43,7 +42,7 @@ export class FormPage {
     readonly pageHeadingAndGuidanceCheckbox: Locator;
 
     constructor(page: Page) {
-        this.page = page;
+        super(page)
 
         // Initialise locators
         this.teamNameInput = page.getByRole('textbox', { name: 'Name of team' });
@@ -84,7 +83,6 @@ export class FormPage {
         this.pageHeadingAndGuidanceCheckbox = page.getByRole('checkbox', { name: 'Add a page heading' })
     }
 
-
     async successBannerIsDisplayed() {
         return this.page.locator('text=Changes saved successfully')
     }
@@ -100,6 +98,7 @@ export class FormPage {
 
     async goTo() {
         await this.page.goto('/create/title')
+        await this.page.waitForLoadState()
     }
 
     async clickMigrate() {
@@ -107,36 +106,43 @@ export class FormPage {
     }
 
     async clickBackToAddEditPages() {
-        await this.backToAddEditPages.click();
+        await this.backToAddEditPages.click()
+        await this.page.waitForLoadState()
     }
 
     async selectRadioOption(value: string) {
-        const radioOption = this.page.locator(`input[type="radio"][value="${value}"]`);
-        await radioOption.check();
-        await this.clickContinueBtn();
+        const radioOption = this.page.locator(`input[type="radio"][value="${value}"]`)
+        await radioOption.check()
+        await this.clickContinueBtn()
+        await this.page.waitForLoadState()
     }
 
     async clickContinueBtn() {
         await this.continueBtn.click();
+        await this.page.waitForLoadState()
     }
 
     async enterFormName(formName: string) {
-        await this.formName.fill(formName);
-        await this.clickContinueBtn();
+        await this.formName.fill(formName)
+        await this.clickContinueBtn()
+        await this.page.waitForLoadState()
     }
 
     async fillTeamDetails(teamName: string, email: string) {
-        await this.teamNameInput.fill(teamName);
-        await this.teamEmailInput.fill(email);
-        await this.saveAndContinueButton.click();
+        await this.teamNameInput.fill(teamName)
+        await this.teamEmailInput.fill(email)
+        await this.saveAndContinueButton.click()
+        await this.page.waitForLoadState()
     }
 
     async editDraft() {
         await this.editDraftButton.click();
+        await this.page.waitForLoadState()
     }
 
     async goToConditionsPage() {
-        await this.page.goto(this.page.url().replace('editor-v2/pages', '') + 'editor-v2/conditions');
+        await this.page.goto(this.page.url().replace('editor-v2/pages', '') + 'editor-v2/conditions')
+        await this.page.waitForLoadState()
     }
 
     async addNewQuestionPage(question: string, description: string) {
@@ -147,13 +153,15 @@ export class FormPage {
         await this.questionInput.fill(question);
         await this.shortDescriptionInput.fill(description);
         await this.saveAndContinueButton.click();
+        await this.page.waitForLoadState()
     }
 
     async createWrittenAnswer(question: string, description: string) {
-
+        console.log('createWrittenAnswer')
         await this.questionInput.fill(question);
         await this.shortDescriptionInput.fill(description);
         await this.saveAndContinueButton.click();
+        await this.page.waitForLoadState()
     }
 
 

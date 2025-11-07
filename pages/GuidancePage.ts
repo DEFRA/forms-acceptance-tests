@@ -1,7 +1,7 @@
 import { Page, Locator, expect } from '@playwright/test';
+import { PageBase } from '~/pages/PageBase.js';
 
-export class GuidancePage {
-    readonly page: Page;
+export class GuidancePage extends PageBase {
     readonly mainHeading: Locator;
     readonly pageHeadingInput: Locator;
     readonly pageHeadingHint: Locator;
@@ -15,7 +15,7 @@ export class GuidancePage {
     readonly manageConditionsButton: Locator;
 
     constructor(page: Page) {
-        this.page = page;
+        super(page)
         this.mainHeading = page.getByRole('heading', { level: 1, name: /Edit guidance page/ });
         this.pageHeadingInput = page.locator('#pageHeading');
         this.pageHeadingHint = page.locator('#pageHeading-hint');

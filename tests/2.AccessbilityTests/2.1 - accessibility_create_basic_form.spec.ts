@@ -1,5 +1,10 @@
-import { expect, test } from '@playwright/test';
+import { test } from '@playwright/test';
 import { runAccessibilityCheck } from './accessibilityChecker';
+
+test.beforeEach(async({ page }) => {
+  await page.context().clearCookies({ name: 'formsSession' })
+})
+
 
 test.skip('2.1 - Accessiblity - should create a new form with short answer field', {
   tag: '@accessibility',
