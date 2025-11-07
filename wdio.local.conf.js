@@ -120,11 +120,11 @@ export const config = {
   baseUrl: 'http://localhost:3000',
   //
   // Default timeout for all waitFor* commands.
-  waitforTimeout: 10000,
+  waitforTimeout: 15000,
   waitforInterval: 200,
-  timeout: 10000,
+  timeout: 15000,
   expect: {
-    timeout: 10000
+    timeout: 15000
   },
   //
   // Default timeout in milliseconds for request

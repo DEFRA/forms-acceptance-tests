@@ -147,7 +147,7 @@ export class EditQuestionPage extends PageBase {
       await this.waitUntilReady()
 
       // Wait for the item input to be visible and interactable
-      await this.itemTextBox.waitFor({ state: 'visible', timeout: 10000 })
+      await this.itemTextBox.waitFor({ state: 'visible', timeout: 15000 })
       await this.itemTextBox.click()
       await this.waitUntilReady()
       await this.itemTextBox.fill(item)

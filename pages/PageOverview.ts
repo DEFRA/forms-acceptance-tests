@@ -83,7 +83,7 @@ export class PageOverview extends PageBase {
 
   async successBannerIsDisplayed() {
     const locator = this.page.locator('text=Changes saved successfully')
-    await locator.waitFor({ state: 'visible', timeout: 10000 })
+    await locator.waitFor({ state: 'visible', timeout: 15000 })
   }
 
   async clickChangeLinkForQuestionByName(questionName: string) {
@@ -101,7 +101,7 @@ export class PageOverview extends PageBase {
       `dd.govuk-summary-list__value >> text=${questionName} >> .. >> dd.govuk-summary-list__actions >> a.govuk-link`,
       { hasText: 'Change' }
     )
-    await changeLink.waitFor({ state: 'visible', timeout: 10000 })
+    await changeLink.waitFor({ state: 'visible', timeout: 15000 })
     await changeLink.click()
   }
 

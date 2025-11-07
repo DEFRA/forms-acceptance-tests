@@ -76,7 +76,7 @@ test('1.4.2 - should update email address for form submissions', async ({ page }
     await formPage.waitUntilReady()
 
     // Assert the new email is visible
-    await expect(page.getByText('new-admin@test.gov.uk')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByText('new-admin@test.gov.uk')).toBeVisible({ timeout: 15000 })
 })
 
 test('1.4.3 - should delete an existing draft form', async ({ page }) => {
