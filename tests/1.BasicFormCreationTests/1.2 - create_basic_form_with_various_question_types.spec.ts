@@ -22,16 +22,15 @@ const test = baseTest.extend<MyFixtures>({
   formPage: async ({ page }, use) => {
     const formPage = new FormPage(page) // Initialize FormPage using the page object
     await formPage.goTo()
-    const form_name =
-      'Automated test - Playwright form ' +
-      Math.random().toString().substring(0, 10)
-    console.log('---form name ---')
-    console.log(form_name)
+    const form_name = formPage.generateNewFormName()
+      
+    console.log('---form name ---', form_name)
     await formPage.enterFormName(form_name)
     await formPage.selectRadioOption('Environment Agency')
     await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
 
     // Edit draft
+    await formPage.waitUntilReady()
     await formPage.editDraft()
 
     await use(formPage) // Provide the fixture for use in tests
@@ -62,6 +61,10 @@ const test = baseTest.extend<MyFixtures>({
   }
 })
 
+test.beforeEach(async({ page }) => {
+  await page.context().clearCookies({ name: 'formsSession' })
+})
+
 test('1.2.1 - should create a new form with short answer field', async ({
   formPage,
   selectQuestionTypePage,
@@ -70,7 +73,7 @@ test('1.2.1 - should create a new form with short answer field', async ({
   editQuestionPage
 }) => {
   // Add a new page
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
   // Select Question Page type
   await selectPageTypePage.choosePageType('question')
 
@@ -106,7 +109,7 @@ test('1.2.2 - should create a new form with long answer field', async ({
   pageOverview
 }) => {
   // Add a new page
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
 
   // Select Question Page type
   await selectPageTypePage.choosePageType('question')
@@ -135,7 +138,7 @@ test('1.2.3 - should create a new form with number field', async ({
   pageOverview
 }) => {
   // Add a new page
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
 
   // Select Question Page type
   await selectPageTypePage.choosePageType('question')
@@ -159,7 +162,7 @@ test('1.2.4 - should create a new form with full date field', async ({
   pageOverview
 }) => {
   // Add a new page
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
 
   // Select Question Page type
   await selectPageTypePage.choosePageType('question')
@@ -183,7 +186,7 @@ test('1.2.5 - should create a new form with Month Year field', async ({
   pageOverview
 }) => {
   // Add a new page
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
 
   // Select Question Page type
   await selectPageTypePage.choosePageType('question')
@@ -207,7 +210,7 @@ test('1.2.6 - should create a new form with UK address field', async ({
   pageOverview
 }) => {
   // Add a new page
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
 
   // Select Question Page type
   await selectPageTypePage.choosePageType('question')
@@ -230,7 +233,7 @@ test('1.2.7 - should create a new form with Phone number field', async ({
   pageOverview
 }) => {
   // Add a new page
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
 
   // Select Question Page type
   await selectPageTypePage.choosePageType('question')
@@ -256,7 +259,7 @@ test('1.2.8 - should create a new form with File Upload field', async ({
   pageOverview
 }) => {
   // Add a new page
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
 
   // Select Question Page type
   await selectPageTypePage.choosePageType('question')
@@ -271,6 +274,7 @@ test('1.2.8 - should create a new form with File Upload field', async ({
     'We need proof of address'
   )
 
+  await pageOverview.waitUntilReady()
   // Verify success banner
   expect(await pageOverview.verifySuccessBanner('Changes saved successfully'))
 })
@@ -282,7 +286,7 @@ test('1.2.9 - should create a new form with Email field', async ({
   pageOverview
 }) => {
   // Add a new page
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
 
   // Select Question Page type
   await selectPageTypePage.choosePageType('question')
@@ -305,7 +309,7 @@ test('1.2.10 - should create a new form with Yes/No field', async ({
   pageOverview
 }) => {
   // Add a new page
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
 
   // Select Question Page type
   await selectPageTypePage.choosePageType('question')
@@ -330,7 +334,7 @@ test.skip('1.2.11 - should create a new form with Checkbox field', async ({
   editQuestionPage
 }) => {
   // Add a new page
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
 
   // Select Question Page type
   await selectPageTypePage.choosePageType('question')
@@ -366,7 +370,7 @@ test.skip('1.2.12 - should create a new form with Select field', async ({
   editQuestionPage
 }) => {
   // Add a new page
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
 
   // Select Question Page type
   await selectPageTypePage.choosePageType('question')
@@ -402,12 +406,14 @@ test('1.2.13 - should create a new form with Declaration', async ({
   editQuestionPage
 }) => {
   // Add a new page
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
 
   // Select Question Page type
+  await selectPageTypePage.waitUntilReady()
   await selectPageTypePage.choosePageType('question')
 
   // Select Written Answer question type
+  await selectQuestionTypePage.waitUntilReady()
   await selectQuestionTypePage.selectQuestionType('declaration')
   await selectQuestionTypePage.clickSaveAndContinue()
 
@@ -436,9 +442,10 @@ test('1.2.14 - should create a new form with guidance page', async ({
   guidancePage
 }) => {
   // Add a new page
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
 
   // Select Question Page type
+  await selectPageTypePage.waitUntilReady()
   await selectPageTypePage.choosePageType('question')
 
   // Select List question type and Autocomplete (Select) subtype
@@ -450,7 +457,7 @@ test('1.2.14 - should create a new form with guidance page', async ({
   await formPage.createWrittenAnswer('Select your country', 'country')
   const error = await formPage.getErrorMessage()
   expect(error).toContain('At least 2 items are required for a list')
-
+  
   // Add options to item list
   const options = ['England', 'Scotland', 'Wales', 'Northern Ireland']
   await editQuestionPage.addListItems(options)
@@ -459,7 +466,7 @@ test('1.2.14 - should create a new form with guidance page', async ({
 
   //click add to guidance page
   await formPage.clickBackToAddEditPages()
-  await formPage.addNewPageButton.click()
+  await formPage.clickAddNewPage()
   await selectPageTypePage.choosePageType('guidance')
 
   await guidancePage.verifyStructureBeforeSaving()
@@ -474,6 +481,7 @@ test('1.2.14 - should create a new form with guidance page', async ({
 
   await guidancePage.setExitPage(false)
   await guidancePage.save()
+  await guidancePage.waitUntilReady()
   await pageOverview.successBannerIsDisplayed()
   await guidancePage.verifyStructureAfterSaving()
 

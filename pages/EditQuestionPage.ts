@@ -1,8 +1,7 @@
 import { Page, Locator } from '@playwright/test'
+import { PageBase } from '~/pages/PageBase.js'
 
-export class EditQuestionPage {
-  readonly page: Page
-
+export class EditQuestionPage extends PageBase {
   // Locators for page elements
   readonly pageHeading: Locator
   readonly questionInput: Locator
@@ -31,7 +30,7 @@ export class EditQuestionPage {
   readonly questionText: Locator
 
   constructor(page: Page) {
-    this.page = page
+    super(page)
 
     // Initialize locators using ARIA attributes
     this.pageHeading = page.getByRole('heading', { name: 'Edit question 1' })
@@ -99,7 +98,7 @@ export class EditQuestionPage {
   }
 
   async enterDeclarationText(declarationText: string) {
-    await this.declarationTextInput.fill(declarationText);
+    await this.declarationTextInput.fill(declarationText)
   }
 
   async setClasses(classes: string) {
@@ -108,6 +107,7 @@ export class EditQuestionPage {
 
   async clickSaveAndContinue() {
     await this.saveAndContinueButton.click()
+    await this.waitUntilReady()
   }
 
   async clickDeleteQuestion() {
@@ -131,41 +131,38 @@ export class EditQuestionPage {
 
   // async compareLists(list1: string[], list2: string[]): Promise<boolean> {
   //     if (JSON.stringify(list1) === JSON.stringify(list2)) {
-  //         console.log('Both lists have the same items:', list1);
-  //         return true;
+  //         console.log('Both lists have the same items:', list1)
+  //         return true
   //     } else {
-  //         console.log('The lists have different items.');
-  //         console.log('list1:', list1);
-  //         console.log('list2:', list2);
-  //         return false;
+  //         console.log('The lists have different items.')
+  //         console.log('list1:', list1)
+  //         console.log('list2:', list2)
+  //         return false
   //     }
   // }
 
   async addListItems(items: string[]): Promise<void> {
     for (const item of items) {
       await this.addItemButton.click()
+      await this.waitUntilReady()
 
       // Wait for the item input to be visible and interactable
       await this.itemTextBox.waitFor({ state: 'visible', timeout: 10000 })
       await this.itemTextBox.click()
+      await this.waitUntilReady()
       await this.itemTextBox.fill(item)
 
       // Click save and wait for the form to update
       await this.saveItemButton.click()
 
       // Wait for the item to be saved - wait for the item text box to be cleared or add item button to be visible again
-      await this.page.waitForTimeout(2000)
-      // Wait for network to be idle to ensure the item is fully saved
-      await this.page
-        .waitForLoadState('networkidle', { timeout: 5000 })
-        .catch(() => {
-          // If networkidle times out, continue anyway
-        })
+      // await this.page.waitForTimeout(2000)
+      await this.waitUntilReady()
     }
   }
 
   // async addFruitListItems() {
-  //     const fruits = ['apple', 'banana', 'grapes'];
-  //     await this.addListItems(fruits);
+  //     const fruits = ['apple', 'banana', 'grapes']
+  //     await this.addListItems(fruits)
   // }
 }

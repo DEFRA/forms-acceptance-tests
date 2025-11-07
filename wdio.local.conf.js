@@ -122,9 +122,9 @@ export const config = {
   // Default timeout for all waitFor* commands.
   waitforTimeout: 10000,
   waitforInterval: 200,
-  timeout: 30000,
+  timeout: 10000,
   expect: {
-    timeout: 15000
+    timeout: 10000
   },
   //
   // Default timeout in milliseconds for request
