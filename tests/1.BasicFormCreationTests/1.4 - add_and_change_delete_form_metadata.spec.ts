@@ -8,6 +8,7 @@ import { TeamDetailsPage } from '~/pages/TeamDetailsPage.js'
 
 test.beforeEach(async({ page }) => {
   await page.context().clearCookies({ name: 'formsSession' })
+  await page.context().clearCookies({ name: 'csrfToken' })
 })
 
 // This test will create a form, expand it, add 'Submitted forms sent to', and then delete the form

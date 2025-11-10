@@ -25,6 +25,7 @@ async function addPage(formPage: FormPage, selectPageTypePage: SelectPageTypePag
 
 test.beforeEach(async({ page }) => {
   await page.context().clearCookies({ name: 'formsSession' })
+  await page.context().clearCookies({ name: 'csrfToken' })
 })
 
 test.skip('should allow re-ordering of pages and display Save button', async ({ page }) => {

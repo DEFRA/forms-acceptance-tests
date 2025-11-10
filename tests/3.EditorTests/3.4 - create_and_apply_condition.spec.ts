@@ -9,6 +9,7 @@ import { link } from 'fs'
 
 test.beforeEach(async({ page }) => {
   await page.context().clearCookies({ name: 'formsSession' })
+  await page.context().clearCookies({ name: 'csrfToken' })
 })
 
 test('should create a condition for Yes/No and apply it to page 2', async ({

@@ -6,6 +6,7 @@ const host_url = process.env.RUNNER_HOST_URL || 'http://localhost:3009'
 
 test.beforeEach(async({ page }) => {
   await page.context().clearCookies({ name: 'formsSession' })
+  await page.context().clearCookies({ name: 'csrfToken' })
 })
 
 

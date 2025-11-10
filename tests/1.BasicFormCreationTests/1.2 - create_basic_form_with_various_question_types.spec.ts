@@ -63,6 +63,7 @@ const test = baseTest.extend<MyFixtures>({
 
 test.beforeEach(async({ page }) => {
   await page.context().clearCookies({ name: 'formsSession' })
+  await page.context().clearCookies({ name: 'csrfToken' })
 })
 
 test('1.2.1 - should create a new form with short answer field', async ({

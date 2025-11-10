@@ -3,6 +3,7 @@ import { runAccessibilityCheck } from './accessibilityChecker.js'
 
 test.beforeEach(async({ page }) => {
   await page.context().clearCookies({ name: 'formsSession' })
+  await page.context().clearCookies({ name: 'csrfToken' })
 })
 
 

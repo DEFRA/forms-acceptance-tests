@@ -32,6 +32,7 @@ const test = base.extend<{
 
 test.beforeEach(async({ page }) => {
   await page.context().clearCookies({ name: 'formsSession' })
+  await page.context().clearCookies({ name: 'csrfToken' })
 })
 
 test('3.1.1 - Conditions Manager should display no conditions', async ({

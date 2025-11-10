@@ -6,6 +6,7 @@ import { beforeEach } from 'node:test'
 
 test.beforeEach(async({ page }) => {
   await page.context().clearCookies({ name: 'formsSession' })
+  await page.context().clearCookies({ name: 'csrfToken' })
 })
 
 test('1.1.1 - should create a new form with short answer field', async ({ page }, testInfo) => {

@@ -4,6 +4,7 @@ import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
 
 test.beforeEach(async({ page }) => {
   await page.context().clearCookies({ name: 'formsSession' })
+  await page.context().clearCookies({ name: 'csrfToken' })
 })
 
 test('3.3.1 - should error when adding a page with a duplicate name', async ({

@@ -34,6 +34,7 @@ function readAndParseJsonFile(filePath: string) {
 
 test.beforeEach(async({ page }) => {
   await page.context().clearCookies({ name: 'formsSession' })
+  await page.context().clearCookies({ name: 'csrfToken' })
 })
 
 test.skip('3.2.1 - Download form as JSON (both ways)', async ({ page, context }) => {

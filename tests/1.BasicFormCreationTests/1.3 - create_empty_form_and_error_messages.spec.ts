@@ -4,6 +4,7 @@ import { FormPage } from '~/pages/FormPage.js'
 
 test.beforeEach(async({ page }) => {
   await page.context().clearCookies({ name: 'formsSession' })
+  await page.context().clearCookies({ name: 'csrfToken' })
 })
 
 test('1.3.1 - should create a new form with valid data', async ({ page }) => {

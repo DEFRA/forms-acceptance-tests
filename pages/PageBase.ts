@@ -22,7 +22,16 @@ export class PageBase {
   }
 
   async waitUntilReady() {
-    await this.page.waitForLoadState()
-    // await setTimeout(1000)
+    try {
+      await this.page.waitForLoadState('load', { timeout: 5000 })
+    } catch {
+      // Ignore
+      // try {
+      //   await this.page.waitForLoadState('networkidle', { timeout: 5000 })
+      // } catch {
+        // Ignore
+      // }
+    }
+    // await setTimeout(2000)
   }
 }
