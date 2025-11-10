@@ -131,8 +131,7 @@ export class FormPage extends PageBase {
     async fillTeamDetails(teamName: string, email: string) {
         await this.teamNameInput.fill(teamName)
         await this.teamEmailInput.fill(email)
-        await this.saveAndContinueButton.click()
-        await this.waitUntilReady()
+        await this.clickSaveAndContinue()
     }
 
     async editDraft() {
@@ -149,18 +148,16 @@ export class FormPage extends PageBase {
 
         await this.writtenAnswerRadio.check()
         await this.shortAnswerRadio.check()
-        await this.saveAndContinueButton.click()
+        await this.clickSaveAndContinue()
         await this.questionInput.fill(question)
         await this.shortDescriptionInput.fill(description)
-        await this.saveAndContinueButton.click()
-        await this.waitUntilReady()
+        await this.clickSaveAndContinue()
     }
 
     async createWrittenAnswer(question: string, description: string) {
         await this.questionInput.fill(question)
         await this.shortDescriptionInput.fill(description)
-        await this.saveAndContinueButton.click()
-        await this.waitUntilReady()
+        await this.clickSaveAndContinue()
     }
 
 
@@ -189,7 +186,7 @@ export class FormPage extends PageBase {
 
 
         // Click Save and Continue
-        await this.saveAndContinueButton.click()
+        await this.clickSaveAndContinue()
     }
 
     async addAnotherQuestion() {

@@ -13,7 +13,6 @@ export class EditQuestionPage extends PageBase {
   readonly maxLengthInput: Locator
   readonly regexInput: Locator
   readonly classesInput: Locator
-  readonly saveAndContinueButton: Locator
   readonly deleteQuestionLink: Locator
   readonly previewPageButton: Locator
   readonly previewErrorMessagesButton: Locator
@@ -43,9 +42,6 @@ export class EditQuestionPage extends PageBase {
     this.maxLengthInput = page.getByLabel('Maximum character length (optional)')
     this.regexInput = page.getByLabel('Regex (optional)')
     this.classesInput = page.getByLabel('Classes (optional)')
-    this.saveAndContinueButton = page.getByRole('button', {
-      name: 'Save and continue'
-    })
     this.deleteQuestionLink = page.getByRole('link', {
       name: 'Delete question'
     })
@@ -103,11 +99,6 @@ export class EditQuestionPage extends PageBase {
 
   async setClasses(classes: string) {
     await this.classesInput.fill(classes)
-  }
-
-  async clickSaveAndContinue() {
-    await this.saveAndContinueButton.click()
-    await this.waitUntilReady()
   }
 
   async clickDeleteQuestion() {

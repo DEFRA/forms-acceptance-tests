@@ -18,7 +18,7 @@ async function addPage(formPage: FormPage, selectPageTypePage: SelectPageTypePag
         await formPage.createWrittenAnswer(questionText || 'Default question', description || 'Default description')
     } else if (pageType === 'guidance') {
         // For guidance page, just save
-        await formPage.saveAndContinueButton.click()
+        await formPage.clickSaveAndContinue()
     }
     await formPage.clickBackToAddEditPages()
 }

@@ -6,7 +6,6 @@ export class PrivacyNoticePage extends PageBase {
     readonly caption: Locator
     readonly privacyNoticeInput: Locator
     readonly privacyNoticeHint: Locator
-    readonly saveAndContinueButton: Locator
     readonly cancelButton: Locator
 
     constructor(page: Page) {
@@ -15,17 +14,11 @@ export class PrivacyNoticePage extends PageBase {
         this.caption = page.locator('.govuk-caption-l')
         this.privacyNoticeInput = page.locator('#privacyNoticeUrl')
         this.privacyNoticeHint = page.locator('#privacyNoticeUrl-hint')
-        this.saveAndContinueButton = page.getByRole('button', { name: 'Save and continue' })
         this.cancelButton = page.getByRole('button', { name: 'Cancel' })
     }
 
     async fillPrivacyNoticeUrl(url: string) {
         await this.privacyNoticeInput.fill(url)
-    }
-
-    async clickSaveAndContinue() {
-        await this.saveAndContinueButton.click()
-        await this.waitUntilReady()
     }
 
     async clickCancel() {

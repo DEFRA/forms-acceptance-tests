@@ -7,7 +7,6 @@ export class TeamDetailsPage extends PageBase {
     readonly teamNameHint: Locator
     readonly teamEmailInput: Locator
     readonly teamEmailHint: Locator
-    readonly saveAndContinueButton: Locator
 
     constructor(page: Page) {
         super(page)
@@ -16,17 +15,11 @@ export class TeamDetailsPage extends PageBase {
         this.teamNameHint = page.locator('#teamName-hint')
         this.teamEmailInput = page.locator('#teamEmail')
         this.teamEmailHint = page.locator('#teamEmail-hint')
-        this.saveAndContinueButton = page.getByRole('button', { name: 'Save and continue' })
     }
 
     async fillTeamDetails(teamName: string, teamEmail: string) {
         await this.teamNameInput.fill(teamName)
         await this.teamEmailInput.fill(teamEmail)
-    }
-
-    async clickSaveAndContinue() {
-        await this.saveAndContinueButton.click()
-        await this.waitUntilReady()
     }
 
     async expectOnPage() {

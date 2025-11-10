@@ -3,7 +3,6 @@ import { PageBase } from '~/pages/PageBase.js'
 
 export class SelectPageTypePage extends PageBase {
     // Locators
-    readonly saveAndContinueButton: Locator
     readonly questionPageRadio: Locator
     readonly guidancePageRadio: Locator
     readonly errorHeading: Locator
@@ -17,7 +16,6 @@ export class SelectPageTypePage extends PageBase {
 
     constructor(page: Page) {
         super(page)
-        this.saveAndContinueButton = page.getByRole('button', { name: 'Save and continue' })
         this.questionPageRadio = page.getByRole('radio', { name: 'Question page' })
         this.guidancePageRadio = page.getByRole('radio', { name: 'Guidance page' })
         this.errorHeading = page.getByRole('heading', { name: 'There is a problem' })
@@ -38,11 +36,6 @@ export class SelectPageTypePage extends PageBase {
         await this.guidancePageRadio.check()
     }
 
-    async clickSaveAndContinue() {
-        await this.saveAndContinueButton.click()
-        await this.waitUntilReady()
-    }
-
     async chooseQuestionPage() {
         await this.selectQuestionPage()
         await this.clickSaveAndContinue()
@@ -61,8 +54,7 @@ export class SelectPageTypePage extends PageBase {
             : this.guidancePageRadio
 
         await radioButton.check()
-        await this.saveAndContinueButton.click()
-        await this.waitUntilReady()
+        await this.clickSaveAndContinue()
     }
 
     async checkErrorIsDisplayed() {

@@ -6,8 +6,6 @@ export class SelectQuestionTypePage extends PageBase {
     private readonly questionTypeLocators: Record<string, Locator>
     private readonly subtypeLocators: Record<string, Locator>
 
-    readonly saveAndContinueButton: Locator
-
     constructor(page: Page) {
         super(page)
 
@@ -39,8 +37,6 @@ export class SelectQuestionTypePage extends PageBase {
             autocomplete: page.getByRole('radio', { name: 'Autocomplete' }),
             select: page.getByRole('radio', { name: 'Select' }),
         }
-
-        this.saveAndContinueButton = page.getByRole('button', { name: 'Save and continue' })
     }
 
     async selectQuestionType(type: keyof typeof this.questionTypeLocators) {
@@ -57,10 +53,5 @@ export class SelectQuestionTypePage extends PageBase {
             throw new Error(`Unknown subtype: ${subtype}`)
         }
         await radioButton.check()
-    }
-
-    async clickSaveAndContinue() {
-        await this.saveAndContinueButton.click()
-        await this.waitUntilReady()
     }
 }
