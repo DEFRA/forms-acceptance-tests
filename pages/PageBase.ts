@@ -16,12 +16,12 @@ export class PageBase {
   }
 
   async clickAddNewPage() {
-    await this.addNewPageButton.click({ timeout: 5000 })
+    await this.addNewPageButton.click({ timeout: 10000 })
     await this.waitUntilReady()
   }
 
   async clickSaveAndContinue() {
-    await this.saveAndContinueButton.click({ timeout: 5000 })
+    await this.saveAndContinueButton.click({ timeout: 10000 })
     await this.waitUntilReady()
   }
 
@@ -33,16 +33,16 @@ export class PageBase {
 
   async waitUntilReady() {
     // try {
-    // await this.page.waitForLoadState('load', { timeout: 5000 })
+    //  await this.page.waitForLoadState('load', { timeout: 10000 })
     // } catch {
       // Ignore
-      try {
-        await this.page.waitForLoadState('networkidle', { timeout: 5000 })
-      } catch {
+      // try {
+      //   await this.page.waitForLoadState('networkidle', { timeout: 5000 })
+      // } catch {
         // Ignore
-        console.log('Wait timeout')
+        // console.log('Wait timeout')
       }
     // }
     // await setTimeout(2000)
-  }
+  // }
 }
