@@ -1,8 +1,10 @@
 import { Page, Locator, expect } from '@playwright/test'
-import { PageBase } from '~/pages/PageBase.js'
 
-export class AddEditPagesPage extends PageBase {
+export class AddEditPagesPage {
+    readonly page: Page
+
     readonly mainHeading: Locator
+    readonly addNewPageButton: Locator
     readonly manageConditionsButton: Locator
     readonly uploadFormButton: Locator
     readonly downloadFormButton: Locator
@@ -13,8 +15,9 @@ export class AddEditPagesPage extends PageBase {
     readonly downloadCopyLink: Locator
 
     constructor(page: Page) {
-        super(page)
+        this.page = page
         this.mainHeading = page.getByRole('heading', { name: /Add and edit pages/i })
+        this.addNewPageButton = page.getByRole('button', { name: 'Add new page' })
         this.manageConditionsButton = page.getByRole('button', { name: 'Manage conditions' })
         this.uploadFormButton = page.getByRole('button', { name: 'Upload a form' })
         this.downloadFormButton = page.getByRole('button', { name: 'Download this form' })
@@ -23,6 +26,10 @@ export class AddEditPagesPage extends PageBase {
         this.summaryCardPreviewLink = page.getByRole('link', { name: /Preview.*Check your answers/i })
         this.backToFormOverviewLink = page.getByRole('link', { name: /Back to form overview/i })
         this.downloadCopyLink = page.getByRole('link', { name: 'download a copy' })
+    }
+
+    async clickAddNewPage() {
+        await this.addNewPageButton.click()
     }
 
     async clickManageConditions() {

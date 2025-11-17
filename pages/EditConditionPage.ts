@@ -1,7 +1,8 @@
 import { Page, Locator } from '@playwright/test'
-import { PageBase } from '~/pages/PageBase.js'
 
-export class EditConditionPage extends PageBase {
+export class EditConditionPage {
+    readonly page: Page
+
     // Locators for form fields and actions
     readonly selectQuestionDropdown: Locator
     readonly selectQuestionButton: Locator
@@ -15,7 +16,7 @@ export class EditConditionPage extends PageBase {
     readonly valueInput: Locator
 
     constructor(page: Page) {
-        super(page)
+        this.page = page
         this.pageHeading = page.getByRole('heading', { name: /Manage conditions/i })
         this.selectQuestionDropdown = page.locator('select[name="items[0][componentId]"]')
         this.selectQuestionButton = page.locator('button[name="action"][value="confirmSelectComponentId"]')
@@ -36,18 +37,15 @@ export class EditConditionPage extends PageBase {
     async selectQuestion(label: string) {
         await this.selectQuestionDropdown.selectOption({ label })
         await this.selectQuestionButton.click()
-        await this.waitUntilReady()
     }
 
     async selectOperator(label: string) {
         await this.operatorDropdown.selectOption({ label })
         await this.selectOperatorButton.click()
-        await this.waitUntilReady()
     }
 
     async addAnotherCondition() {
         await this.addAnotherConditionButton.click()
-        await this.waitUntilReady()
     }
 
     async setConditionName(name: string) {
@@ -56,12 +54,10 @@ export class EditConditionPage extends PageBase {
 
     async saveCondition() {
         await this.saveConditionButton.click()
-        await this.waitUntilReady()
     }
 
     async cancel() {
         await this.cancelLink.click()
-        await this.waitUntilReady()
     }
 
     async enterValue(value: string) {

@@ -2,9 +2,9 @@ import { defineConfig, devices } from '@playwright/test'
 
 export default defineConfig({
   globalSetup: require.resolve('./global-setup'),
-  timeout: 15000,
+  timeout: 30000,
   expect: {
-    timeout: 10000
+    timeout: 15000
   },
   workers: process.env.CI ? 1 : undefined,
 

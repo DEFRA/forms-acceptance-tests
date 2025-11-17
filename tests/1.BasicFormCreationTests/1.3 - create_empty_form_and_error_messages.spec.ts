@@ -1,18 +1,16 @@
 import { test, expect } from '@playwright/test'
 import { LibraryPage } from '~/pages/LibraryPage.js'
 import { FormPage } from '~/pages/FormPage.js'
-
-test.beforeEach(async({ page }) => {
-  await page.context().clearCookies({ name: 'formsSession' })
-  await page.context().clearCookies({ name: 'csrfToken' })
-})
+import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
 
 test('1.3.1 - should create a new form with valid data', async ({ page }) => {
   //create a form
   const formPage = new FormPage(page)
+  const selectQuestionType = new SelectPageTypePage(page)
 
   formPage.goTo()
-  const form_name = formPage.generateNewFormName()
+  const form_name = 'Automated test - Playwright form ' + Math.random().toString().substring(0, 10)
+
   await formPage.enterFormName(form_name)
   await formPage.selectRadioOption('Environment Agency')
   await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
@@ -50,7 +48,7 @@ test('1.3.3 - should display error for missing email address', async ({ page }) 
 
 
   // Fill form details
-  const formName = formPage.generateNewFormName()
+  const formName = 'Automated test - Playwright form ' + Math.random().toString().substring(0, 12)
   await formPage.enterFormName(formName)
   await formPage.selectRadioOption('Defra')
   await formPage.fillTeamDetails('Team A', '')
@@ -58,32 +56,31 @@ test('1.3.3 - should display error for missing email address', async ({ page }) 
   // Verify error for missing email address
   const errorMessage = ((await formPage.getErrorMessage()))
   expect(errorMessage).toContain('Enter a shared team email address')
-})
+});
 
-;[
+[
   { email: 'invalid-email', expected: 'Enter a shared team email address in the correct format' },
   { email: 'test@test.com', expected: 'Enter a shared team email address in the correct format' },
   { email: 'test@', expected: 'Enter a shared team email address in the correct format' },
   { email: '', expected: 'Enter a shared team email address in the correct format' },
 ].forEach(({ email, expected }) => {
   test.describe(() => {
-    let formPage: FormPage
     test.beforeEach(async ({ page }) => {
       const libraryPage = new LibraryPage(page)
-      formPage = new FormPage(page)
+      const formPage = new FormPage(page)
 
       // Navigate to the library page and create a new form
       await libraryPage.goto()
       await libraryPage.clickCreateForm()
 
       // Fill form details
-      const formName = formPage.generateNewFormName()
+      const formName = 'Automated test - Playwright form ' + + Math.random().toString().substring(0, 10)
 
       await formPage.enterFormName(formName)
       await formPage.selectRadioOption('Defra')
     })
     test(`1.3.4 - testing with email "${email}" and expected message "${expected}"`, async ({ page }) => {
-      // const formPage = new FormPage(page)
+      const formPage = new FormPage(page)
       // await expect(page.getByRole('heading')).toHaveText(expected)
       await formPage.fillTeamDetails('Team A', 'invalid-email')
     })
@@ -101,7 +98,7 @@ test('1.3.5 - should display error for missing Lead Organisation', async ({ page
   await libraryPage.clickCreateForm()
 
   // Fill form details
-  const formName = formPage.generateNewFormName()
+  const formName = 'Automated test - Playwright form ' + + Math.random().toString().substring(0, 10)
 
   await formPage.enterFormName(formName)
   await formPage.clickContinueBtn()

@@ -1,12 +1,6 @@
 import { expect, test, TestInfo } from '@playwright/test'
-import { FormPage } from '~/pages/FormPage.js'
-import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
-
-test.beforeEach(async({ page }) => {
-  await page.context().clearCookies({ name: 'formsSession' })
-  await page.context().clearCookies({ name: 'csrfToken' })
-})
-
+import { FormPage } from '../../pages/FormPage'
+import { SelectPageTypePage } from '../../pages/SelectPageTypePage'
 test('3.3.1 - should error when adding a page with a duplicate name', async ({
   page
 }, testInfo) => {
@@ -14,7 +8,9 @@ test('3.3.1 - should error when adding a page with a duplicate name', async ({
   const formPage = new FormPage(page)
   const selectPageTypePage = new SelectPageTypePage(page)
   formPage.goTo()
-  const form_name = formPage.generateNewFormName()
+  const form_name =
+    'Automated test - Playwright form ' +
+    Math.random().toString().substring(0, 10)
 
   await formPage.enterFormName(form_name)
   await formPage.selectRadioOption('Environment Agency')
@@ -25,7 +21,7 @@ test('3.3.1 - should error when adding a page with a duplicate name', async ({
 
   // Add a new question page
 
-  await formPage.clickAddNewPage()
+  await formPage.addNewPageButton.click()
   await selectPageTypePage.choosePageType('question')
   await formPage.addNewQuestionPage('What is your name?', 'Your name')
   const successBanner1 = await formPage.successBannerIsDisplayed()
@@ -34,7 +30,7 @@ test('3.3.1 - should error when adding a page with a duplicate name', async ({
 
   // Add a new question page with a duplicate name
 
-  await formPage.clickAddNewPage()
+  await formPage.addNewPageButton.click()
   await selectPageTypePage.choosePageType('question')
   await formPage.addNewQuestionPage(
     'What is your name?',

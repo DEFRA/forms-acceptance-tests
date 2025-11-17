@@ -1,7 +1,8 @@
 import { Page, Locator, expect } from '@playwright/test'
-import { PageBase } from '~/pages/PageBase.js'
 
-export class PageOverview extends PageBase {
+export class PageOverview {
+  readonly page: Page
+
   // Locators for page elements
   readonly pageHeading: Locator
   readonly successBanner: Locator
@@ -29,7 +30,7 @@ export class PageOverview extends PageBase {
   readonly saveConditionButton: Locator
 
   constructor(page: Page) {
-    super(page)
+    this.page = page
 
     // Initialise locators using Playwright's methods
     this.pageHeading = page.getByText('Page 1', { exact: true })
@@ -82,26 +83,24 @@ export class PageOverview extends PageBase {
   }
 
   async successBannerIsDisplayed() {
-    const locator = this.page.locator('text=Changes saved successfully')
-    await locator.waitFor({ state: 'visible', timeout: 15000 })
+    return this.page.locator('text=Changes saved successfully')
   }
-
   async clickChangeLinkForQuestionByName(questionName: string) {
     // Wait for the page to be fully loaded
-    await this.waitUntilReady()
+    await this.page.waitForLoadState('networkidle')
 
     // Wait for the success banner to appear and disappear (if present)
-    // const successBanner = this.page.locator('text=Changes saved successfully')
-    // if (await successBanner.isVisible({ timeout: 1000 }).catch(() => false)) {
-    //   await successBanner.waitFor({ state: 'visible', timeout: 5000 })
-    // }
+    const successBanner = this.page.locator('text=Changes saved successfully')
+    if (await successBanner.isVisible({ timeout: 1000 }).catch(() => false)) {
+      await successBanner.waitFor({ state: 'visible', timeout: 5000 })
+    }
 
     // Now find and click the Change link
     const changeLink = this.page.locator(
       `dd.govuk-summary-list__value >> text=${questionName} >> .. >> dd.govuk-summary-list__actions >> a.govuk-link`,
       { hasText: 'Change' }
     )
-    await changeLink.waitFor({ state: 'visible', timeout: 15000 })
+    await changeLink.waitFor({ state: 'visible', timeout: 30000 })
     await changeLink.click()
   }
 
@@ -110,12 +109,9 @@ export class PageOverview extends PageBase {
   }
 
   async verifySuccessBanner(expectedMessage: string) {
-    const successBanner = this.page.locator(`text=${expectedMessage}`)
-    await successBanner.waitFor({ state: 'visible', timeout: 5000 })
-
-    // await expect(
-    //   this.successBanner.locator('p.govuk-notification-banner__heading')
-    // ).toHaveText(expectedMessage)
+    await expect(
+      this.successBanner.locator('p.govuk-notification-banner__heading')
+    ).toHaveText(expectedMessage)
   }
 
   async previewPage() {
