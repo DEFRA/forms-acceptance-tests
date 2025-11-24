@@ -98,7 +98,8 @@ test('1.2.15.2 - should create a new form with Latitude and Longitude field', as
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
-  pageOverview
+  pageOverview,
+  editQuestionPage
 }) => {
   await formPage.addNewPageButton.click()
 
@@ -110,14 +111,37 @@ test('1.2.15.2 - should create a new form with Latitude and Longitude field', as
 
   await formPage.createWrittenAnswer('Enter coordinates', 'lat-long')
 
-  expect(await pageOverview.verifySuccessBanner('Changes saved successfully'))
+  await pageOverview.verifySuccessBanner('Changes saved successfully')
+  await pageOverview.verifyPageHeading('Page 1')
+
+  await pageOverview.clickChangeLinkForQuestionByName('Enter coordinates')
+
+  await editQuestionPage.fillQuestionDetails(
+    'What are the site coordinates?',
+    'For example. Latitude: 52.123456, Longitude: -1.234567',
+    'Site coordinates'
+  )
+
+  await editQuestionPage.setOptionalCheckbox(true)
+  await editQuestionPage.setGiveInstructionsCheckbox(true)
+
+  await editQuestionPage.clickSaveAndContinue()
+
+  await pageOverview.verifySuccessBanner('Changes saved successfully')
+
+  await pageOverview.clickChangeLinkForQuestionByName(
+    'What are the site coordinates?'
+  )
+  await expect(editQuestionPage.optionalCheckbox).toBeChecked()
+  await expect(editQuestionPage.giveInstructionsCheckbox).toBeChecked()
 })
 
 test('1.2.15.3 - should create a new form with OS Grid Reference field', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
-  pageOverview
+  pageOverview,
+  editQuestionPage
 }) => {
   await formPage.addNewPageButton.click()
 
@@ -129,14 +153,37 @@ test('1.2.15.3 - should create a new form with OS Grid Reference field', async (
 
   await formPage.createWrittenAnswer('Enter OS grid reference', 'os-grid-ref')
 
-  expect(await pageOverview.verifySuccessBanner('Changes saved successfully'))
+  await pageOverview.verifySuccessBanner('Changes saved successfully')
+  await pageOverview.verifyPageHeading('Page 1')
+
+  await pageOverview.clickChangeLinkForQuestionByName('Enter OS grid reference')
+
+  await editQuestionPage.fillQuestionDetails(
+    'Provide the OS grid reference',
+    'For example. SK 123 456 or SK123456',
+    'OS grid reference'
+  )
+
+  await editQuestionPage.setOptionalCheckbox(true)
+  await editQuestionPage.setGiveInstructionsCheckbox(true)
+
+  await editQuestionPage.clickSaveAndContinue()
+
+  await pageOverview.verifySuccessBanner('Changes saved successfully')
+
+  await pageOverview.clickChangeLinkForQuestionByName(
+    'Provide the OS grid reference'
+  )
+  await expect(editQuestionPage.optionalCheckbox).toBeChecked()
+  await expect(editQuestionPage.giveInstructionsCheckbox).toBeChecked()
 })
 
 test('1.2.15.4 - should create a new form with National Grid field number', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
-  pageOverview
+  pageOverview,
+  editQuestionPage
 }) => {
   await formPage.addNewPageButton.click()
 
@@ -151,5 +198,29 @@ test('1.2.15.4 - should create a new form with National Grid field number', asyn
     'national-grid-field'
   )
 
-  expect(await pageOverview.verifySuccessBanner('Changes saved successfully'))
+  await pageOverview.verifySuccessBanner('Changes saved successfully')
+  await pageOverview.verifyPageHeading('Page 1')
+
+  await pageOverview.clickChangeLinkForQuestionByName(
+    'Enter National Grid field number'
+  )
+
+  await editQuestionPage.fillQuestionDetails(
+    'What is the National Grid field number?',
+    'For example. NT123456 or a 2-letter, 6-digit code',
+    'National Grid field number'
+  )
+
+  await editQuestionPage.setOptionalCheckbox(true)
+  await editQuestionPage.setGiveInstructionsCheckbox(true)
+
+  await editQuestionPage.clickSaveAndContinue()
+
+  await pageOverview.verifySuccessBanner('Changes saved successfully')
+
+  await pageOverview.clickChangeLinkForQuestionByName(
+    'What is the National Grid field number?'
+  )
+  await expect(editQuestionPage.optionalCheckbox).toBeChecked()
+  await expect(editQuestionPage.giveInstructionsCheckbox).toBeChecked()
 })
