@@ -212,8 +212,9 @@ test('1.2.6 - should create a new form with UK address field', async ({
   // Select Question Page type
   await selectPageTypePage.choosePageType('question')
 
-  // Select Written Answer question type
-  await selectQuestionTypePage.selectQuestionType('ukAddress')
+  // Select Location question type with UK address subtype
+  await selectQuestionTypePage.selectQuestionType('location')
+  await selectQuestionTypePage.selectSubtype('ukAddressSub')
   await selectQuestionTypePage.clickSaveAndContinue()
 
   // Configure the question
@@ -401,30 +402,28 @@ test('1.2.13 - should create a new form with Declaration', async ({
   selectQuestionTypePage,
   editQuestionPage
 }) => {
-  // Add a new page
   await formPage.addNewPageButton.click()
 
-  // Select Question Page type
   await selectPageTypePage.choosePageType('question')
 
-  // Select Written Answer question type
   await selectQuestionTypePage.selectQuestionType('declaration')
   await selectQuestionTypePage.clickSaveAndContinue()
 
-  // Configure the question
   await formPage.createWrittenAnswer('This is a declaration', 'declaration')
   const error = await formPage.getErrorMessage()
   expect(error).toContain('Enter declaration text')
 
-  //enter declaration text
-  await editQuestionPage.enterDeclarationText('You must agree to this declaration')
+  await editQuestionPage.enterDeclarationText(
+    'You must agree to this declaration'
+  )
   await editQuestionPage.clickSaveAndContinue()
   await pageOverview.successBannerIsDisplayed()
   await pageOverview.clickChangeLinkForQuestionByName('This is a declaration')
 
-  //assert declaration text
   await editQuestionPage.getPageHeadingText()
-  await expect(editQuestionPage.declarationTextInput).toHaveValue('You must agree to this declaration')
+  await expect(editQuestionPage.declarationTextInput).toHaveValue(
+    'You must agree to this declaration'
+  )
 })
 
 test('1.2.14 - should create a new form with guidance page', async ({
