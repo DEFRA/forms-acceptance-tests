@@ -8,6 +8,7 @@ export class EditQuestionPage {
   readonly questionInput: Locator
   readonly hintTextInput: Locator
   readonly optionalCheckbox: Locator
+  readonly giveInstructionsCheckbox: Locator
   readonly shortDescriptionInput: Locator
   readonly declarationTextInput: Locator
   readonly minLengthInput: Locator
@@ -38,6 +39,9 @@ export class EditQuestionPage {
     this.questionInput = page.getByRole('textbox', { name: 'Question' })
     this.hintTextInput = page.getByLabel('Hint text (optional)')
     this.optionalCheckbox = page.getByLabel('Make this question optional')
+    this.giveInstructionsCheckbox = page.getByLabel(
+      'Give instructions to help users answer this question'
+    )
     this.shortDescriptionInput = page.getByLabel('Short description')
     this.declarationTextInput = page.getByLabel('Declaration text')
     this.minLengthInput = page.getByLabel('Minimum character length (optional)')
@@ -92,6 +96,14 @@ export class EditQuestionPage {
     }
   }
 
+  async setGiveInstructionsCheckbox(giveInstructions: boolean) {
+    if (giveInstructions) {
+      await this.giveInstructionsCheckbox.check()
+    } else {
+      await this.giveInstructionsCheckbox.uncheck()
+    }
+  }
+
   async setAnswerLimits(minLength: string, maxLength: string, regex: string) {
     await this.minLengthInput.fill(minLength)
     await this.maxLengthInput.fill(maxLength)
@@ -99,7 +111,7 @@ export class EditQuestionPage {
   }
 
   async enterDeclarationText(declarationText: string) {
-    await this.declarationTextInput.fill(declarationText);
+    await this.declarationTextInput.fill(declarationText)
   }
 
   async setClasses(classes: string) {
@@ -128,18 +140,6 @@ export class EditQuestionPage {
       .allTextContents()
     return listItems.map((item) => item.trim())
   }
-
-  // async compareLists(list1: string[], list2: string[]): Promise<boolean> {
-  //     if (JSON.stringify(list1) === JSON.stringify(list2)) {
-  //         console.log('Both lists have the same items:', list1);
-  //         return true;
-  //     } else {
-  //         console.log('The lists have different items.');
-  //         console.log('list1:', list1);
-  //         console.log('list2:', list2);
-  //         return false;
-  //     }
-  // }
 
   async addListItems(items: string[]): Promise<void> {
     for (const item of items) {
