@@ -37,13 +37,13 @@ test('1.5.1 - ensure the confirmation email checkbox exists and works as expecte
   await expect(disableEmailsCheckBox).toHaveAttribute('id', 'disableConfirmationEmail');
 
   // Check the confirmation email input is visible in the preview panel
-  await expect(page.locator('#userConfirmationEmailAddress')).toBeVisible();
+  await expect(page.getByLabel('Confirmation email (optional)')).toBeVisible();
 
   // Disable the confirmation emails
   await disableEmailsCheckBox.click()
 
   // Check the confirmation email input is no longer visible in the preview panel
-  await expect(page.locator('#userConfirmationEmailAddress')).not.toBeVisible();
+  await expect(page.getByLabel('Confirmation email (optional)')).not.toBeVisible();
 
   // Save the changes to the form
   await formPage.saveChangesButton.click()
