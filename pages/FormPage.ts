@@ -9,7 +9,6 @@ export class FormPage {
     readonly saveAndContinueButton: Locator;
     readonly saveChangesButton: Locator;
     readonly editDraftButton: Locator;
-    // readonly editDraftButtonOldEditor: Locator;
     readonly addNewPageButton: Locator;
     readonly questionPageRadio: Locator;
     readonly writtenAnswerRadio: Locator;
@@ -21,8 +20,6 @@ export class FormPage {
     readonly errorBox: Locator;
     readonly formName: Locator;
     readonly continueBtn: Locator;
-    // readonly orgRadio: Locator;
-    // readonly alertMessage: Locator;
     readonly successBanner: Locator;
     readonly migrateButton: Locator;
     readonly enterEmailAddressLink: Locator;
@@ -34,13 +31,14 @@ export class FormPage {
     readonly enterOnlineContactLinkForSupportLink: Locator;
     readonly enterWhatHappensNextLink: Locator;
     readonly enterLinkToPrivacyNoticeLink: Locator;
-    // readonly phoneEmailSupportInput: Locator;
     readonly emailAddressForSupportInput: Locator;
     readonly supportPhoneInput: Locator;
     readonly changeSubmissionGuidance: Locator;
     readonly backToAddEditPages: Locator;
     readonly changeTeamNameLink: Locator;
     readonly pageHeadingAndGuidanceCheckbox: Locator;
+    readonly checkYourAnswersLink: Locator;
+    readonly confirmationEmailsLink: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -50,7 +48,6 @@ export class FormPage {
         this.teamEmailInput = page.getByRole('textbox', { name: 'Shared team email address' });
         this.saveAndContinueButton = page.getByRole('button', { name: 'Save and continue' });
         this.saveChangesButton = page.getByRole('button', { name: 'Save changes' });
-        // this.editDraftButtonOldEditor = page.getByRole('button', { name: 'Edit draft (legacy editor)' });
         this.editDraftButton = page.getByRole('button', { name: 'Edit draft' });
         this.addNewPageButton = page.getByRole('button', { name: 'Add new page' });
         this.questionPageRadio = page.getByRole('radio', { name: 'Question page' });
@@ -82,6 +79,8 @@ export class FormPage {
         this.changeTeamNameLink = page.getByRole('link', { name: 'Change   teamName' });
 
         this.pageHeadingAndGuidanceCheckbox = page.getByRole('checkbox', { name: 'Add a page heading' })
+        this.checkYourAnswersLink = page.locator('a[href$="/check-answers-settings"]')
+        this.confirmationEmailsLink = page.getByRole('link', { name: 'Confirmation emails' })
     }
 
 
@@ -137,6 +136,29 @@ export class FormPage {
 
     async goToConditionsPage() {
         await this.page.goto(this.page.url().replace('editor-v2/pages', '') + 'editor-v2/conditions');
+    }
+
+    /**
+     * Constructs the editor-v2 based URL (http(s)://{form-url}/editor-v2/{path})
+     */
+    constructEditorV2Url(path: string) {
+        const url = this.page.url();
+        const editorBaseUrl = url.split('/editor-v2')[0];
+        return `${editorBaseUrl}/editor-v2/${path}`;
+    }
+
+    /**
+     * Navigates to the editor-v2 based path (http(s)://{form-url}/editor-v2/{path})
+     */
+    async goToEditorV2Page(path: string) {
+        await this.page.goto(this.constructEditorV2Url(path));
+    }
+
+    /**
+     * Navigates to the pages page (http(s)://{form-url}/editor-v2/pages)
+     */
+    async goToPages() {
+        await this.goToEditorV2Page('pages');
     }
 
     async addNewQuestionPage(question: string, description: string) {
