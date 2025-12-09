@@ -23,6 +23,7 @@ test('1.5.1 - ensure the confirmation email checkbox exists and works as expecte
 
   // Wait for navigation to the editor pages
   await page.waitForURL(/\/editor-v2\//)
+  await page.waitForLoadState('networkidle')
 
   // Check the summary page controller 
   // (should be SummaryPageWithConfirmationEmailController to indicate confirmation emails are enabled) 
