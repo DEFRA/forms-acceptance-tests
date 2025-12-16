@@ -134,8 +134,9 @@ export class FormPage {
     this.checkYourAnswersLink = page.locator(
       'a[href$="/check-answers-settings"]'
     )
+    // Use explicit regex otherwise may match additional elements on the page
     this.confirmationEmailsLink = page.getByRole('link', {
-      name: 'Confirmation email'
+      name: /Confirmation email/
     })
   }
 
