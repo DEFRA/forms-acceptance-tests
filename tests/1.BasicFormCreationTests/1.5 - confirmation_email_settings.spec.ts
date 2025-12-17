@@ -68,8 +68,10 @@ async function checkSummaryPageControllerIs(formPage: FormPage, page: Page, expe
   // Get the download URL from the current page URL
   const downloadUrl = formPage.constructEditorV2Url('download')
 
+  console.log('downloadUrl', downloadUrl)
   // Fetch the form JSON directly using Playwright's request context
   const response = await page.request.get(downloadUrl)
+  console.log('response', response?.status)
   expect(response.ok()).toBeTruthy()
   const jsonContent = await response.text()
   const formJson = JSON.parse(jsonContent)
