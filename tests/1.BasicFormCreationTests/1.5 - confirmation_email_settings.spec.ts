@@ -71,10 +71,11 @@ async function checkSummaryPageControllerIs(formPage: FormPage, page: Page, expe
   console.log('downloadUrl', downloadUrl)
   // Fetch the form JSON directly using Playwright's request context
   const response = await page.request.get(downloadUrl)
-  console.log('response', response?.status())
-  console.log('response', response?.statusText())
+  console.log('response status', response?.status())
+  console.log('response text', response?.statusText())
   expect(response.ok()).toBeTruthy()
   const jsonContent = await response.text()
+  console.log('response jsonContent', jsonContent)
   const formJson = JSON.parse(jsonContent)
 
   // Verify the form JSON has a pages array
