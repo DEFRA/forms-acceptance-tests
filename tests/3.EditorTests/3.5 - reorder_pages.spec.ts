@@ -23,7 +23,7 @@ async function addPage(formPage: FormPage, selectPageTypePage: SelectPageTypePag
     await formPage.clickBackToAddEditPages();
 }
 
-test.skip('should allow re-ordering of pages and display Save button', async ({ page }) => {
+test('should allow re-ordering of pages and display Save button', async ({ page }) => {
     const formPage = new FormPage(page);
     const selectPageTypePage = new SelectPageTypePage(page);
     const selectQuestionTypePage = new SelectQuestionTypePage(page);
@@ -31,14 +31,13 @@ test.skip('should allow re-ordering of pages and display Save button', async ({ 
 
     // Step 1: Create a form
     await formPage.goTo();
-    const formName = 'Reorder Test Form ' + Math.random().toString().substring(0, 8);
+    const formName = 'Reorder Test Form ' + Math.random().toString().substring(0, 10);
     await formPage.enterFormName(formName);
     await formPage.selectRadioOption('Environment Agency');
     await formPage.fillTeamDetails('Team A', 'test@test.gov.uk');
     await formPage.editDraft();
 
     // Step 2: Add a page heading so we can add more than one question
-    await formPage.setPageHeading(formName)
 
     // Step 3: Add 4 pages with mixture of component types
     await addPage(formPage, selectPageTypePage, selectQuestionTypePage, 'question', 'writtenAnswer', 'shortAnswer', 'What is your name?', 'Name');
