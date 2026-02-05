@@ -49,7 +49,11 @@ test('1.5.1 - ensure the confirmation email checkbox exists and works as expecte
   // Save the changes to the form
   await formPage.saveChangesButton.click()
 
+  // Edit the 'check your answers' page
+  await formPage.checkYourAnswersLink.click()
+
   // Check the email status has changed
+  await expect(formPage.confirmationEmailsLink).toBeVisible()
   expect(emailStatusOn).not.toBeVisible()
 
   // Check the summary page controller 
@@ -101,12 +105,12 @@ test('1.5.2 - ensure the reference checkbox exists and works as expected', async
   // Save the changes to the form
   await formPage.saveChangesButton.click()
 
-  // Check the email status has changed
-  expect(referenceNumberStatus).not.toBeVisible()
+  // Edit the 'check your answers' page
+  await formPage.checkYourAnswersLink.click()
 
-  // Check the summary page controller 
-  // (should be SummaryPageController to indicate confirmation emails are disabled) 
-  await checkSummaryPageControllerIs(formPage, page, 'SummaryPageController')
+  // Check the email status has changed
+  await expect(formPage.referenceNumberLink).toBeVisible()
+  expect(referenceNumberStatus).not.toBeVisible()
 })
 
 /**

@@ -148,8 +148,9 @@ export class FormPage {
       name: /Confirmation email/
     })
 
+    // Use explicit regex otherwise may match additional elements on the page
     this.referenceNumberLink = page.getByRole('link', {
-      name: 'Reference number'
+      name: /Reference number/
     })
   }
 
