@@ -3,11 +3,10 @@ import { expect, test, Page } from '@playwright/test'
 
 /**
  * Tests the following:
- * - The confirmation emails pages can be accessed via the check your answers editor page.
+ * - The confirmation email page can be accessed via the check your answers editor page.
  * - The confirmation email checkbox exists on the confirmation emails page.
  * - The confirmation email checkbox works as expected by enabling/disabling the confirmation emails (updates the form JSON upon save).
- * - The confirmation email input is visible in the preview panel when enabled.
- * - The confirmation email input is no longer visible in the preview panel when disabled.
+ * - The check your answers overview is updated accordingly.
  */
 test('1.5.1 - ensure the confirmation email checkbox exists and works as expected', async ({ page }) => {
   // Create a form
@@ -52,6 +51,58 @@ test('1.5.1 - ensure the confirmation email checkbox exists and works as expecte
 
   // Check the email status has changed
   expect(emailStatusOn).not.toBeVisible()
+
+  // Check the summary page controller 
+  // (should be SummaryPageController to indicate confirmation emails are disabled) 
+  await checkSummaryPageControllerIs(formPage, page, 'SummaryPageController')
+})
+
+/**
+ * Tests the following:
+ * - The reference number page can be accessed via the check your answers editor page.
+ * - The reference number checkbox exists on the reference number page.
+ * - The reference number checkbox works as expected by enabling/disabling the reference number option (updates the form JSON upon save).
+ * - The check your answers overview is updated accordingly.
+ */
+test('1.5.2 - ensure the reference checkbox exists and works as expected', async ({ page }) => {
+  // Create a form
+  const formPage = new FormPage(page)
+  formPage.goTo()
+  const form_name = `Automated test - Playwright form ${Math.random().toString().substring(0, 10)} - Summary page`
+  await formPage.enterFormName(form_name)
+  await formPage.selectRadioOption('Environment Agency')
+  await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
+
+  // Edit draft
+  await formPage.editDraft()
+
+  // Wait for navigation to the editor pages
+  await page.waitForURL(/\/editor-v2\//)
+  await page.waitForLoadState('networkidle')
+
+  // Edit the 'check your answers' page
+  await formPage.goToPages()
+  await formPage.checkYourAnswersLink.click()
+
+  // Check the reference number settings panel/page
+  await expect(formPage.referenceNumberLink).toBeVisible()
+  const referenceNumberStatus = page.getByRole('link', {
+    name: 'Turn on the reference number'
+  })
+  expect(referenceNumberStatus).toBeVisible()
+  await formPage.referenceNumberLink.click()
+  const referenceNumberCheckBox = page.getByLabel('Turn on the reference number');
+  await expect(referenceNumberCheckBox).toBeVisible();
+  await expect(referenceNumberCheckBox).toHaveAttribute('id', 'enableReferenceNumber');
+
+  // Enable the reference number
+  await referenceNumberCheckBox.click()
+
+  // Save the changes to the form
+  await formPage.saveChangesButton.click()
+
+  // Check the email status has changed
+  expect(referenceNumberStatus).not.toBeVisible()
 
   // Check the summary page controller 
   // (should be SummaryPageController to indicate confirmation emails are disabled) 

@@ -16,6 +16,8 @@ export class FormPage {
   readonly questionInput: Locator
   readonly shortDescriptionInput: Locator
   readonly declarationTextInput: Locator
+  readonly paymentAmountInput: Locator
+  readonly paymentDescriptionInput: Locator
   readonly addAnotherQuestionButton: Locator
   readonly errorBox: Locator
   readonly formName: Locator
@@ -39,6 +41,7 @@ export class FormPage {
   readonly pageHeadingAndGuidanceCheckbox: Locator
   readonly checkYourAnswersLink: Locator
   readonly confirmationEmailsLink: Locator
+  readonly referenceNumberLink: Locator
 
   constructor(page: Page) {
     this.page = page
@@ -64,6 +67,12 @@ export class FormPage {
     this.questionInput = page.locator('#question')
     this.shortDescriptionInput = page.getByRole('textbox', {
       name: 'Short description'
+    })
+    this.paymentAmountInput = page.getByRole('textbox', {
+      name: 'Payment amount'
+    })
+    this.paymentDescriptionInput = page.getByRole('textbox', {
+      name: 'Payment description'
     })
     this.declarationTextInput = page.getByRole('textbox', {
       name: 'Declaration text'
@@ -137,6 +146,10 @@ export class FormPage {
     // Use explicit regex otherwise may match additional elements on the page
     this.confirmationEmailsLink = page.getByRole('link', {
       name: /Confirmation email/
+    })
+
+    this.referenceNumberLink = page.getByRole('link', {
+      name: 'Reference number'
     })
   }
 

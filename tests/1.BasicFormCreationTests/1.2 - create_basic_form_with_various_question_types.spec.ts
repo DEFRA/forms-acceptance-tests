@@ -299,7 +299,32 @@ test('1.2.9 - should create a new form with Email field', async ({
   expect(await pageOverview.verifySuccessBanner('Changes saved successfully'))
 })
 
-test('1.2.10 - should create a new form with Yes/No field', async ({
+test('1.2.10 - should create a new form with a payment field', async ({
+  formPage,
+  selectPageTypePage,
+  selectQuestionTypePage,
+  pageOverview
+}) => {
+  // Add a new page
+  await formPage.addNewPageButton.click()
+
+  // Select Question Page type
+  await selectPageTypePage.choosePageType('question')
+
+  // Select Payment question type
+  await selectQuestionTypePage.selectQuestionType('payment')
+  await selectQuestionTypePage.clickSaveAndContinue()
+
+  // Configure the payment
+  await formPage.paymentAmountInput.fill('15.75')
+  await formPage.paymentDescriptionInput.fill('Licence fee payment')
+  await formPage.saveAndContinueButton.click()
+
+  // Verify success banner
+  expect(await pageOverview.verifySuccessBanner('Changes saved successfully'))
+})
+
+test('1.2.11 - should create a new form with Yes/No field', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
@@ -323,7 +348,7 @@ test('1.2.10 - should create a new form with Yes/No field', async ({
   expect(await pageOverview.verifySuccessBanner('Changes saved successfully'))
 })
 
-test.skip('1.2.11 - should create a new form with Checkbox field', async ({
+test.skip('1.2.12 - should create a new form with Checkbox field', async ({
   formPage,
   pageOverview,
   selectPageTypePage,
@@ -359,7 +384,7 @@ test.skip('1.2.11 - should create a new form with Checkbox field', async ({
   expect(actualListItems).toEqual(fruits)
 })
 
-test.skip('1.2.12 - should create a new form with Select field', async ({
+test.skip('1.2.13 - should create a new form with Select field', async ({
   formPage,
   pageOverview,
   selectPageTypePage,
@@ -395,7 +420,7 @@ test.skip('1.2.12 - should create a new form with Select field', async ({
   expect(actualListItems).toEqual(options)
 })
 
-test('1.2.13 - should create a new form with Declaration', async ({
+test('1.2.14 - should create a new form with Declaration', async ({
   formPage,
   pageOverview,
   selectPageTypePage,
@@ -426,7 +451,7 @@ test('1.2.13 - should create a new form with Declaration', async ({
   )
 })
 
-test('1.2.14 - should create a new form with guidance page', async ({
+test('1.2.15 - should create a new form with guidance page', async ({
   formPage,
   pageOverview,
   selectPageTypePage,
