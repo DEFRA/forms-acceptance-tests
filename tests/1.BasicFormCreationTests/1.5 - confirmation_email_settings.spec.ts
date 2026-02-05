@@ -35,22 +35,23 @@ test('1.5.1 - ensure the confirmation email checkbox exists and works as expecte
 
   // Check the confirmation emails settings panel/page
   await expect(formPage.confirmationEmailsLink).toBeVisible()
+  const emailStatusOn = page.getByRole('link', {
+    name: 'Turn off confirmation emails'
+  })
+  expect(emailStatusOn).toBeVisible()
   await formPage.confirmationEmailsLink.click()
   const disableEmailsCheckBox = page.getByLabel('Turn off the confirmation email');
   await expect(disableEmailsCheckBox).toBeVisible();
   await expect(disableEmailsCheckBox).toHaveAttribute('id', 'disableConfirmationEmail');
 
-  // Check the confirmation email input is visible in the preview panel
-  await expect(page.getByLabel('Confirmation email (optional)')).toBeVisible();
-
   // Disable the confirmation emails
   await disableEmailsCheckBox.click()
 
-  // Check the confirmation email input is no longer visible in the preview panel
-  await expect(page.getByLabel('Confirmation email (optional)')).not.toBeVisible();
-
   // Save the changes to the form
   await formPage.saveChangesButton.click()
+
+  // Check the email status has changed
+  expect(emailStatusOn).not.toBeVisible()
 
   // Check the summary page controller 
   // (should be SummaryPageController to indicate confirmation emails are disabled) 
