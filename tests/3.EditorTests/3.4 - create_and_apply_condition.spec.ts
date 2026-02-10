@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test'
-import { FormPage } from '../../pages/FormPage'
-import { SelectPageTypePage } from '../../pages/SelectPageTypePage'
-import { SelectQuestionTypePage } from '../../pages/SelectQuestionTypePage'
-import { PageOverview } from '../../pages/PageOverview'
-import { EditConditionPage } from '../../pages/EditConditionPage'
-import { ManagerConditionsPage } from '../../pages/ManagerConditionsPage'
+import { FormPage } from '../../../pages/FormPage.js'
+import { SelectPageTypePage } from '../../../pages/SelectPageTypePage.js'
+import { SelectQuestionTypePage } from '../../../pages/SelectQuestionTypePage.js'
+import { PageOverview } from '../../../pages/PageOverview.js'
+import { EditConditionPage } from '../../../pages/EditConditionPage.js'
+import { ManagerConditionsPage } from '../../../pages/ManagerConditionsPage.js'
 import { link } from 'fs'
 
 test('should create a condition for Yes/No and apply it to page 2', async ({

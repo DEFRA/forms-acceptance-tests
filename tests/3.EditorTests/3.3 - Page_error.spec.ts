@@ -1,6 +1,6 @@
 import { expect, test, TestInfo } from '@playwright/test'
-import { FormPage } from '../../pages/FormPage'
-import { SelectPageTypePage } from '../../pages/SelectPageTypePage'
+import { FormPage } from '../../../pages/FormPage.js'
+import { SelectPageTypePage } from '../../../pages/SelectPageTypePage.js'
 test('3.3.1 - should error when adding a page with a duplicate name', async ({
   page
 }, testInfo) => {

@@ -2,6 +2,8 @@ import { defineConfig, devices } from '@playwright/test'
 
 export default defineConfig({
   globalSetup: require.resolve('./global-setup'),
+  globalTeardown: require.resolve('./global-teardown'),
+
   timeout: 30000,
   expect: {
     timeout: 15000
@@ -11,8 +13,22 @@ export default defineConfig({
   projects: [
     {
       name: 'Google Chrome',
+      testDir: 'tests/',
+
       use: {
         ...devices['Desktop Chrome'],
+        channel: 'chrome',
+        storageState: 'playwright/.auth/user.json',
+        baseURL: process.env.BASE_URL ?? 'http://localhost:3000',
+        acceptDownloads: true
+      }
+    },
+    {
+      name: 'accessibility',
+      testDir: 'tests/accessibility',
+      use: {
+        ...devices['Desktop Chrome'],
+        trace: 'on',
         channel: 'chrome',
         storageState: 'playwright/.auth/user.json',
         baseURL: process.env.BASE_URL ?? 'http://localhost:3000',

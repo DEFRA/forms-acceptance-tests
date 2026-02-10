@@ -24,7 +24,7 @@ export class LoginPage {
         this.passwordInput = page.getByRole('textbox', { name: 'Password' });
         this.signInButton = page.getByRole('button', { name: 'Login' });
         this.signOut = page.getByRole('link', { name: 'Sign out' })
-        this.loginErrorMessage = page.getByText("We c1ouldn\'t find an acco1unt")
+        this.loginErrorMessage = page.getByText("We couldn't find an account")
 
         this.userProfileLink = page.getByRole('link', { name: displayName });
     }
