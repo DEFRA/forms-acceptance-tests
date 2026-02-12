@@ -6,7 +6,7 @@ test.describe('Accessibility - full form creation and publish journey', () => {
     'every step of the create → edit → publish flow has no WCAG 2.2 AA violations',
     { tag: '@accessibility' },
     async ({ app }, testInfo) => {
-      test.setTimeout(240_000) // 4 minutes, due to long flow with many steps
+      test.setTimeout(120_000) // 2 minutes, due to long flow with many steps
       const { libraryPage } = app
       const { page } = libraryPage
 
@@ -150,14 +150,43 @@ test.describe('Accessibility - full form creation and publish journey', () => {
           .fill('submissions@defra.gov.uk')
         await page.getByRole('button', { name: 'Save and continue' }).click()
 
-        // ── Step 12: Form overview with all fields complete ────────
+        // 11e: Enter phone number for support
+        await page
+          .getByRole('link', { name: 'Enter phone number for support' })
+          .click()
+        await page.waitForURL('**/contact/**')
+        await runAccessibilityCheck(page, testInfo, 'edit-contact-phone')
+
+        await page
+          .getByRole('textbox', {
+            name: 'phone'
+          })
+          .fill('01234 567890')
+        await page.getByRole('button', { name: 'Save and continue' }).click()
+
+        // Enter online contact link for support
+        await page
+          .getByRole('link', { name: 'Enter online contact link for support' })
+          .click()
+        await page.waitForURL('**/contact/**')
+        await runAccessibilityCheck(page, testInfo, 'edit-contact-online')
+
+        await page
+          .getByRole('textbox', { name: 'Contact link', exact: true })
+          .fill('https://www.defra.gov.uk/contact')
+        await page
+          .getByRole('textbox', { name: 'Text to describe the contact link' })
+          .fill('Online contact form')
+        await page.getByRole('button', { name: 'Save and continue' }).click()
+        await page.waitForURL('**/library/**')
+
+        // main overview page after filling all required fields
         await runAccessibilityCheck(
           page,
           testInfo,
           'form-overview-all-complete'
         )
       })
-
       // ── Step 13: Make draft live – confirmation page ───────────
       await page.getByRole('button', { name: 'Make draft live' }).click()
       await page.waitForURL('**/make-draft-live**')

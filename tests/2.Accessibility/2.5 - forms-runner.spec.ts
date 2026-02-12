@@ -11,7 +11,6 @@ test.describe('Accessibility - forms runner', () => {
         RUNNER_BASE_URL +
         RUNNER_PATHS.previewDraftForm('e2e-form', 'whats-your-name')
 
-      // Page 1 – What's your name?
       await page.goto(namePageUrl)
       await runAccessibilityCheck(page, testInfo, 'runner-whats-your-name')
 
@@ -20,7 +19,7 @@ test.describe('Accessibility - forms runner', () => {
         .fill('BOB the builder')
       await page.getByRole('button', { name: 'Continue' }).click()
 
-      // Page 2 – What's your email address?
+      // What's your email address?
       await runAccessibilityCheck(
         page,
         testInfo,
@@ -31,7 +30,7 @@ test.describe('Accessibility - forms runner', () => {
         .fill('test@defra.gov.uk')
       await page.getByRole('button', { name: 'Continue' }).click()
 
-      // Page 3 – What's your phone number?
+      // What's your phone number?
       await page
         .getByRole('textbox', { name: "What's your phone number?" })
         .fill('123654789')

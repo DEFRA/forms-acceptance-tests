@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test'
-import { FormPage } from '../../../pages/FormPage.js'
-import { SelectPageTypePage } from '../../../pages/SelectPageTypePage.js'
-import { SelectQuestionTypePage } from '../../../pages/SelectQuestionTypePage.js'
-import { PageOverview } from '../../../pages/PageOverview.js'
-import { ReOrderPages } from '../../../pages/ReOrderPages.js'
+import { FormPage } from '../../pages/FormPage.js'
+import { SelectPageTypePage } from '../../pages/SelectPageTypePage.js'
+import { SelectQuestionTypePage } from '../../pages/SelectQuestionTypePage.js'
+import { PageOverview } from '../../pages/PageOverview.js'
+import { ReOrderPages } from '../../pages/ReOrderPages.js'
 
 // Helper to add a page with a specific question type
 async function addPage(

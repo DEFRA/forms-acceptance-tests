@@ -4,8 +4,8 @@
 import { expect, Page, TestInfo } from '@playwright/test'
 import { AxeBuilder } from '@axe-core/playwright'
 import { createHtmlReport } from 'axe-html-reporter'
-import * as fs from 'fs'
-import * as path from 'path'
+import * as fs from 'node:fs'
+import * as path from 'node:path'
 
 export async function runAccessibilityCheck(
   page: Page,
@@ -15,7 +15,14 @@ export async function runAccessibilityCheck(
   // Get axeBuilder from the fixture
   const axeResults = await new AxeBuilder({ page })
     .withRules(['color-contrast'])
-    .withTags(['wcag22aa', 'wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+    .withTags([
+      'best-practice',
+      'wcag22aa',
+      'wcag2a',
+      'wcag2aa',
+      'wcag21a',
+      'wcag21aa'
+    ])
     .exclude('input[type="radio"]')
     .analyze()
 
@@ -90,10 +97,42 @@ export async function runAccessibilityCheck(
     body: Buffer.from(violationSummary, 'utf-8'),
     contentType: 'text/plain'
   })
+  // filter out violations with tag 'best-bractice'
 
+  const filteredViolations = axeResults.violations.filter(
+    (violation) => !violation.tags.includes('best-practice')
+  )
+
+  const bestPracticeViolations = axeResults.violations.filter((violation) =>
+    violation.tags.includes('best-practice')
+  )
+
+  if (bestPracticeViolations.length > 0) {
+    console.warn(
+      `Best practice violations found in ${description} page: ${bestPracticeViolations.length}`
+    )
+    testInfo.annotations.push({
+      type: 'best-practice-violations',
+      description: `${bestPracticeViolations.length} best practice violation(s) found in ${description} page`
+    })
+  }
+  if (bestPracticeViolations.length > 0) {
+    const bestPracticeSummary = bestPracticeViolations
+      .map(
+        (violation) =>
+          `${violation.id} (${violation.impact ?? 'impact: n/a'}) - ${violation.nodes.length} nodes`
+      )
+      .join('\n')
+
+    testInfo.tags.push('best-practice-violations')
+    await testInfo.attach(`${description}-axe-best-practice-violations`, {
+      body: Buffer.from(bestPracticeSummary, 'utf-8'),
+      contentType: 'text/plain'
+    })
+  }
   expect
     .soft(
-      axeResults.violations,
+      filteredViolations,
       `Accessibility violations found in ${description} page`
     )
     .toEqual([])

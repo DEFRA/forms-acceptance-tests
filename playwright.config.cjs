@@ -25,7 +25,7 @@ export default defineConfig({
     },
     {
       name: 'accessibility',
-      testDir: 'tests/accessibility',
+      testDir: 'tests/2.Accessibility',
       use: {
         ...devices['Desktop Chrome'],
         trace: 'on',

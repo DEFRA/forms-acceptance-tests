@@ -1,13 +1,16 @@
-import { test, expect } from '@playwright/test'
-import { FormPage } from '../../../pages/FormPage.js'
-import { AddEditPagesPage } from '../../../pages/AddEditPagesPage.js'
-import { UploadPage } from '../../../pages/UploadPage.js'
-import * as fs from 'fs'
+import { test, expect, type Page } from '@playwright/test'
+import { FormPage } from '~/pages/FormPage.js'
+import { AddEditPagesPage } from '~/pages/AddEditPagesPage.js'
+import { UploadPage } from '~/pages/UploadPage.js'
+import * as fs from 'node:fs'
 
 // This test assumes authentication is handled by storageState
 
 // Helper to download a form and parse JSON
-async function downloadAndParseJson(page, downloadAction) {
+async function downloadAndParseJson(
+  page: Page,
+  downloadAction: () => Promise<any>
+) {
   const [download] = await Promise.all([
     page.waitForEvent('download'),
     downloadAction()
@@ -16,30 +19,35 @@ async function downloadAndParseJson(page, downloadAction) {
   expect(downloadPath).toBeTruthy()
   const fileContents = fs.readFileSync(downloadPath, 'utf-8')
   let json
-  expect(() => {
+  try {
     json = JSON.parse(fileContents)
-  }).not.toThrow()
+  } catch (e) {
+    console.error('Error parsing JSON:', e)
+    console.error('File contents:', fileContents)
+    test.fail()
+  }
   expect(json).toBeTruthy()
   expect(typeof json).toBe('object')
-  return json
+  return json as Record<string, any>
 }
 
 // Helper to read and parse a local JSON file
-function readAndParseJsonFile(filePath) {
+function readAndParseJsonFile(filePath: string) {
   const fileContents = fs.readFileSync(filePath, 'utf-8')
   let json
-  expect(() => {
+  try {
     json = JSON.parse(fileContents)
-  }).not.toThrow()
+  } catch (e) {
+    console.error('Error parsing JSON:', e)
+    console.error('File contents:', fileContents)
+    test.fail()
+  }
   expect(json).toBeTruthy()
   expect(typeof json).toBe('object')
   return json
 }
 
-test.skip('3.2.1 - Download form as JSON (both ways)', async ({
-  page,
-  context
-}) => {
+test.skip('3.2.1 - Download form as JSON (both ways)', async ({ page }) => {
   // Create a form
   const formPage = new FormPage(page)
   const addEditPagesPage = new AddEditPagesPage(page)

@@ -13,9 +13,21 @@ test.describe('Accessibility - designer pages', () => {
         await runAccessibilityCheck(
           page,
           testInfo,
-          `designer-${description.toLowerCase().replace(/\s+/g, '-')}`
+          `designer-${description.toLowerCase().replaceAll(/\s+/g, '-')}`
         )
       }
     )
   }
+})
+
+test.describe('Accessibility - designer landing page without login', () => {
+  test('Home page has no WCAG 2.2 AA violations for unauthenticated users', async ({
+    browser
+  }, testInfo) => {
+    //fresh browser context to ensure no cached authentication state
+    const context = await browser.newContext()
+    const page = await context.newPage()
+    await page.goto(`${DESIGNER_BASE_URL}/`)
+    await runAccessibilityCheck(page, testInfo, 'designer-home-unauthenticated')
+  })
 })

@@ -1,6 +1,6 @@
 import { test, expect, Page } from '@playwright/test'
-import { FormPage } from '../../../pages/FormPage.js'
-import { LibraryPage } from '../../../pages/LibraryPage.js'
+import { FormPage } from '~/pages/FormPage.js'
+import { LibraryPage } from '~/pages/LibraryPage.js'
 
 async function createForm(page: Page, formName: string) {
   const formPage = new FormPage(page)
