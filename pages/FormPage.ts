@@ -32,7 +32,7 @@ export class FormPage {
   readonly enterEmailAddressForSupportLink: Locator
   readonly enterOnlineContactLinkForSupportLink: Locator
   readonly enterWhatHappensNextLink: Locator
-  readonly enterLinkToPrivacyNoticeLink: Locator
+  readonly addPrivacyNoticeLink: Locator
   readonly emailAddressForSupportInput: Locator
   readonly supportPhoneInput: Locator
   readonly changeSubmissionGuidance: Locator
@@ -116,8 +116,8 @@ export class FormPage {
     this.changeSubmissionGuidance = page.getByRole('link', {
       name: 'Change submission guidance'
     })
-    this.enterLinkToPrivacyNoticeLink = page.getByRole('link', {
-      name: 'Enter link to privacy notice'
+    this.addPrivacyNoticeLink = page.getByRole('link', {
+      name: 'Add privacy notice'
     })
 
     this.enterOnlineContactLinkForSupportLink = page.getByRole('link', {

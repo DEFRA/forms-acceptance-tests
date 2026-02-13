@@ -282,11 +282,12 @@ test('1.4.11 - should add a privacy notice URL for the form', async ({ page }) =
     await formPage.selectRadioOption('Environment Agency')
     await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
 
-    // Go to privacy notice page (update this step if navigation is different in your app)
-    await formPage.enterLinkToPrivacyNoticeLink.click()
+    // Go to privacy notice page
+    await formPage.addPrivacyNoticeLink.click()
 
     const privacyNoticePage = new PrivacyNoticePage(page)
     await privacyNoticePage.expectOnPage()
+    await privacyNoticePage.selectPrivacyNoticeType('link')
     const dummyUrl = 'https://dummy-privacy-url.test/privacy'
     await privacyNoticePage.fillPrivacyNoticeUrl(dummyUrl)
     await privacyNoticePage.clickSaveAndContinue()
@@ -295,7 +296,34 @@ test('1.4.11 - should add a privacy notice URL for the form', async ({ page }) =
     await expect(page.getByText(dummyUrl)).toBeVisible()
 })
 
-test('1.4.12 - should amend team name', async ({ page }) => {
+test('1.4.12 - should add a privacy notice markdown content for the form', async ({ page }) => {
+    // Create a form
+    const formPage = new FormPage(page)
+    await formPage.goTo()
+    const form_name = 'Automated test - Playwright form ' + Math.random().toString().substring(0, 10)
+
+    await formPage.enterFormName(form_name)
+    await formPage.selectRadioOption('Environment Agency')
+    await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
+
+    // Go to privacy notice page
+    await formPage.addPrivacyNoticeLink.click()
+
+    const privacyNoticePage = new PrivacyNoticePage(page)
+    await privacyNoticePage.expectOnPage()
+    await privacyNoticePage.selectPrivacyNoticeType('text')
+    const markdownContent = `# Privacy heading
+* privacy line 1
+* privacy line 2`
+    await privacyNoticePage.fillPrivacyNoticeText(markdownContent)
+    await privacyNoticePage.clickSaveAndContinue()
+
+    // Assert the dummy URL is visible on the page (update selector if needed)
+    await expect(page.getByText('Privacy heading')).toBeVisible()
+    await expect(page.getByText('privacy line 1')).toBeVisible()
+})
+
+test('1.4.13 - should amend team name', async ({ page }) => {
     // Create a form
     const formPage = new FormPage(page)
     await formPage.goTo()
