@@ -58,7 +58,7 @@ export class EditQuestionPage {
     this.previewErrorMessagesButton = page.getByRole('button', {
       name: 'Preview error messages'
     })
-    this.addItemButton = page.getByRole('button', { name: 'Add item' })
+    this.addItemButton = page.getByRole('button', { name: 'Add list item' })
     this.itemTextBox = page.getByRole('textbox', { name: 'Item' })
     this.saveItemButton = page.getByRole('button', { name: 'Save item' })
     this.radioHint = page.locator('#radioHint')

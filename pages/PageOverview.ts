@@ -172,8 +172,8 @@ export class PageOverview {
   }
 
   async getPageTitles(): Promise<string[]> {
-    // Select all h2.govuk-summary-card__title, extract the text after the first colon and trim it
-    return this.page.$$eval('h2.govuk-summary-card__title', (nodes) =>
+    // Select all h3.govuk-summary-card__title, extract the text after the first colon and trim it
+    return this.page.$$eval('h3.govuk-summary-card__title', (nodes) =>
       nodes
         .map((n) => n.textContent || '')
         .map((text) => {
