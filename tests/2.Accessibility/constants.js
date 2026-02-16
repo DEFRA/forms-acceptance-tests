@@ -21,36 +21,44 @@ export const DESIGNER_PAGES = [
   { path: 'about', description: 'About' },
   { path: 'get-started', description: 'Get Started' },
   { path: 'features', description: 'Features' },
+  { path: 'features#forms-designer', description: 'Features - Forms Designer' },
   { path: 'resources', description: 'Resources' },
   { path: 'admin/index', description: 'Admin Index' },
   { path: 'manage/users', description: 'Manage Users' },
   { path: 'auth/account', description: 'Auth Account' }
-] as const
+]
 
 /** Form creation flow paths */
 export const CREATE_FORM_PATHS = {
   title: 'create/title',
   organisation: 'create/organisation',
   team: 'create/team'
-} as const
+}
 
 /** Form management helper – builds paths for a specific form slug */
-export const formPaths = (slug: string) =>
-  ({
-    overview: `library/${slug}`,
-    editorPages: `library/${slug}/editor-v2/pages`,
-    addPage: `library/${slug}/editor-v2/page`,
-    responses: `library/${slug}/editor-v2/responses`,
-    history: `library/${slug}/history`,
-    editContactEmail: `library/${slug}/edit/contact/email`,
-    editNotificationEmail: `library/${slug}/edit/notification-email`,
-    editSubmissionGuidance: `library/${slug}/edit/submission-guidance`,
-    editPrivacyNotice: `library/${slug}/edit/privacy-notice`,
-    makeDraftLive: `library/${slug}/make-draft-live`
-  }) as const
+/**
+ *
+ * @param {string} slug
+ * @returns Record<string,string>[]
+ */
+export const formPaths = (slug) => ({
+  overview: `library/${slug}`,
+  editorPages: `library/${slug}/editor-v2/pages`,
+  addPage: `library/${slug}/editor-v2/page`,
+  responses: `library/${slug}/editor-v2/responses`,
+  history: `library/${slug}/history`,
+  editContactEmail: `library/${slug}/edit/contact/email`,
+  editNotificationEmail: `library/${slug}/edit/notification-email`,
+  editSubmissionGuidance: `library/${slug}/edit/submission-guidance`,
+  editPrivacyNotice: `library/${slug}/edit/privacy-notice`,
+  makeDraftLive: `library/${slug}/make-draft-live`
+})
 
 /** Common runner form paths – extend as needed */
 export const RUNNER_PATHS = {
-  previewDraftForm: (formSlug: string, pageSlug: string) =>
+  /** * @param {string} formSlug
+   * @param {string} pageSlug
+   * @returns {string} */
+  previewDraftForm: (formSlug, pageSlug) =>
     `/form/preview/draft/${formSlug}/${pageSlug}`
-} as const
+}

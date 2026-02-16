@@ -14,7 +14,6 @@ export async function runAccessibilityCheck(
 ): Promise<void> {
   // Get axeBuilder from the fixture
   const axeResults = await new AxeBuilder({ page })
-    .withRules(['color-contrast'])
     .withTags([
       'best-practice',
       'wcag22aa',
@@ -29,7 +28,7 @@ export async function runAccessibilityCheck(
   const reportDir = 'test-results/axe-core-reports'
   const resultsDir = path.join(reportDir, 'results')
   const safeDescription = description
-    .replace(/[^a-z0-9-_]+/gi, '-')
+    .replaceAll(/[^a-z0-9-_]+/gi, '-')
     .toLowerCase()
   const reportFileName = `${safeDescription}-accessibility-report.html`
   const reportPath = path.join(reportDir, reportFileName)
@@ -115,15 +114,13 @@ export async function runAccessibilityCheck(
       type: 'best-practice-violations',
       description: `${bestPracticeViolations.length} best practice violation(s) found in ${description} page`
     })
-  }
-  if (bestPracticeViolations.length > 0) {
+
     const bestPracticeSummary = bestPracticeViolations
       .map(
         (violation) =>
           `${violation.id} (${violation.impact ?? 'impact: n/a'}) - ${violation.nodes.length} nodes`
       )
       .join('\n')
-
     testInfo.tags.push('best-practice-violations')
     await testInfo.attach(`${description}-axe-best-practice-violations`, {
       body: Buffer.from(bestPracticeSummary, 'utf-8'),
