@@ -11,7 +11,7 @@ const __dirname = path.dirname('playwright/.auth/user.json')
 const authFile = path.join(__dirname, 'user.json')
 const TWENTY_MINUTES = 20 * 60 * 1000
 
-async function globalSetup(config: FullConfig) {
+async function globalSetup(_config: FullConfig) {
     let shouldLogin = true
     if (fs.existsSync(authFile)) {
         const stats = fs.statSync(authFile)

@@ -8,6 +8,7 @@ module.exports = {
     before: true,
     after: true
   },
+  ignorePatterns: ['playwright-report', 'test-results'],
   extends: [
     'standard',
     'prettier',
@@ -19,6 +20,7 @@ module.exports = {
     ecmaVersion: 'latest'
   },
   plugins: ['prettier', 'wdio'],
+
   rules: {
     'prettier/prettier': 'error',
     'no-console': 'error'

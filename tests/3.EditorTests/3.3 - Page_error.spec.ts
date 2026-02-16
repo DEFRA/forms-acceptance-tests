@@ -1,13 +1,13 @@
-import { expect, test, TestInfo } from '@playwright/test'
-import { FormPage } from '../../pages/FormPage'
-import { SelectPageTypePage } from '../../pages/SelectPageTypePage'
+import { expect, test } from '@playwright/test'
+import { FormPage } from '~/pages/FormPage.js'
+import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
 test('3.3.1 - should error when adding a page with a duplicate name', async ({
   page
-}, testInfo) => {
+}) => {
   //create a form
   const formPage = new FormPage(page)
   const selectPageTypePage = new SelectPageTypePage(page)
-  formPage.goTo()
+  await formPage.goTo()
   const form_name =
     'Automated test - Playwright form ' +
     Math.random().toString().substring(0, 10)
