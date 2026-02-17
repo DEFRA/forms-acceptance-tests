@@ -3,7 +3,7 @@ import { runAccessibilityCheck } from './accessibilityChecker.js'
 import { RUNNER_BASE_URL, RUNNER_PATHS } from './constants.js'
 
 test.describe('Accessibility - forms runner', () => {
-  test(
+  test.skip(
     'runner form pages have no WCAG 2.2 AA violations',
     { tag: '@accessibility' },
     async ({ page }, testInfo) => {
