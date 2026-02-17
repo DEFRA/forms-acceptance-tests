@@ -128,13 +128,16 @@ test.describe('Accessibility - full form creation and publish journey', () => {
 
         // 11c – Privacy notice
         await page
-          .getByRole('link', { name: 'Enter link to privacy notice' })
-          .click()
+          .getByRole('link', { name: 'Add privacy notice' })
+          .click()          
         await runAccessibilityCheck(page, testInfo, 'edit-privacy-notice')
 
         await page
+          .getByRole('radio', { name: 'Link to a privacy notice on GOV.UK' })
+          .check()
+        await page
           .getByRole('textbox', {
-            name: 'Link to privacy notice for this form'
+            name: 'Enter link'
           })
           .fill('https://www.gov.uk/help/privacy-notice')
         await page.getByRole('button', { name: 'Save and continue' }).click()

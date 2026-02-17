@@ -25,12 +25,12 @@ export class PrivacyNoticePage {
     }
 
     async selectPrivacyNoticeType(type: keyof typeof this.privacyNoticeTypes) {
-    const radioButton = this.privacyNoticeTypes[type]
-    if (!radioButton) {
-      throw new Error(`Unknown privacy notice type: ${type}`)
+        const radioButton = this.privacyNoticeTypes[type]
+        if (!radioButton) {
+        throw new Error(`Unknown privacy notice type: ${type}`)
+        }
+        await radioButton.check()
     }
-    await radioButton.check()
-  }
 
     async fillPrivacyNoticeUrl(url: string) {
         await this.privacyNoticeUrl.fill(url);
