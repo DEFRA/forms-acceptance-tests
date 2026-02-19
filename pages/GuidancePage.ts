@@ -16,7 +16,7 @@ export class GuidancePage {
 
     constructor(page: Page) {
         this.page = page;
-        this.mainHeading = page.getByRole('heading', { level: 1, name: /Edit guidance page/ });
+        this.mainHeading = page.getByRole('heading', { level: 2, name: /Edit guidance page/ });
         this.pageHeadingInput = page.locator('#pageHeading');
         this.pageHeadingHint = page.locator('#pageHeading-hint');
         this.guidanceTextInput = page.locator('#guidanceText');
