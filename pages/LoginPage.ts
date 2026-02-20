@@ -26,7 +26,7 @@ export class LoginPage {
         this.signOut = page.getByRole('link', { name: 'Sign out' })
         this.loginErrorMessage = page.getByText("We couldn't find an account")
 
-        this.userProfileLink = page.getByRole('link', { name: displayName });
+        this.userProfileLink = page.getByRole('link', { name: displayName, exact: true });
     }
 
     async navigateToLoginPage() {
