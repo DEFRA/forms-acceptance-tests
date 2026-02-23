@@ -22,7 +22,47 @@ export const DESIGNER_PAGES = [
   { path: 'get-started', description: 'Get Started' },
   { path: 'features', description: 'Features' },
   { path: 'features#forms-designer', description: 'Features - Forms Designer' },
+  {
+    path: 'features#developer-plugin',
+    description: 'Features - Developer Plugin'
+  },
+  {
+    path: 'features#compare',
+    description: 'Features - Compare'
+  },
   { path: 'resources', description: 'Resources' },
+  {
+    path: 'resources/does-this-need-to-be-a-form',
+    description: 'Does This Need to Be a Form'
+  },
+  {
+    path: 'resources/accessibility-and-inclusion',
+    description: 'Accessibility and Inclusion'
+  },
+  {
+    path: 'resources/working-with-subject-matter-experts',
+    description: 'Working with Subject Matter Experts'
+  },
+  {
+    path: 'resources/question-protocols',
+    description: 'Question Protocols'
+  },
+  {
+    path: 'resources/prototyping-a-form',
+    description: 'Prototyping a Form'
+  },
+  {
+    path: 'resources/form-pages-on-govuk',
+    description: 'Form Pages on GOV.UK'
+  },
+  {
+    path: 'resources/peer-reviewing-forms',
+    description: 'Peer Reviewing Forms'
+  },
+  {
+    path: 'resources/privacy-notices',
+    description: 'Privacy Notices'
+  },
   { path: 'admin/index', description: 'Admin Index' },
   { path: 'manage/users', description: 'Manage Users' },
   { path: 'auth/account', description: 'Auth Account' }
