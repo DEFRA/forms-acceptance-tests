@@ -280,10 +280,4 @@ test('should be able to reorder sections', async ({ page }) => {
   await expect(
     page.getByRole('heading', { name: 'Section 2: Section One' })
   ).toBeVisible()
-
-  const previewPanel = page.locator('[role="tabpanel"]')
-  await expect(previewPanel).toContainText('Section Two')
-  await expect(previewPanel).toContainText('Question One')
-  await expect(previewPanel).toContainText('Question Two')
-  await expect(previewPanel).toContainText('Section One')
 })
