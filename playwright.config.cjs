@@ -17,6 +17,7 @@ export default defineConfig({
 
       use: {
         ...devices['Desktop Chrome'],
+        trace: 'on-first-retry',
         channel: 'chrome',
         storageState: 'playwright/.auth/user.json',
         baseURL: process.env.BASE_URL ?? 'http://localhost:3000',
@@ -28,7 +29,7 @@ export default defineConfig({
       testDir: 'tests/2.Accessibility',
       use: {
         ...devices['Desktop Chrome'],
-        trace: 'on',
+        trace: 'on-first-retry',
         channel: 'chrome',
         storageState: 'playwright/.auth/user.json',
         baseURL: process.env.BASE_URL ?? 'http://localhost:3000',

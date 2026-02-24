@@ -1,38 +1,12 @@
 import { test, expect } from '@playwright/test'
-import { FormPage } from '~/pages/FormPage.js'
-import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
-import { SelectQuestionTypePage } from '~/pages/SelectQuestionTypePage.js'
-
-async function addWrittenQuestionPage(
-  formPage: FormPage,
-  selectPageTypePage: SelectPageTypePage,
-  selectQuestionTypePage: SelectQuestionTypePage,
-  questionText: string,
-  shortDescription: string
-) {
-  await formPage.addNewPageButton.click()
-  await selectPageTypePage.choosePageType('question')
-  await selectQuestionTypePage.selectQuestionType('writtenAnswer')
-  await selectQuestionTypePage.selectSubtype('shortAnswer')
-  await selectQuestionTypePage.clickSaveAndContinue()
-  await formPage.createWrittenAnswer(questionText, shortDescription)
-  await formPage.clickBackToAddEditPages()
-}
+import {
+  addWrittenQuestionPage,
+  createDraftFormWithDefaults
+} from '~/tests/3.EditorTests/utils.js'
 
 test('should assign pages to Section One and Section Two', async ({ page }) => {
-  const formPage = new FormPage(page)
-  const selectPageTypePage = new SelectPageTypePage(page)
-  const selectQuestionTypePage = new SelectQuestionTypePage(page)
-
-  await formPage.goTo()
-
-  const formName =
-    'Sections assignment form ' + Math.random().toString().substring(2, 10)
-
-  await formPage.enterFormName(formName)
-  await formPage.selectRadioOption('Environment Agency')
-  await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
-  await formPage.editDraft()
+  const { formPage, selectPageTypePage, selectQuestionTypePage } =
+    await createDraftFormWithDefaults(page, 'Sections assignment form')
 
   await addWrittenQuestionPage(
     formPage,
@@ -68,11 +42,17 @@ test('should assign pages to Section One and Section Two', async ({ page }) => {
     .getByRole('textbox', { name: 'Section heading' })
     .fill('Section One')
   await page.getByRole('button', { name: '+ Add section heading' }).click()
+  await expect(
+    page.getByRole('heading', { name: 'Section 1: Section One' })
+  ).toBeVisible()
 
   await page
     .getByRole('textbox', { name: 'Section heading' })
     .fill('Section Two')
   await page.getByRole('button', { name: '+ Add section heading' }).click()
+  await expect(
+    page.getByRole('heading', { name: 'Section 2: Section Two' })
+  ).toBeVisible()
 
   const questionOneRow = page.locator('li', { hasText: 'Question One' }).first()
   await questionOneRow.locator('select').selectOption({ label: 'Section One' })
@@ -115,19 +95,8 @@ test('should assign pages to Section One and Section Two', async ({ page }) => {
 test('should reassign a question from Section One to Section Two', async ({
   page
 }) => {
-  const formPage = new FormPage(page)
-  const selectPageTypePage = new SelectPageTypePage(page)
-  const selectQuestionTypePage = new SelectQuestionTypePage(page)
-
-  await formPage.goTo()
-
-  const formName =
-    'Sections reassign form ' + Math.random().toString().substring(2, 10)
-
-  await formPage.enterFormName(formName)
-  await formPage.selectRadioOption('Environment Agency')
-  await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
-  await formPage.editDraft()
+  const { formPage, selectPageTypePage, selectQuestionTypePage } =
+    await createDraftFormWithDefaults(page, 'Sections reassign form')
 
   await addWrittenQuestionPage(
     formPage,
@@ -161,12 +130,19 @@ test('should reassign a question from Section One to Section Two', async ({
     .getByRole('textbox', { name: 'Section heading' })
     .fill('Section One')
   await page.getByRole('button', { name: '+ Add section heading' }).click()
+  await expect(
+    page.getByRole('heading', { name: 'Section 1: Section One' })
+  ).toBeVisible()
 
   await page
     .getByRole('textbox', { name: 'Section heading' })
     .fill('Section Two')
   await page.getByRole('button', { name: '+ Add section heading' }).click()
+  await expect(
+    page.getByRole('heading', { name: 'Section 2: Section Two' })
+  ).toBeVisible()
 
+  // assign question one and two to section one, question three to section two
   const questionOneRow = page.locator('li', { hasText: 'Question One' }).first()
   await questionOneRow.locator('select').selectOption({ label: 'Section One' })
   await questionOneRow.getByRole('button', { name: 'Assign' }).click()
@@ -225,4 +201,86 @@ test('should reassign a question from Section One to Section Two', async ({
   await expect(previewPanel).toContainText('Section Two')
   await expect(previewPanel).toContainText('Question Two')
   await expect(previewPanel).toContainText('Question Three')
+})
+
+test('should be able to reorder sections', async ({ page }) => {
+  const { formPage, selectPageTypePage, selectQuestionTypePage } =
+    await createDraftFormWithDefaults(page, 'Sections reorder form')
+
+  await addWrittenQuestionPage(
+    formPage,
+    selectPageTypePage,
+    selectQuestionTypePage,
+    'Question One',
+    'Q1 desc'
+  )
+
+  await addWrittenQuestionPage(
+    formPage,
+    selectPageTypePage,
+    selectQuestionTypePage,
+    'Question Two',
+    'Q2 desc'
+  )
+
+  await page.getByRole('link', { name: 'Edit (Check your answers)' }).click()
+  await page.getByRole('link', { name: 'Sections', exact: true }).click()
+
+  await page
+    .getByRole('textbox', { name: 'Section heading' })
+    .fill('Section One')
+  await page.getByRole('button', { name: '+ Add section heading' }).click()
+  await expect(
+    page.getByRole('heading', { name: 'Section 1: Section One' })
+  ).toBeVisible()
+
+  await page
+    .getByRole('textbox', { name: 'Section heading' })
+    .fill('Section Two')
+  await page.getByRole('button', { name: '+ Add section heading' }).click()
+  await expect(
+    page.getByRole('heading', { name: 'Section 2: Section Two' })
+  ).toBeVisible()
+
+  // assign quetion one to section one, question two to section two
+  const questionOneRow = page.locator('li', { hasText: 'Question One' }).first()
+  await questionOneRow.locator('select').selectOption({ label: 'Section One' })
+  await questionOneRow.getByRole('button', { name: 'Assign' }).click()
+
+  const questionTwoRow = page.locator('li', { hasText: 'Question Two' }).first()
+  await questionTwoRow.locator('select').selectOption({ label: 'Section Two' })
+  await questionTwoRow.getByRole('button', { name: 'Assign' }).click()
+
+  const sectionOneAssigned = page
+    .getByRole('heading', { name: 'Section 1: Section One' })
+    .locator('../..')
+  await expect(sectionOneAssigned).toContainText('Question One')
+
+  const sectionTwoAssigned = page.getByRole('heading', {
+    name: 'Section 2: Section Two',
+    exact: true
+  })
+
+  const sectionTwoParent = sectionTwoAssigned.locator('../..')
+  await expect(sectionTwoParent).not.toContainText('Question One')
+  await expect(sectionTwoParent).toContainText('Question Two')
+  // reorder sections
+  await page
+    .getByRole('button', { name: 'Re-order sections ', exact: true })
+    .click()
+  await page.waitForURL('**/sections-reorder**')
+  // move section1 down
+  await page
+    .locator('li', { hasText: 'Section 1: Section One' })
+    .getByRole('button', { name: 'Down' })
+    .click()
+  await page.getByRole('button', { name: 'Save changes' }).click()
+
+  // back to sections page and verify section two is now above section one
+  await expect(
+    page.getByRole('heading', { name: 'Section 1: Section Two' })
+  ).toBeVisible()
+  await expect(
+    page.getByRole('heading', { name: 'Section 2: Section One' })
+  ).toBeVisible()
 })
