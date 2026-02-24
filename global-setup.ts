@@ -1,8 +1,8 @@
 import { chromium, FullConfig } from '@playwright/test'
-import path from 'path'
+import path from 'node:path'
 import { LoginPage } from './pages/LoginPage.js'
 import dotenv from 'dotenv'
-import fs from 'fs'
+import fs from 'node:fs'
 
 dotenv.config()
 
