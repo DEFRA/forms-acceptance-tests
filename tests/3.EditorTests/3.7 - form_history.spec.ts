@@ -1,5 +1,8 @@
 import { test, expect } from '@playwright/test'
-import { addWrittenQuestionPage, createDraftFormWithDefaults } from './utils.js'
+import {
+  addWrittenQuestionPage,
+  createDraftFormWithDefaults
+} from '~/tests/3.EditorTests/utils.js'
 
 test('should show draft edit history after adding questions across edit sessions', async ({
   page
