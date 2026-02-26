@@ -266,7 +266,7 @@ test('should be able to reorder sections', async ({ page }) => {
   await expect(sectionTwoParent).toContainText('Question Two')
   // reorder sections
   await page
-    .getByRole('button', { name: 'Re-order sections ', exact: true })
+    .getByRole('button', { name: 'Re-order sections', exact: true })
     .click()
   await page.waitForURL('**/sections-reorder**')
   // move section1 down
