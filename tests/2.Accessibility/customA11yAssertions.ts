@@ -16,6 +16,14 @@ export type MeaningfulImageAltExpectation = {
   forbiddenAltValues?: string[]
 }
 
+const ACTION_LINK_KEYWORDS = [
+  'edit',
+  'remove',
+  're-order',
+  'change',
+  'up',
+  'down'
+]
 export async function assertSkipLinkWorks(page: Page): Promise<void> {
   await page.waitForLoadState('domcontentloaded')
 
@@ -314,4 +322,70 @@ export async function assertNoOrphanedHeadingAnchors(
     })
     return orphaned
   })
+}
+
+
+export async function assertActionLinksHaveHiddenContext(
+  page: Page,
+  stepName: string
+): Promise<void> {
+  const offenders = await page.evaluate((actionKeywords: string[]) => {
+    const hiddenSelector =
+      '.govuk-visually-hidden, .visually-hidden, [class*="visually-hidden"]'
+
+    const normalise = (value: string | null | undefined) =>
+      (value ?? '').replaceAll(/\s+/g, ' ').trim()
+
+    const getVisibleLinkText = (anchor: HTMLAnchorElement) => {
+      const clone = anchor.cloneNode(true) as HTMLAnchorElement
+      clone
+        .querySelectorAll(hiddenSelector)
+        .forEach((element) => element.remove())
+      return normalise(clone.textContent)
+    }
+
+    const isActionLink = (text: string) =>
+      actionKeywords.includes(text.toLowerCase())
+
+    const results: Array<{
+      text: string
+      href: string
+      hiddenText: string[]
+      ariaLabel: string | null
+    }> = []
+
+    const anchors = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>('a[href]')
+    )
+
+    anchors.forEach((anchor) => {
+      const visibleText = getVisibleLinkText(anchor)
+
+      if (!visibleText || !isActionLink(visibleText)) {
+        return
+      }
+
+      const hiddenText = Array.from(anchor.querySelectorAll(hiddenSelector))
+        .map((element) => normalise(element.textContent))
+        .filter(Boolean)
+
+      if (hiddenText.length === 0) {
+        results.push({
+          text: visibleText,
+          href: anchor.getAttribute('href') ?? '',
+          hiddenText,
+          ariaLabel: anchor.getAttribute('aria-label')
+        })
+      }
+    })
+
+    return results
+  }, ACTION_LINK_KEYWORDS)
+
+  expect
+    .soft(
+      offenders,
+      `Action links on "${stepName}" should include a visually hidden context span when link text is generic`
+    )
+    .toEqual([])
 }

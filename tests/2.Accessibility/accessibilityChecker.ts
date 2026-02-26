@@ -16,6 +16,7 @@ export async function runAccessibilityCheck(
   const axeResults = await new AxeBuilder({ page })
     .withTags([
       'best-practice',
+      'wcag22aaa',
       'wcag22aa',
       'wcag2a',
       'wcag2aa',

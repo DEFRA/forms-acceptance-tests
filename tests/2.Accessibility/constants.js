@@ -20,6 +20,22 @@ export const DESIGNER_PAGES = [
   { path: 'services', description: 'Services' },
   { path: 'about', description: 'About' },
   { path: 'get-started', description: 'Get Started' },
+  {
+    path: 'get-started/make-form-live-checklist',
+    description: 'Make Form Live Checklist'
+  },
+  {
+    path: 'get-started/get-access',
+    description: 'Get Access'
+  },
+  {
+    path: 'get-started/form-suitability-criteria',
+    description: 'Form Suitability Criteria'
+  },
+  {
+    path: 'get-started/measuring-suitability',
+    description: 'Measuring Suitability'
+  },
   { path: 'features', description: 'Features' },
   { path: 'features#forms-designer', description: 'Features - Forms Designer' },
   {
