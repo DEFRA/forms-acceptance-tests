@@ -14,6 +14,7 @@ import { ReOrderPages } from './pages/ReOrderPages.js'
 import { SelectPageTypePage } from './pages/SelectPageTypePage.js'
 import { SelectQuestionTypePage } from './pages/SelectQuestionTypePage.js'
 import { TeamDetailsPage } from './pages/TeamDetailsPage.js'
+import { TermsAndConditionsPage } from './pages/TermsAndConditionsPage.js'
 import { UploadPage } from './pages/UploadPage.js'
 
 export class Application {
@@ -32,6 +33,7 @@ export class Application {
   private readonly _selectPageTypePage: SelectPageTypePage
   private readonly _selectQuestionTypePage: SelectQuestionTypePage
   private readonly _teamDetailsPage: TeamDetailsPage
+  private readonly _termsAndConditionsPage: TermsAndConditionsPage
   private readonly _uploadPage: UploadPage
 
   constructor(page: Page, displayName: string = 'Local Service Account') {
@@ -50,6 +52,7 @@ export class Application {
     this._selectPageTypePage = new SelectPageTypePage(page)
     this._selectQuestionTypePage = new SelectQuestionTypePage(page)
     this._teamDetailsPage = new TeamDetailsPage(page)
+    this._termsAndConditionsPage = new TermsAndConditionsPage(page)
     this._uploadPage = new UploadPage(page)
   }
 
@@ -111,6 +114,10 @@ export class Application {
 
   get teamDetailsPage(): TeamDetailsPage {
     return this._teamDetailsPage
+  }
+
+  get termsAndConditionsPage(): TermsAndConditionsPage {
+    return this._termsAndConditionsPage
   }
 
   get uploadPage(): UploadPage {
