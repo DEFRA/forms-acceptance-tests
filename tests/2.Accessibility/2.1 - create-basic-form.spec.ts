@@ -1,5 +1,6 @@
 import { test } from '~/fixtures/main.js'
 import { runAccessibilityCheck } from './accessibilityChecker.js'
+import { assertHeadingHierarchy } from './customA11yAssertions.js'
 
 test.describe('Accessibility - create a form with short answer field', () => {
   test(
@@ -12,6 +13,8 @@ test.describe('Accessibility - create a form with short answer field', () => {
 
       // Navigate to library and start creating a form
       await libraryPage.goto()
+      // check Heading hierarchy
+      await assertHeadingHierarchy(page)
       await libraryPage.clickCreateForm()
 
       const formName =
@@ -23,7 +26,7 @@ test.describe('Accessibility - create a form with short answer field', () => {
         .fill(formName)
 
       await runAccessibilityCheck(page, testInfo, 'create-form-enter-name')
-
+      await assertHeadingHierarchy(page)
       // Continue through the form creation wizard
       await page.getByRole('button', { name: 'Continue' }).click()
       await page.getByRole('radio', { name: 'Defra' }).check()

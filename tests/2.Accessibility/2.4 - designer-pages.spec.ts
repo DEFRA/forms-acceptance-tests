@@ -2,6 +2,7 @@ import { test } from '~/fixtures/main.js'
 import { runAccessibilityCheck } from './accessibilityChecker.js'
 import { DESIGNER_BASE_URL, DESIGNER_PAGES } from './constants.js'
 import {
+  assertHeadingHierarchy,
   assertNoHiddenFocusableElementsInTabOrder,
   assertNoOrphanedHeadingAnchors
 } from './customA11yAssertions.js'
@@ -28,6 +29,7 @@ test.describe('Accessibility - designer pages', () => {
           `designer-${description.toLowerCase().replaceAll(/\s+/g, '-')}`
         )
         await assertNoHiddenFocusableElementsInTabOrder(page)
+        await assertHeadingHierarchy(page)
       }
     )
   }
