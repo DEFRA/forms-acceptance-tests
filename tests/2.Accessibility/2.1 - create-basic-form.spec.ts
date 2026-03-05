@@ -1,6 +1,6 @@
 import { test } from '~/fixtures/main.js'
-import { runAccessibilityCheck } from './accessibilityChecker.js'
-import { assertHeadingHierarchy } from './customA11yAssertions.js'
+import { runAccessibilityCheck } from '~/tests/2.Accessibility/accessibilityChecker.js'
+import { assertHeadingHierarchy } from '~/tests/2.Accessibility/customA11yAssertions.js'
 
 test.describe('Accessibility - create a form with short answer field', () => {
   test(
