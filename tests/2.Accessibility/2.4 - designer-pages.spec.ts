@@ -1,6 +1,9 @@
 import { test } from '~/fixtures/main.js'
 import { runAccessibilityCheck } from '~/tests/2.Accessibility/accessibilityChecker.js'
-import { DESIGNER_BASE_URL, DESIGNER_PAGES } from './constants.js'
+import {
+  DESIGNER_BASE_URL,
+  DESIGNER_PAGES
+} from '~/tests/2.Accessibility/constants.js'
 import {
   assertHeadingHierarchy,
   assertNoHiddenFocusableElementsInTabOrder,
