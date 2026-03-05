@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test'
 import { test } from '~/fixtures/main.js'
-import { assertHeadingHierarchy } from './customA11yAssertions.js'
-import { runAccessibilityCheck } from './accessibilityChecker.js'
+import { assertHeadingHierarchy } from '~/tests/2.Accessibility/customA11yAssertions.js'
+import { runAccessibilityCheck } from '~/tests/2.Accessibility/accessibilityChecker.js'
 
 type QuestionTypeScenario = {
   label: string
