@@ -18,6 +18,7 @@ export class FormPage {
   readonly declarationTextInput: Locator
   readonly paymentAmountInput: Locator
   readonly paymentDescriptionInput: Locator
+  readonly paymentTestApiKey: Locator
   readonly addAnotherQuestionButton: Locator
   readonly errorBox: Locator
   readonly formName: Locator
@@ -73,6 +74,9 @@ export class FormPage {
     })
     this.paymentDescriptionInput = page.getByRole('textbox', {
       name: 'Payment description'
+    })
+    this.paymentTestApiKey = page.getByRole('textbox', {
+      name: 'Test API key for the draft form and live previews'
     })
     this.declarationTextInput = page.getByRole('textbox', {
       name: 'Declaration text'

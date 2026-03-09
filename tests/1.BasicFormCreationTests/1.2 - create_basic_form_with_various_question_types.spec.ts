@@ -6,6 +6,7 @@ import { PageOverview } from '~/pages/PageOverview.js'
 import { faker } from '@faker-js/faker/locale/en'
 import { EditQuestionPage } from '~/pages/EditQuestionPage.js'
 import { GuidancePage } from '~/pages/GuidancePage.js'
+import { STATUS_CODES } from 'node:http'
 
 // Declare the types of your fixtures
 type MyFixtures = {
@@ -318,6 +319,7 @@ test('1.2.10 - should create a new form with a payment field', async ({
   // Configure the payment
   await formPage.paymentAmountInput.fill('15.75')
   await formPage.paymentDescriptionInput.fill('Licence fee payment')
+  await formPage.paymentTestApiKey.fill('api_test_123')
   await formPage.saveAndContinueButton.click()
 
   // Verify success banner
