@@ -16,6 +16,10 @@ export type MeaningfulImageAltExpectation = {
   forbiddenAltValues?: string[]
 }
 
+export type HeadingSectionContentOptions = {
+  scopeSelector?: string
+}
+
 const ACTION_LINK_KEYWORDS = [
   'edit',
   'remove',
@@ -229,6 +233,100 @@ export async function assertHeadingHierarchy(
   ).toEqual([])
 }
 
+export async function assertHeadingSectionsHaveContent(
+  page: Page,
+  levels: number[] = [2],
+  options: HeadingSectionContentOptions = {}
+): Promise<void> {
+  const { scopeSelector = 'body' } = options
+  const invalidLevels = levels.filter((level) => level < 1 || level > 6)
+  expect(invalidLevels, 'Heading levels must be between 1 and 6').toEqual([])
+
+  const offenders = await page.evaluate(
+    ({ selectedLevels, scope }) => {
+      const headingTags = selectedLevels.map((level) => `h${level}`).join(',')
+
+      const root = document.querySelector(scope)
+
+      const getHeadingLevel = (element: Element): number =>
+        Number(element.tagName.slice(1))
+
+      const normaliseText = (value: string | null | undefined): string =>
+        (value ?? '').replaceAll(/\s+/g, ' ').trim()
+
+      const isMeaningfulNode = (element: Element): boolean => {
+        const tag = element.tagName.toLowerCase()
+
+        if (['script', 'style', 'template'].includes(tag)) {
+          return false
+        }
+
+        if (tag === 'img') {
+          const alt = element.getAttribute('alt')
+          return normaliseText(alt).length > 0
+        }
+
+        const hasMeaningfulText = normaliseText(element.textContent).length > 0
+        if (hasMeaningfulText) {
+          return true
+        }
+
+        return Boolean(
+          element.querySelector(
+            'img:not([alt=""]), ul, ol, dl, table, form, fieldset, details, blockquote, pre, iframe, video, audio, button'
+          )
+        )
+      }
+
+      const headingElements = Array.from(
+        root?.querySelectorAll<HTMLHeadingElement>(headingTags) || []
+      )
+
+      const findings: Array<{ level: number; heading: string; id: string }> = []
+
+      headingElements.forEach((heading) => {
+        const currentLevel = getHeadingLevel(heading)
+        let sibling = heading.nextElementSibling
+        let hasContent = false
+
+        while (sibling) {
+          const siblingTag = sibling.tagName.toLowerCase()
+          const siblingLevel = /^h[1-6]$/.test(siblingTag)
+            ? getHeadingLevel(sibling)
+            : null
+
+          if (siblingLevel !== null && siblingLevel <= currentLevel) {
+            break
+          }
+
+          if (isMeaningfulNode(sibling)) {
+            hasContent = true
+            break
+          }
+
+          sibling = sibling.nextElementSibling
+        }
+
+        if (!hasContent) {
+          findings.push({
+            level: currentLevel,
+            heading: normaliseText(heading.textContent),
+            id: heading.id
+          })
+        }
+      })
+
+      return findings
+    },
+    { selectedLevels: levels, scope: scopeSelector }
+  )
+
+  expect(
+    offenders,
+    `Each heading (levels ${levels.join(', ')}) must have meaningful content before the next heading of same or higher level`
+  ).toEqual([])
+}
+
 export async function assertDecorativeIconsHidden(
   page: Page,
   selectors: string[]
@@ -323,7 +421,6 @@ export async function assertNoOrphanedHeadingAnchors(
     return orphaned
   })
 }
-
 
 export async function assertActionLinksHaveHiddenContext(
   page: Page,

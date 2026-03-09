@@ -1,10 +1,14 @@
 import { test } from '~/fixtures/main.js'
-import { runAccessibilityCheck } from './accessibilityChecker.js'
-import { DESIGNER_BASE_URL, DESIGNER_PAGES } from './constants.js'
+import { runAccessibilityCheck } from '~/tests/2.Accessibility/accessibilityChecker.js'
 import {
+  DESIGNER_BASE_URL,
+  DESIGNER_PAGES
+} from '~/tests/2.Accessibility/constants.js'
+import {
+  assertHeadingHierarchy,
   assertNoHiddenFocusableElementsInTabOrder,
   assertNoOrphanedHeadingAnchors
-} from './customA11yAssertions.js'
+} from '~/tests/2.Accessibility/customA11yAssertions.js'
 import { expect } from '@playwright/test'
 
 test.describe('Accessibility - designer pages', () => {
@@ -28,6 +32,7 @@ test.describe('Accessibility - designer pages', () => {
           `designer-${description.toLowerCase().replaceAll(/\s+/g, '-')}`
         )
         await assertNoHiddenFocusableElementsInTabOrder(page)
+        await assertHeadingHierarchy(page)
       }
     )
   }
