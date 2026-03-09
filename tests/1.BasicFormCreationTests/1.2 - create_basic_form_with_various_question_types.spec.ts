@@ -316,11 +316,6 @@ test('1.2.10 - should create a new form with a payment field', async ({
   await selectQuestionTypePage.selectQuestionType('payment')
   await selectQuestionTypePage.clickSaveAndContinue()
 
-  // Setup a mock for Gov Pay - valid auth but payment not found i.e. valid API key
-  await formPage.page.route('https://publicapi.payments.service.gov.uk/v1/payments', async route => {
-    await route.fulfill({ status: 404 })
-  })
-
   // Configure the payment
   await formPage.paymentAmountInput.fill('15.75')
   await formPage.paymentDescriptionInput.fill('Licence fee payment')
