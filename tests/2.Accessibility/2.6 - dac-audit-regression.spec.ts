@@ -22,6 +22,8 @@ test.describe('Accessibility - DAC audit regression coverage', () => {
         'dac-regression-library-skip-link'
       )
       await assertSkipLinkWorks(page)
+      await assertNoHiddenFocusableElementsInTabOrder(page)
+      await assertHeadingHierarchy(page)
     }
   )
 
@@ -83,6 +85,7 @@ test.describe('Accessibility - DAC audit regression coverage', () => {
       await page
         .getByRole('radio', { name: 'Short answer (a single line)' })
         .check()
+      await assertHeadingHierarchy(page)
       await page.getByRole('button', { name: 'Save and continue' }).click()
 
       await runAccessibilityCheck(
