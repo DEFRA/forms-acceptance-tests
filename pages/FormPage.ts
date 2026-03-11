@@ -98,7 +98,7 @@ export class FormPage {
       exact: true
     })
     this.changeEmailAddressLink = page.getByRole('link', {
-      name: /Change.*email address/i
+      name: /Change.*email address where/i
     })
     this.changeSupportEmailLink = page.getByRole('link', {
       name: 'Change   contact email'
@@ -138,7 +138,7 @@ export class FormPage {
       name: /email address for support/i
     })
     this.changeTeamNameLink = page.getByRole('link', {
-      name: 'Change   teamName'
+      name: 'Change   team name'
     })
 
     this.pageHeadingAndGuidanceCheckbox = page.getByRole('checkbox', {
