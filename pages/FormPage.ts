@@ -76,7 +76,7 @@ export class FormPage {
       name: 'Payment description'
     })
     this.paymentTestApiKey = page.getByRole('textbox', {
-      name: 'Test API key for the draft form and live previews'
+      name: 'Test API key'
     })
     this.declarationTextInput = page.getByRole('textbox', {
       name: 'Declaration text'
