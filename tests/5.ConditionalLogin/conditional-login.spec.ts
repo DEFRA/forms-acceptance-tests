@@ -20,8 +20,9 @@ test('should be logged in and on the library page', async ({ page }) => {
   await expect(
     page.getByRole('heading', { name: 'Forms library' })
   ).toBeVisible()
+  // Use explicit regex otherwise may match additional elements on the page
   await expect(
-    page.getByRole('link', { name: process.env.AUTH_DISPLAY_NAME })
+    page.getByRole('link', { name: new RegExp(String.raw`${process.env.AUTH_DISPLAY_NAME}`) })
   ).toBeVisible()
 })
 
