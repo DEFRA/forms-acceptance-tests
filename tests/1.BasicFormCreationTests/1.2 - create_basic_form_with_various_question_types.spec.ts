@@ -6,7 +6,6 @@ import { PageOverview } from '~/pages/PageOverview.js'
 import { faker } from '@faker-js/faker/locale/en'
 import { EditQuestionPage } from '~/pages/EditQuestionPage.js'
 import { GuidancePage } from '~/pages/GuidancePage.js'
-import { STATUS_CODES } from 'node:http'
 
 // Declare the types of your fixtures
 type MyFixtures = {
