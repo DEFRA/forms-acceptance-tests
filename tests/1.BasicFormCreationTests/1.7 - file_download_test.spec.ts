@@ -7,7 +7,7 @@ import { PrivacyNoticePage } from '~/pages/PrivacyNoticePage.js'
 import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
 import { SelectQuestionTypePage } from '~/pages/SelectQuestionTypePage.js'
 import { TermsAndConditionsPage } from '~/pages/TermsAndConditionsPage.js'
-import { createAdminAccessToken } from '../utils/auth.js'
+import { createAdminAccessToken } from '~/tests/utils/auth.js'
 
 const uploadFixturePath = fileURLToPath(
   new URL('../../test_upload.txt', import.meta.url)
