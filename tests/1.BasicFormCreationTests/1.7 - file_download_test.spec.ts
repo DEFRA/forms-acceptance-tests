@@ -10,7 +10,7 @@ import { TermsAndConditionsPage } from '~/pages/TermsAndConditionsPage.js'
 import { createAdminAccessToken } from '~/tests/utils/auth.js'
 
 const uploadFixturePath = fileURLToPath(
-  new URL('../../test_upload.txt', import.meta.url)
+  new URL('../../test-data/test_upload.txt', import.meta.url)
 )
 
 const designerBaseUrl = process.env.DESIGNER_BASE_URL
