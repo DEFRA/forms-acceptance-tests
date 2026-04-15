@@ -75,6 +75,23 @@ runs:
       run: |
         cd forms-acceptance-tests
         npm i
+    - name: Setup environment variables
+      shell: bash
+      run: |
+        cat > forms-acceptance-tests/.env <<'EOF'
+        AUTH_EMAIL=admin@internal.test
+        AUTH_PASSWORD=password
+        AUTH_DISPLAY_NAME=Admin
+        MOCK_OIDC_USERNAME=admin
+        MOCK_OIDC_PASSWORD=password
+        MOCK_OIDC_CLIENT_ID=local-test-client
+        MOCK_OIDC_CLIENT_SECRET=local-mock-secret
+        MOCK_OIDC_TOKEN_URL=http://localhost:5556/connect/token
+        DESIGNER_BASE_URL=http://localhost:3000
+        SUBMISSION_API_BASE_URL=http://localhost:3002
+        EOF
+
+        echo "Generated forms-acceptance-tests/.env for local journey tests"
     - name: Run the tests
       shell: bash
       run: |
