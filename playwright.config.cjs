@@ -18,6 +18,8 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         trace: 'on-first-retry',
+        screenshot: 'only-on-failure',
+        video: 'retain-on-failure',
         channel: 'chrome',
         storageState: 'playwright/.auth/user.json',
         baseURL: process.env.BASE_URL ?? 'http://localhost:3000',
