@@ -1,5 +1,6 @@
 import { expect, type Page, test } from '@playwright/test'
 import fs from 'node:fs'
+import { setTimeout } from 'node:timers/promises'
 import { fileURLToPath } from 'node:url'
 
 import { FormPage } from '~/pages/FormPage.js'
@@ -370,7 +371,7 @@ async function downloadFileFromDesigner(
 test('1.7.1 - should create, publish and submit a form with supporting evidence and download the file', async ({
   page,
   browser
-}) => {
+}, testInfo) => {
   test.setTimeout(120_000)
   const formPage = new FormPage(page)
   const selectPageTypePage = new SelectPageTypePage(page)
@@ -412,8 +413,41 @@ test('1.7.1 - should create, publish and submit a form with supporting evidence 
     await getSubmissionDataByReferenceNumber(referenceNumber)
   const fileId = getFirstFileIdFromSubmissionData(submissionData?.data?.files)
 
+  // adding a 10 sec delay for file to be available in s3 bucket.
+  await setTimeout(10_000)
   // a new browser context is required to test the file download flow as it involves going to a public URL without authentication, which would not work in the same context as the form submission which requires authentication
-  const context = await browser.newContext()
-  const newPage = await context.newPage()
-  await downloadFileFromDesigner(newPage, fileId, submissionsEmailAddress)
+  const context = await browser.newContext({
+    recordVideo: {
+      dir: testInfo.outputPath('file-download-context-videos'),
+      size: { height: 720, width: 1280 }
+    }
+  })
+
+  let newPage: Page | undefined
+  let downloadFlowError: unknown
+
+  try {
+    newPage = await context.newPage()
+    await downloadFileFromDesigner(newPage, fileId, submissionsEmailAddress)
+  } catch (error) {
+    downloadFlowError = error
+    throw error
+  } finally {
+    await context.close()
+    // video can only be saved after context is closed
+    if (downloadFlowError && newPage) {
+      const video = newPage.video()
+
+      if (video) {
+        const videoPath = await video.path()
+
+        if (videoPath && fs.existsSync(videoPath)) {
+          await testInfo.attach('file-download-context-video', {
+            contentType: 'video/webm',
+            path: videoPath
+          })
+        }
+      }
+    }
+  }
 })
