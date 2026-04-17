@@ -189,9 +189,17 @@ async function submitLiveForm(page: Page, liveFormUrl: string) {
 
   await page.locator('input[type="file"]').setInputFiles(uploadFixturePath)
   await page.getByRole('button', { name: 'Upload file' }).click()
-  await expect(page.getByRole('alert')).toContainText('1 file uploaded', {
-    timeout: 30_000
-  })
+  await expect
+    .poll(
+      async () =>
+        await page.getByText('1 file uploaded', { exact: true }).isVisible(),
+      {
+        intervals: [2000],
+        timeout: 30_000,
+        message: 'Expected uploaded file to be displayed on the page'
+      }
+    )
+    .toEqual(true)
   await expect(page.getByText('Uploaded', { exact: true })).toBeVisible()
   await page.getByRole('button', { name: 'Continue' }).click()
 
