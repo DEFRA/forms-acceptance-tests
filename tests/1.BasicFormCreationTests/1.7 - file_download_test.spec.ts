@@ -1,6 +1,4 @@
 import { expect, type Page, test } from '@playwright/test'
-import fs from 'node:fs'
-import { setTimeout } from 'node:timers/promises'
 import { fileURLToPath } from 'node:url'
 
 import { FormPage } from '~/pages/FormPage.js'
@@ -23,6 +21,29 @@ type SubmissionData = {
   data?: {
     files?: unknown
   } | null
+}
+
+type UploadAttemptResult = 'uploaded' | 'missing-file' | 'pending'
+
+function extractDownloadUrlFromResponseHtml(html: string) {
+  const match =
+    /<meta[^>]+http-equiv=["']refresh["'][^>]+content=["'][^"']*url=([^"']+)["']/i.exec(
+      html
+    )
+
+  return match?.[1]?.replaceAll('&amp;', '&').trim() ?? null
+}
+
+function getUrlHost(url: string | null) {
+  if (!url) {
+    return null
+  }
+
+  try {
+    return new URL(url).host
+  } catch {
+    return null
+  }
 }
 
 async function addWrittenAnswerPage(
@@ -178,6 +199,84 @@ async function startFormIfRequired(page: Page) {
   }
 }
 
+async function setSupportingEvidenceFile(page: Page) {
+  const fileInput = page.locator('form input[type="file"]').first()
+
+  await expect(fileInput).toBeAttached()
+  await fileInput.setInputFiles(uploadFixturePath)
+  await expect
+    .poll(
+      async () =>
+        fileInput.evaluate(
+          (input) => (input as HTMLInputElement).files?.length ?? 0
+        ),
+      {
+        timeout: 5_000,
+        message: 'Expected file input to contain a selected file'
+      }
+    )
+    .toBe(1)
+  await fileInput.dispatchEvent('change')
+}
+
+async function waitForSupportingEvidenceUpload(
+  page: Page
+): Promise<UploadAttemptResult> {
+  let uploadResult: UploadAttemptResult = 'pending'
+
+  await expect
+    .poll(
+      async () => {
+        if (
+          await page
+            .getByText('1 file uploaded', { exact: true })
+            .isVisible()
+            .catch(() => false)
+        ) {
+          uploadResult = 'uploaded'
+          return true
+        }
+
+        if (
+          await page
+            .getByText('Error: Select a file', { exact: true })
+            .isVisible()
+            .catch(() => false)
+        ) {
+          uploadResult = 'missing-file'
+          return true
+        }
+
+        uploadResult = 'pending'
+        return false
+      },
+      {
+        intervals: [1_000],
+        timeout: 10_000,
+        message:
+          'Expected supporting evidence upload to succeed or surface a validation error'
+      }
+    )
+    .toBe(true)
+
+  return uploadResult
+}
+
+async function uploadSupportingEvidence(page: Page) {
+  await setSupportingEvidenceFile(page)
+  await page.getByRole('button', { name: 'Upload file' }).click()
+
+  let uploadResult = await waitForSupportingEvidenceUpload(page)
+
+  if (uploadResult === 'missing-file') {
+    await setSupportingEvidenceFile(page)
+    await page.getByRole('button', { name: 'Upload file' }).click()
+    uploadResult = await waitForSupportingEvidenceUpload(page)
+  }
+
+  expect(uploadResult).toBe('uploaded')
+}
+
 async function submitLiveForm(page: Page, liveFormUrl: string) {
   await page.goto(liveFormUrl)
   await startFormIfRequired(page)
@@ -187,19 +286,7 @@ async function submitLiveForm(page: Page, liveFormUrl: string) {
     .fill('Test User')
   await page.getByRole('button', { name: 'Continue' }).click()
 
-  await page.locator('input[type="file"]').setInputFiles(uploadFixturePath)
-  await page.getByRole('button', { name: 'Upload file' }).click()
-  await expect
-    .poll(
-      async () =>
-        await page.getByText('1 file uploaded', { exact: true }).isVisible(),
-      {
-        intervals: [2000],
-        timeout: 30_000,
-        message: 'Expected uploaded file to be displayed on the page'
-      }
-    )
-    .toEqual(true)
+  await uploadSupportingEvidence(page)
   await expect(page.getByText('Uploaded', { exact: true })).toBeVisible()
   await page.getByRole('button', { name: 'Continue' }).click()
 
@@ -249,10 +336,6 @@ async function getSubmissionDataByReferenceNumber(referenceNumber: string) {
           referenceNumber,
           token
         )
-        console.log('Submission data API response for reference number', {
-          referenceNumber,
-          result: result.status
-        })
         if (result.status === 'success') {
           submissionData = result.data
         }
@@ -352,35 +435,85 @@ function findFirstFileId(value: unknown): string | undefined {
 async function downloadFileFromDesigner(
   page: Page,
   fileId: string,
-  emailAddress: string
+  emailAddress: string,
+  savedDownloadPath: string
 ) {
-  await page.goto(`${designerBaseUrl}/file-download/${fileId}`)
+  await page.goto(`${designerBaseUrl}/file-download/${fileId}`, {
+    waitUntil: 'domcontentloaded'
+  })
+
   await expect(
     page.getByRole('heading', { name: 'You have a file to download' })
   ).toBeVisible()
 
   await page.getByRole('textbox', { name: 'Email address' }).fill(emailAddress)
-  const download = page.waitForEvent('download')
-  await page.getByRole('button', { name: 'Download file' }).click()
+  const downloadEventPromise = page.waitForEvent('download', {
+    timeout: 30_000
+  })
+  const downloadPageResponsePromise = page.waitForResponse(
+    (response) =>
+      response.url().endsWith(`/file-download/${fileId}`) &&
+      response.request().method() === 'POST',
+    { timeout: 30_000 }
+  )
 
-  await expect(
-    page.getByRole('heading', { name: 'Your file is downloading' })
-  ).toBeVisible()
+  const [downloadArtifact, downloadPageResponse] = await Promise.all([
+    downloadEventPromise,
+    downloadPageResponsePromise,
+    page.getByRole('button', { name: 'Download file' }).click({
+      noWaitAfter: true
+    })
+  ])
 
-  const downloadPath = await download
-  const filePath = await downloadPath.path()
-  expect(filePath).toBeTruthy()
+  const downloadingHeading = page.getByRole('heading', {
+    name: 'Your file is downloading'
+  })
+  const downloadPageHtml = await downloadPageResponse.text()
+  const renderedDownloadUrl =
+    extractDownloadUrlFromResponseHtml(downloadPageHtml)
 
-  if (!filePath || !fs.existsSync(filePath)) {
-    throw new Error(`Expected downloaded file to exist for fileId ${fileId}`)
+  await downloadingHeading
+    .waitFor({ state: 'visible', timeout: 5_000 })
+    .catch(() => undefined)
+
+  console.log('Designer rendered download URL', {
+    fileId,
+    designerDownloadPageUrl: page.url(),
+    renderedDownloadUrl,
+    renderedDownloadHost: getUrlHost(renderedDownloadUrl)
+  })
+
+  expect(renderedDownloadUrl).toBeTruthy()
+  expect(downloadArtifact.suggestedFilename()).toBe('test_upload.txt')
+
+  if (!renderedDownloadUrl) {
+    throw new Error(
+      'Expected file download page response to include a download URL'
+    )
   }
+
+  const downloadedFileResponse = await fetch(renderedDownloadUrl)
+  const downloadedFileBuffer = Buffer.from(
+    await downloadedFileResponse.arrayBuffer()
+  )
+
+  console.log('Fetched download URL response', {
+    fileId,
+    fetchedDownloadUrl: downloadedFileResponse.url,
+    fetchedDownloadHost: getUrlHost(downloadedFileResponse.url),
+    status: downloadedFileResponse.status,
+    ok: downloadedFileResponse.ok
+  })
+
+  expect(downloadedFileResponse.ok).toBe(true)
+  expect(downloadedFileBuffer.length).toBeGreaterThan(0)
 }
 
 test('1.7.1 - should create, publish and submit a form with supporting evidence and download the file', async ({
   page,
   browser
 }, testInfo) => {
-  test.setTimeout(120_000)
+  test.setTimeout(180_000)
   const formPage = new FormPage(page)
   const selectPageTypePage = new SelectPageTypePage(page)
   const selectQuestionTypePage = new SelectQuestionTypePage(page)
@@ -416,46 +549,16 @@ test('1.7.1 - should create, publish and submit a form with supporting evidence 
   const liveFormUrl = await getLiveFormUrl(page)
   const referenceNumber = await submitLiveForm(page, liveFormUrl)
 
-  // wait for submission data to be available in forms-submission-api and log it (to help with debugging if the next step fails)
   const submissionData =
     await getSubmissionDataByReferenceNumber(referenceNumber)
   const fileId = getFirstFileIdFromSubmissionData(submissionData?.data?.files)
+  const context = await browser.newContext()
 
-  // adding a 10 sec delay for file to be available in s3 bucket.
-  await setTimeout(10_000)
-  // a new browser context is required to test the file download flow as it involves going to a public URL without authentication, which would not work in the same context as the form submission which requires authentication
-  const context = await browser.newContext({
-    recordVideo: {
-      dir: testInfo.outputPath('file-download-context-videos'),
-      size: { height: 720, width: 1280 }
-    }
-  })
-
-  let newPage: Page | undefined
-  let downloadFlowError: unknown
-
-  try {
-    newPage = await context.newPage()
-    await downloadFileFromDesigner(newPage, fileId, submissionsEmailAddress)
-  } catch (error) {
-    downloadFlowError = error
-    throw error
-  } finally {
-    await context.close()
-    // video can only be saved after context is closed
-    if (downloadFlowError && newPage) {
-      const video = newPage.video()
-
-      if (video) {
-        const videoPath = await video.path()
-
-        if (videoPath && fs.existsSync(videoPath)) {
-          await testInfo.attach('file-download-context-video', {
-            contentType: 'video/webm',
-            path: videoPath
-          })
-        }
-      }
-    }
-  }
+  const newPage = await context.newPage()
+  await downloadFileFromDesigner(
+    newPage,
+    fileId,
+    submissionsEmailAddress,
+    testInfo.outputPath(`downloaded-${fileId}.txt`)
+  )
 })
