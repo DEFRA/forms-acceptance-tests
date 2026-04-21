@@ -62,7 +62,7 @@ const seededGeospatialFeatures = [
       ]
     }
   }
-] as const
+]
 
 const seededLocationDescriptions = seededGeospatialFeatures.map(
   (feature) => feature.properties.description
