@@ -51,7 +51,7 @@ const test = baseTest.extend<MyFixtures>({
   }
 })
 
-test('1.2.15.1 - should create a new form with Easting and Northing field', async ({
+test('1.2.9.1 - should create a new form with Easting and Northing field', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
@@ -94,7 +94,7 @@ test('1.2.15.1 - should create a new form with Easting and Northing field', asyn
   await expect(editQuestionPage.giveInstructionsCheckbox).toBeChecked()
 })
 
-test('1.2.15.2 - should create a new form with Latitude and Longitude field', async ({
+test('1.2.9.2 - should create a new form with Latitude and Longitude field', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
@@ -136,7 +136,7 @@ test('1.2.15.2 - should create a new form with Latitude and Longitude field', as
   await expect(editQuestionPage.giveInstructionsCheckbox).toBeChecked()
 })
 
-test('1.2.15.3 - should create a new form with OS Grid Reference field', async ({
+test('1.2.9.3 - should create a new form with OS Grid Reference field', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
@@ -178,7 +178,7 @@ test('1.2.15.3 - should create a new form with OS Grid Reference field', async (
   await expect(editQuestionPage.giveInstructionsCheckbox).toBeChecked()
 })
 
-test('1.2.15.4 - should create a new form with National Grid field number', async ({
+test('1.2.9.4 - should create a new form with National Grid field number', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
