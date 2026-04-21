@@ -62,6 +62,9 @@ export class SelectQuestionTypePage {
       latitudeLongitude: page.getByRole('radio', {
         name: 'Latitude and longitude'
       }),
+      areaOrPointsOnMap: page.getByRole('radio', {
+        name: 'An area or points on a map'
+      }),
 
       yesNo: page.getByRole('radio', { name: 'Yes or No' }),
       checkboxes: page.getByRole('radio', { name: 'Checkboxes' }),
