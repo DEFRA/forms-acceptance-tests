@@ -19,7 +19,7 @@ type MyFixtures = {
 
 // Rename the extended test object to avoid conflicts
 const test = baseTest.extend<MyFixtures>({
-  formPage: async ({ page }, use) => {
+  formPage: async ({ page }, use, testInfo) => {
     const formPage = new FormPage(page) // Initialize FormPage using the page object
     await formPage.goTo()
     const form_name =
@@ -27,7 +27,7 @@ const test = baseTest.extend<MyFixtures>({
       Math.random().toString().substring(0, 10)
     console.log('---form name ---')
     console.log(form_name)
-    await formPage.enterFormName(form_name)
+    await formPage.enterFormName(form_name, testInfo)
     await formPage.selectRadioOption('Environment Agency')
     await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
 

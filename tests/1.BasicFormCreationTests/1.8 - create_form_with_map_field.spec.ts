@@ -78,7 +78,7 @@ type MyFixtures = {
 
 async function clickMapButton(page: Page, buttonId: string) {
   await page.locator(`#${buttonId}`).evaluate((button) => {
-    ;(button as HTMLButtonElement).click()
+    ; (button as HTMLButtonElement).click()
   })
 }
 
@@ -228,14 +228,14 @@ async function startFormIfRequired(page: Page) {
 }
 
 const test = baseTest.extend<MyFixtures>({
-  formPage: async ({ page }, use) => {
+  formPage: async ({ page }, use, testInfo) => {
     const formPage = new FormPage(page)
     await formPage.goTo()
     const formName =
       'Automated test - Playwright map form ' +
       Math.random().toString().substring(0, 10)
 
-    await formPage.enterFormName(formName)
+    await formPage.enterFormName(formName, testInfo)
     await formPage.selectRadioOption('Environment Agency')
     await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
     await formPage.editDraft()
