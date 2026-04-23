@@ -260,7 +260,7 @@ const test = baseTest.extend<MyFixtures>({
   }
 })
 
-test.only('1.8 - should create a new form with an area or points on a map question', async ({
+test('1.8 - should create a new form with an area or points on a map question', async ({
   page,
   formPage,
   selectPageTypePage,
