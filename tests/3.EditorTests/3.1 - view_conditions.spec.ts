@@ -13,7 +13,7 @@ const test = base.extend<{
     formName: string
   }
 }>({
-  async formSetup({ page }, use) {
+  async formSetup({ page }, use, testInfo) {
     const formPage = new FormPage(page)
     const selectPageTypePage = new SelectPageTypePage(page)
     const pageOverview = new PageOverview(page)
@@ -21,7 +21,7 @@ const test = base.extend<{
     const formName =
       'Automated test - Playwright form ' +
       Math.random().toString().substring(0, 10)
-    await formPage.enterFormName(formName)
+    await formPage.enterFormName(formName, testInfo)
     await formPage.selectRadioOption('Environment Agency')
     await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
     await formPage.editDraft()

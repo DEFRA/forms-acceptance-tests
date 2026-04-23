@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test'
+import { Page, TestInfo } from '@playwright/test'
 import { FormPage } from '~/pages/FormPage.js'
 import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
 import { SelectQuestionTypePage } from '~/pages/SelectQuestionTypePage.js'
@@ -21,7 +21,8 @@ export async function addWrittenQuestionPage(
 
 export async function createDraftFormWithDefaults(
   page: Page,
-  formNamePrefix: string
+  formNamePrefix: string,
+  testInfo?: TestInfo
 ) {
   const formPage = new FormPage(page)
   const selectPageTypePage = new SelectPageTypePage(page)
@@ -32,7 +33,7 @@ export async function createDraftFormWithDefaults(
   const formName =
     `${formNamePrefix} ` + Math.random().toString().substring(2, 10)
 
-  await formPage.enterFormName(formName)
+  await formPage.enterFormName(formName, testInfo)
   await formPage.selectRadioOption('Environment Agency')
   await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
   await formPage.editDraft()

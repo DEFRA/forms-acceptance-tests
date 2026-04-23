@@ -1,4 +1,5 @@
-import { Page, Locator } from '@playwright/test'
+import { Page, Locator, TestInfo } from '@playwright/test'
+import { recordCreatedForm } from '~/tests/utils/reporting.js'
 
 export class FormPage {
   readonly page: Page
@@ -196,9 +197,13 @@ export class FormPage {
     await this.continueBtn.click()
   }
 
-  async enterFormName(formName: string) {
+  async enterFormName(formName: string, testInfo?: TestInfo) {
     await this.formName.fill(formName)
     await this.clickContinueBtn()
+
+    if (testInfo) {
+      await recordCreatedForm(testInfo, { name: formName, url: this.page.url() })
+    }
   }
 
   async fillTeamDetails(teamName: string, email: string) {
