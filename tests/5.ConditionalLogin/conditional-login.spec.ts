@@ -1,13 +1,13 @@
-import { test, expect, Page } from '@playwright/test'
+import { test, expect, Page, TestInfo } from '@playwright/test'
 import { FormPage } from '~/pages/FormPage.js'
 import { LibraryPage } from '~/pages/LibraryPage.js'
 
-async function createForm(page: Page, formName: string) {
+async function createForm(page: Page, formName: string, testInfo?: TestInfo) {
   const formPage = new FormPage(page)
   const libraryPage = new LibraryPage(page)
   await libraryPage.goto()
   await libraryPage.clickCreateForm()
-  await formPage.enterFormName(formName)
+  await formPage.enterFormName(formName, testInfo)
   await formPage.selectRadioOption('Environment Agency')
   await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
   await formPage.editDraft()
@@ -26,12 +26,13 @@ test('should be logged in and on the library page', async ({ page }) => {
   ).toBeVisible()
 })
 
-test('should create a form and then find it using the search', async ({
-  page
-}) => {
+test('should create a form and then find it using the search', async (
+  { page },
+  testInfo
+) => {
   const libraryPage = new LibraryPage(page)
   const formName = 'Test search form ' + Math.random()
-  await createForm(page, formName)
+  await createForm(page, formName, testInfo)
 
   // Go back to the library and search for the form
   await libraryPage.goto()
@@ -53,18 +54,19 @@ test('should display "no forms found" message when searching for a non-existent 
   await expect(libraryPage.formsTable.locator('tbody tr')).toHaveCount(0)
 })
 
-test('should return multiple results for a partial search', async ({
-  page
-}) => {
+test('should return multiple results for a partial search', async (
+  { page },
+  testInfo
+) => {
   const libraryPage = new LibraryPage(page)
   const commonNamePart = 'Partial Search ' + Math.random()
   const formNameA = `${commonNamePart} A`
   const formNameB = `${commonNamePart} B`
   const uniqueFormName = `Unique Form ${Math.random()}`
 
-  await createForm(page, formNameA)
-  await createForm(page, formNameB)
-  await createForm(page, uniqueFormName)
+  await createForm(page, formNameA, testInfo)
+  await createForm(page, formNameB, testInfo)
+  await createForm(page, uniqueFormName, testInfo)
 
   await libraryPage.goto()
   await libraryPage.searchForm(commonNamePart)
@@ -77,10 +79,10 @@ test('should return multiple results for a partial search', async ({
   await expect(libraryPage.formsTable.locator('tbody tr')).toHaveCount(2)
 })
 
-test('should be case-insensitive', async ({ page }) => {
+test('should be case-insensitive', async ({ page }, testInfo) => {
   const libraryPage = new LibraryPage(page)
   const formName = 'Case-Insensitive Test Form ' + Math.random()
-  await createForm(page, formName)
+  await createForm(page, formName, testInfo)
 
   await libraryPage.goto()
 
@@ -93,13 +95,13 @@ test('should be case-insensitive', async ({ page }) => {
   await expect(page.getByRole('link', { name: formName })).toBeVisible()
 })
 
-test('should clear the search and show all forms', async ({ page }) => {
+test('should clear the search and show all forms', async ({ page }, testInfo) => {
   const libraryPage = new LibraryPage(page)
   const formNameA = 'Clear Search A ' + Math.random()
   const formNameB = 'Clear Search B ' + Math.random()
 
-  await createForm(page, formNameA)
-  await createForm(page, formNameB)
+  await createForm(page, formNameA, testInfo)
+  await createForm(page, formNameB, testInfo)
 
   await libraryPage.goto()
 

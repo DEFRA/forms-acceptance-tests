@@ -11,7 +11,7 @@ test('1.1.1 - should create a new form with short answer field', async ({ page }
   formPage.goTo()
   const form_name = 'Automated test - Playwright form ' + Math.random().toString().substring(0, 10)
 
-  await formPage.enterFormName(form_name)
+  await formPage.enterFormName(form_name, testInfo)
   await formPage.selectRadioOption('Environment Agency')
   await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
 

@@ -476,13 +476,6 @@ async function downloadFileFromDesigner(
     .waitFor({ state: 'visible', timeout: 5_000 })
     .catch(() => undefined)
 
-  console.log('Designer rendered download URL', {
-    fileId,
-    designerDownloadPageUrl: page.url(),
-    renderedDownloadUrl,
-    renderedDownloadHost: getUrlHost(renderedDownloadUrl)
-  })
-
   expect(renderedDownloadUrl).toBeTruthy()
   expect(downloadArtifact.suggestedFilename()).toBe('test_upload.txt')
 
@@ -496,15 +489,6 @@ async function downloadFileFromDesigner(
   const downloadedFileBuffer = Buffer.from(
     await downloadedFileResponse.arrayBuffer()
   )
-
-  console.log('Fetched download URL response', {
-    fileId,
-    fetchedDownloadUrl: downloadedFileResponse.url,
-    fetchedDownloadHost: getUrlHost(downloadedFileResponse.url),
-    status: downloadedFileResponse.status,
-    ok: downloadedFileResponse.ok
-  })
-
   expect(downloadedFileResponse.ok).toBe(true)
   expect(downloadedFileBuffer.length).toBeGreaterThan(0)
 }
