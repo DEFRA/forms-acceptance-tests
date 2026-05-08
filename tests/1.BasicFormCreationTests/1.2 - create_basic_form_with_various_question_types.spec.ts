@@ -349,7 +349,7 @@ test('1.2.11 - should create a new form with Yes/No field', async ({
   expect(await pageOverview.verifySuccessBanner('Changes saved successfully'))
 })
 
-test.skip('1.2.12 - should create a new form with Checkbox field', async ({
+test('1.2.12 - should create a new form with Checkbox field', async ({
   formPage,
   pageOverview,
   selectPageTypePage,
