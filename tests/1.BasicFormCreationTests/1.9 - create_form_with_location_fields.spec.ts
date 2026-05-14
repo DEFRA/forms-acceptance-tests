@@ -72,7 +72,7 @@ test('1.2.9.1 - should create a new form with Easting and Northing field', async
   )
 
   await pageOverview.verifySuccessBanner('Changes saved successfully')
-  await pageOverview.verifyPageHeading('Page 1')
+  await pageOverview.verifyPageHeading('Page 1 overview')
 
   await pageOverview.clickChangeLinkForQuestionByName('What is the location?')
 
@@ -112,7 +112,7 @@ test('1.2.9.2 - should create a new form with Latitude and Longitude field', asy
   await formPage.createWrittenAnswer('Enter coordinates', 'lat-long')
 
   await pageOverview.verifySuccessBanner('Changes saved successfully')
-  await pageOverview.verifyPageHeading('Page 1')
+  await pageOverview.verifyPageHeading('Page 1 overview')
 
   await pageOverview.clickChangeLinkForQuestionByName('Enter coordinates')
 
@@ -154,7 +154,7 @@ test('1.2.9.3 - should create a new form with OS Grid Reference field', async ({
   await formPage.createWrittenAnswer('Enter OS grid reference', 'os-grid-ref')
 
   await pageOverview.verifySuccessBanner('Changes saved successfully')
-  await pageOverview.verifyPageHeading('Page 1')
+  await pageOverview.verifyPageHeading('Page 1 overview')
 
   await pageOverview.clickChangeLinkForQuestionByName('Enter OS grid reference')
 
@@ -199,7 +199,7 @@ test('1.2.9.4 - should create a new form with National Grid field number', async
   )
 
   await pageOverview.verifySuccessBanner('Changes saved successfully')
-  await pageOverview.verifyPageHeading('Page 1')
+  await pageOverview.verifyPageHeading('Page 1 overview')
 
   await pageOverview.clickChangeLinkForQuestionByName(
     'Enter National Grid field number'

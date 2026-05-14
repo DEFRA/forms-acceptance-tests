@@ -293,7 +293,7 @@ test('1.8 - should create a new form with an area or points on a map question', 
   )
 
   await pageOverview.verifySuccessBanner('Changes saved successfully')
-  await pageOverview.verifyPageHeading('Page 1')
+  await pageOverview.verifyPageHeading('Page 1 overview')
 
   await pageOverview.clickChangeLinkForQuestionByName(
     'Add all the barn locations'

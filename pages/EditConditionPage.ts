@@ -17,7 +17,7 @@ export class EditConditionPage {
 
     constructor(page: Page) {
         this.page = page
-        this.pageHeading = page.getByRole('heading', { name: /Manage conditions/i })
+        this.pageHeading = page.getByRole('heading', { name: /Create new condition/i })
         this.selectQuestionDropdown = page.locator('select[name="items[0][componentId]"]')
         this.selectQuestionButton = page.locator('button[name="action"][value="confirmSelectComponentId"]')
         this.operatorDropdown = page.locator('select[name="items[0][operator]"]')
