@@ -35,7 +35,7 @@ export class EditQuestionPage {
     this.page = page
 
     // Initialize locators using ARIA attributes
-    this.pageHeading = page.getByRole('heading', { name: 'Edit question 1' })
+    this.pageHeading = page.getByRole('heading', { name: /Edit page \d+: question \d+/ })
     this.questionInput = page.getByRole('textbox', { name: 'Question' })
     this.hintTextInput = page.getByLabel('Hint text (optional)')
     this.optionalCheckbox = page.getByLabel('Make this question optional')

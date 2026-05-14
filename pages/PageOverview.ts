@@ -33,7 +33,7 @@ export class PageOverview {
     this.page = page
 
     // Initialise locators using Playwright's methods
-    this.pageHeading = page.getByText('Page 1', { exact: true })
+    this.pageHeading = page.getByText('Page 1 overview', { exact: true })
     this.successBanner = page.locator('div[role="alert"]', {
       hasText: 'Changes saved successfully'
     })

@@ -82,7 +82,7 @@ test('1.2.1 - should create a new form with short answer field', async ({
   // Configure the question
   await formPage.createWrittenAnswer('What is your name?', 'Your name')
   await pageOverview.verifySuccessBanner('Changes saved successfully')
-  await pageOverview.verifyPageHeading('Page 1')
+  await pageOverview.verifyPageHeading('Page 1 overview')
 
   //check change question
   await pageOverview.clickChangeLinkForQuestionByName('What is your name?')

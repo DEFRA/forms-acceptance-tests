@@ -157,7 +157,7 @@ test.describe('Accessibility - descriptive action links', () => {
         .getByRole('link', { name: 'Page overview', exact: true })
         .click()
       await page
-        .getByRole('heading', { name: 'Check answers page overview' })
+        .getByRole('heading', { name: /Edit settings.*page overview/ })
         .waitFor({ state: 'visible' })
       await assertActionLinksHaveHiddenContext(
         page,
