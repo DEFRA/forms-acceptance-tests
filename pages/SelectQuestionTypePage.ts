@@ -63,7 +63,7 @@ export class SelectQuestionTypePage {
         name: 'Latitude and longitude'
       }),
       areaOrPointsOnMap: page.getByRole('radio', {
-        name: 'An area or points on a map'
+        name: 'An area, a line, or points on a map'
       }),
 
       yesNo: page.getByRole('radio', { name: 'Yes or No' }),

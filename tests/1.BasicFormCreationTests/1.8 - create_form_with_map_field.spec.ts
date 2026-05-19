@@ -301,7 +301,7 @@ test('1.8 - should create a new form with an area or points on a map question', 
 
   await editQuestionPage.fillQuestionDetails(
     'Add all the barn locations',
-    'You can add points, shapes or lines to the map.',
+    'You can add points, lines or shapes to the map.',
     'Add all barn locations on a map'
   )
   await editQuestionPage.clickSaveAndContinue()
