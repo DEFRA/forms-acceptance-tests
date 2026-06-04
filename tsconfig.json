@@ -15,5 +15,6 @@
       "~/*": ["./*"]
     }
   },
-  "exclude": ["${configDir}/dist", "${configDir}/node_modules", "node_modules"]
+  "include": ["tests/**/*", "pages/**/*"],
+  "exclude": ["${configDir}/dist", "${configDir}/node_modules", "node_modules", "tests/loginTests.spec.ts"]
 }
