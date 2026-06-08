@@ -64,6 +64,33 @@ export class EditConditionPage {
         await this.valueInput.fill(value)
     }
 
+    /**
+     * For list-based questions (checkboxes, radios, autocomplete, select), the
+     * "Select a value" area is rendered as a set of checkboxes - one per list
+     * item. Checking more than one lets a single condition match a range of
+     * answers.
+     */
+    async selectListValues(labels: string[]) {
+        for (const label of labels) {
+            await this.page
+                .getByRole('checkbox', { name: label, exact: true })
+                .check()
+        }
+    }
+
+    /**
+     * Checkbox questions use the "contains" operator and offer a coordinator to
+     * decide whether all selected values must be present (AND) or any one of
+     * them (OR).
+     */
+    async setCheckboxCoordinator(mode: 'and' | 'or') {
+        await this.page
+            .locator(
+                `input[name="items[0][value][itemsCoordinator]"][value="${mode}"]`
+            )
+            .check()
+    }
+
     async selectYesNoValue(value: 'Yes' | 'No') {
         // Yes = value="true", No = value="false"
         const radioValue = value === 'Yes' ? 'true' : 'false'

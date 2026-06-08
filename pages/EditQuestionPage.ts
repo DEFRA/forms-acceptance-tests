@@ -141,6 +141,12 @@ export class EditQuestionPage {
     return listItems.map((item) => item.trim())
   }
 
+  async addAutoCompleteOptions(options: string[]): Promise<void> {
+    // Autocomplete questions use a single textarea where each option is on its
+    // own line, rather than the "Add list item" repeater used by other lists.
+    await this.page.locator('#autoCompleteOptions').fill(options.join('\n'))
+  }
+
   async addListItems(items: string[]): Promise<void> {
     for (const item of items) {
       await this.addItemButton.click()
