@@ -402,6 +402,7 @@ export async function assertNoOrphanedHeadingAnchors(
       return href && href.startsWith('#') && href.length > 1
     })
 
+    // eslint-disable-next-line no-console
     console.log(
       `Found ${anchors.length} in-page anchors for heading check ${anchors.map((a) => a.getAttribute('href')).join(', ')}`
     )

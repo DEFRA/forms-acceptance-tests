@@ -22,12 +22,10 @@ const test = baseTest.extend<MyFixtures>({
   formPage: async ({ page }, use, testInfo) => {
     const formPage = new FormPage(page) // Initialize FormPage using the page object
     await formPage.goTo()
-    const form_name =
+    const formName =
       'Automated test - Playwright form ' +
       Math.random().toString().substring(0, 10)
-    console.log('---form name ---')
-    console.log(form_name)
-    await formPage.enterFormName(form_name, testInfo)
+    await formPage.enterFormName(formName, testInfo)
     await formPage.selectRadioOption('Environment Agency')
     await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
 
@@ -84,7 +82,7 @@ test('1.2.1 - should create a new form with short answer field', async ({
   await pageOverview.verifySuccessBanner('Changes saved successfully')
   await pageOverview.verifyPageHeading('Page 1 overview')
 
-  //check change question
+  // check change question
   await pageOverview.clickChangeLinkForQuestionByName('What is your name?')
 
   // Use EditQuestionPage to modify the question
@@ -125,14 +123,13 @@ test('1.2.2 - should create a new form with long answer field', async ({
   // Verify success banner
   expect(await pageOverview.verifySuccessBanner('Changes saved successfully'))
 
-  //check edit question preview panel - with JS off preview
+  // check edit question preview panel - with JS off preview
 })
 
 test('1.2.3 - should create a new form with number field', async ({
   formPage,
   selectPageTypePage,
-  selectQuestionTypePage,
-  pageOverview
+  selectQuestionTypePage
 }) => {
   // Add a new page
   await formPage.addNewPageButton.click()
@@ -372,14 +369,14 @@ test('1.2.12 - should create a new form with Checkbox field', async ({
   const error = await formPage.getErrorMessage()
   expect(error).toContain('At least 2 items are required for a list')
 
-  //add fruits to item list
+  // add fruits to item list
   const fruits = ['apple', 'banana', 'grapes']
   await editQuestionPage.addListItems(fruits)
   await editQuestionPage.clickSaveAndContinue()
   await pageOverview.successBannerIsDisplayed()
   await pageOverview.clickChangeLinkForQuestionByName('Select your interests')
 
-  //assert lis items
+  // assert lis items
   await editQuestionPage.getPageHeadingText()
   const actualListItems = await editQuestionPage.getListItems()
   expect(actualListItems).toEqual(fruits)
@@ -482,7 +479,7 @@ test('1.2.15 - should create a new form with guidance page', async ({
   await editQuestionPage.clickSaveAndContinue()
   await pageOverview.successBannerIsDisplayed()
 
-  //click add to guidance page
+  // click add to guidance page
   await formPage.clickBackToAddEditPages()
   await formPage.addNewPageButton.click()
   await selectPageTypePage.choosePageType('guidance')
@@ -506,7 +503,7 @@ test('1.2.15 - should create a new form with guidance page', async ({
   await expect(guidancePage.guidanceTextInput).toHaveValue(guidanceText)
   await expect(guidancePage.exitPageCheckbox).not.toBeChecked()
 
-  //now make it an exit page
+  // now make it an exit page
   await guidancePage.setExitPage(true)
   await guidancePage.save()
   await pageOverview.successBannerIsDisplayed()

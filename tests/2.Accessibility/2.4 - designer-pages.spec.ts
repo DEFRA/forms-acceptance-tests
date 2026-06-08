@@ -42,7 +42,7 @@ test.describe('Accessibility - designer landing page without login', () => {
   test('Home page has no WCAG 2.2 AA violations for unauthenticated users', async ({
     browser
   }, testInfo) => {
-    //fresh browser context to ensure no cached authentication state
+    // fresh browser context to ensure no cached authentication state
     const context = await browser.newContext()
     const page = await context.newPage()
     await page.goto(`${DESIGNER_BASE_URL}/`)

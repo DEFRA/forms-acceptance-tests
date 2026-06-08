@@ -9,7 +9,7 @@ import * as fs from 'node:fs'
 // Helper to download a form and parse JSON
 async function downloadAndParseJson(
   page: Page,
-  downloadAction: () => Promise<any>
+  downloadAction: () => Promise<unknown>
 ) {
   const [download] = await Promise.all([
     page.waitForEvent('download'),
@@ -22,13 +22,15 @@ async function downloadAndParseJson(
   try {
     json = JSON.parse(fileContents)
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error('Error parsing JSON:', e)
+    // eslint-disable-next-line no-console
     console.error('File contents:', fileContents)
     test.fail()
   }
   expect(json).toBeTruthy()
   expect(typeof json).toBe('object')
-  return json as Record<string, any>
+  return json as Record<string, unknown>
 }
 
 // Helper to read and parse a local JSON file
@@ -38,7 +40,9 @@ function readAndParseJsonFile(filePath: string) {
   try {
     json = JSON.parse(fileContents)
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error('Error parsing JSON:', e)
+    // eslint-disable-next-line no-console
     console.error('File contents:', fileContents)
     test.fail()
   }
@@ -120,7 +124,7 @@ test.skip('3.2.2 - Upload a form JSON file and verify', async ({ page }) => {
   const originalJson = readAndParseJsonFile(filePath)
 
   // Assert both JSONs are deeply equal
-  const { name: name1, ...restDownloaded } = downloadedJson
-  const { name: name2, ...restOriginal } = originalJson
+  const { name: _name1, ...restDownloaded } = downloadedJson
+  const { name: _name2, ...restOriginal } = originalJson
   expect(restDownloaded).toEqual(restOriginal)
 })

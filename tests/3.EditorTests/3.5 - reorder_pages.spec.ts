@@ -116,6 +116,7 @@ test.skip('should allow re-ordering of pages and display Save button', async ({
   // Step 8: Verify the new order
   await pageOverview.verifySuccessBanner('Changes saved successfully')
   const pageTitles = await pageOverview.getPageTitles()
+  // eslint-disable-next-line no-console
   console.log('Page titles:', pageTitles)
   expect(pageTitles[0]).toContain('What is your favourite fruit')
 })

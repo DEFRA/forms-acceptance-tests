@@ -85,6 +85,7 @@ export class PageOverview {
   async successBannerIsDisplayed() {
     return this.page.locator('text=Changes saved successfully')
   }
+
   async clickChangeLinkForQuestionByName(questionName: string) {
     // Wait for the page to be fully loaded
     await this.page.waitForLoadState('networkidle')

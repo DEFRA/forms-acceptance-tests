@@ -34,18 +34,6 @@ function extractDownloadUrlFromResponseHtml(html: string) {
   return match?.[1]?.replaceAll('&amp;', '&').trim() ?? null
 }
 
-function getUrlHost(url: string | null) {
-  if (!url) {
-    return null
-  }
-
-  try {
-    return new URL(url).host
-  } catch {
-    return null
-  }
-}
-
 async function addWrittenAnswerPage(
   formPage: FormPage,
   selectPageTypePage: SelectPageTypePage,
@@ -305,9 +293,9 @@ async function submitLiveForm(page: Page, liveFormUrl: string) {
   const confirmationDiv = page.getByText(/Your reference number/i).first()
   await expect(confirmationDiv).toBeVisible()
   const confirmationText = await confirmationDiv.textContent()
-  const match = new RegExp(
-    /Your reference number\s*([A-Z0-9]{3}(?:-[A-Z0-9]{3}){2})/
-  ).exec(confirmationText ?? '')
+  const match = /Your reference number\s*([A-Z0-9]{3}(?:-[A-Z0-9]{3}){2})/.exec(
+    confirmationText ?? ''
+  )
 
   const referenceNumber = match?.[1]
   expect(referenceNumber).toBeTruthy()
@@ -436,7 +424,7 @@ async function downloadFileFromDesigner(
   page: Page,
   fileId: string,
   emailAddress: string,
-  savedDownloadPath: string
+  _savedDownloadPath: string
 ) {
   await page.goto(`${designerBaseUrl}/file-download/${fileId}`, {
     waitUntil: 'domcontentloaded'

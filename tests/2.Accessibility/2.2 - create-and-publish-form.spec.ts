@@ -127,9 +127,7 @@ test.describe('Accessibility - full form creation and publish journey', () => {
         await page.getByRole('button', { name: 'Save and continue' }).click()
 
         // 11c – Privacy notice
-        await page
-          .getByRole('link', { name: 'Add privacy notice' })
-          .click()          
+        await page.getByRole('link', { name: 'Add privacy notice' }).click()
         await runAccessibilityCheck(page, testInfo, 'edit-privacy-notice')
 
         await page

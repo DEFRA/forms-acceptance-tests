@@ -141,9 +141,9 @@ async function createMultiValueCondition(
   await editConditionPage.saveCondition()
 
   await expect(formPage.page).toHaveURL(/editor-v2\/conditions/)
-  await expect(
-    formPage.page.locator('main')
-  ).toContainText(expectedConditionExpression(spec))
+  await expect(formPage.page.locator('main')).toContainText(
+    expectedConditionExpression(spec)
+  )
 }
 
 async function addGuidancePageWithCondition(
@@ -225,9 +225,7 @@ async function answerAutocomplete(page: Page, value: string) {
 
   if (await enhancedInput.count()) {
     await enhancedInput.fill(value)
-    const option = page
-      .locator('li[role="option"]', { hasText: value })
-      .first()
+    const option = page.locator('li[role="option"]', { hasText: value }).first()
     await option.waitFor({ state: 'visible' })
     await option.click()
   } else {
@@ -353,10 +351,18 @@ test.describe.serial('3.9 - Range of answers in a condition', () => {
 
     // Every guidance page condition fails, so the runner skips straight to the
     // summary without showing any of them.
-    await expect(page.getByRole('heading', { name: 'Fruit guidance' })).toHaveCount(0)
-    await expect(page.getByRole('heading', { name: 'Colour guidance' })).toHaveCount(0)
-    await expect(page.getByRole('heading', { name: 'Country guidance' })).toHaveCount(0)
-    await expect(page.getByRole('heading', { name: 'Season guidance' })).toHaveCount(0)
+    await expect(
+      page.getByRole('heading', { name: 'Fruit guidance' })
+    ).toHaveCount(0)
+    await expect(
+      page.getByRole('heading', { name: 'Colour guidance' })
+    ).toHaveCount(0)
+    await expect(
+      page.getByRole('heading', { name: 'Country guidance' })
+    ).toHaveCount(0)
+    await expect(
+      page.getByRole('heading', { name: 'Season guidance' })
+    ).toHaveCount(0)
 
     await expectOnSummary(page)
   })
@@ -377,13 +383,17 @@ test.describe.serial('3.9 - Range of answers in a condition', () => {
     })
 
     // Fruit guidance is skipped because the checkbox condition needs BOTH values
-    await expect(page.getByRole('heading', { name: 'Fruit guidance' })).toHaveCount(0)
+    await expect(
+      page.getByRole('heading', { name: 'Fruit guidance' })
+    ).toHaveCount(0)
 
     await expectGuidancePageThenContinue(page, 'Colour guidance')
     await expectGuidancePageThenContinue(page, 'Country guidance')
 
     // Season guidance is skipped because "Winter" is not one of the two values
-    await expect(page.getByRole('heading', { name: 'Season guidance' })).toHaveCount(0)
+    await expect(
+      page.getByRole('heading', { name: 'Season guidance' })
+    ).toHaveCount(0)
 
     await expectOnSummary(page)
   })

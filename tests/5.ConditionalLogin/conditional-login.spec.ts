@@ -22,14 +22,15 @@ test('should be logged in and on the library page', async ({ page }) => {
   ).toBeVisible()
   // Use explicit regex otherwise may match additional elements on the page
   await expect(
-    page.getByRole('link', { name: new RegExp(String.raw`${process.env.AUTH_DISPLAY_NAME}`) })
+    page.getByRole('link', {
+      name: new RegExp(String.raw`${process.env.AUTH_DISPLAY_NAME}`)
+    })
   ).toBeVisible()
 })
 
-test('should create a form and then find it using the search', async (
-  { page },
-  testInfo
-) => {
+test('should create a form and then find it using the search', async ({
+  page
+}, testInfo) => {
   const libraryPage = new LibraryPage(page)
   const formName = 'Test search form ' + Math.random()
   await createForm(page, formName, testInfo)
@@ -54,10 +55,9 @@ test('should display "no forms found" message when searching for a non-existent 
   await expect(libraryPage.formsTable.locator('tbody tr')).toHaveCount(0)
 })
 
-test('should return multiple results for a partial search', async (
-  { page },
-  testInfo
-) => {
+test('should return multiple results for a partial search', async ({
+  page
+}, testInfo) => {
   const libraryPage = new LibraryPage(page)
   const commonNamePart = 'Partial Search ' + Math.random()
   const formNameA = `${commonNamePart} A`
@@ -95,7 +95,9 @@ test('should be case-insensitive', async ({ page }, testInfo) => {
   await expect(page.getByRole('link', { name: formName })).toBeVisible()
 })
 
-test('should clear the search and show all forms', async ({ page }, testInfo) => {
+test('should clear the search and show all forms', async ({
+  page
+}, testInfo) => {
   const libraryPage = new LibraryPage(page)
   const formNameA = 'Clear Search A ' + Math.random()
   const formNameB = 'Clear Search B ' + Math.random()
