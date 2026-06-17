@@ -48,7 +48,7 @@
     "@wdio/mocha-framework": "9.27.2",
     "@wdio/spec-reporter": "9.27.2",
     "allure-commandline": "2.42.0",
-    "allure-playwright": "3.9.0",
+    "allure-playwright": "3.10.0",
     "axe-html-reporter": "^2.2.11",
     "axe-playwright": "2.2.2",
     "dotenv": "17.4.2",
