@@ -48,7 +48,7 @@
     "@wdio/mocha-framework": "9.27.2",
     "@wdio/spec-reporter": "9.27.2",
     "allure-commandline": "2.42.0",
-    "allure-playwright": "3.9.0",
+    "allure-playwright": "3.10.0",
     "axe-html-reporter": "^2.2.11",
     "axe-playwright": "2.2.2",
     "dotenv": "17.4.2",
@@ -58,17 +58,13 @@
     "undici": "8.3.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "3.3.5",
-    "@eslint/js": "10.0.1",
-    "eslint": "10.4.1",
+    "eslint": "9.39.4",
     "eslint-config-prettier": "10.1.8",
-    "eslint-config-standard": "17.1.0",
-    "eslint-plugin-import": "2.32.0",
-    "eslint-plugin-n": "16.6.2",
+    "eslint-plugin-import-x": "4.16.2",
     "eslint-plugin-prettier": "5.5.6",
-    "eslint-plugin-promise": "7.3.0",
     "eslint-plugin-wdio": "9.27.2",
     "husky": "9.1.7",
+    "neostandard": "0.13.0",
     "prettier": "3.8.3"
   }
 }
