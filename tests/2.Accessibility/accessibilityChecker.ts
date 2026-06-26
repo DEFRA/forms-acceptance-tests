@@ -1,5 +1,5 @@
-//accessibilityChecker.ts
-//https://medium.com/@tpshadinijk/automating-accessibility-checks-using-playwright-db443214c38d
+// accessibilityChecker.ts
+// https://medium.com/@tpshadinijk/automating-accessibility-checks-using-playwright-db443214c38d
 
 import { expect, Page, TestInfo } from '@playwright/test'
 import { AxeBuilder } from '@axe-core/playwright'
@@ -108,6 +108,7 @@ export async function runAccessibilityCheck(
   )
 
   if (bestPracticeViolations.length > 0) {
+    // eslint-disable-next-line no-console
     console.warn(
       `Best practice violations found in ${description} page: ${bestPracticeViolations.length}`
     )

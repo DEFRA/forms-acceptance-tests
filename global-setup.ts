@@ -20,6 +20,7 @@ async function globalSetup(_config: FullConfig) {
     if (now - mtime < TWENTY_MINUTES) {
       // user.json is fresh, no need to login again
       shouldLogin = false
+      // eslint-disable-next-line no-console
       console.log('Using existing authentication state.')
     }
   }
@@ -43,6 +44,7 @@ async function globalSetup(_config: FullConfig) {
     await loginPage.verifyUserLoggedIn()
     await page.context().storageState({ path: authFile })
     await browser.close()
+    // eslint-disable-next-line no-console
     console.log('Logged in and saved new authentication state.')
   }
 }

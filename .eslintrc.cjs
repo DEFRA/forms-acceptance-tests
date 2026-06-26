@@ -15,7 +15,20 @@ module.exports = {
     'eslint:recommended',
     'plugin:wdio/recommended'
   ],
-  overrides: [],
+  overrides: [
+    {
+      files: ['**/*.ts'],
+      parser: '@typescript-eslint/parser',
+      plugins: ['@typescript-eslint'],
+      extends: ['plugin:@typescript-eslint/recommended', 'prettier'],
+      rules: {
+        '@typescript-eslint/no-unused-vars': [
+          'error',
+          { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
+        ]
+      }
+    }
+  ],
   parserOptions: {
     ecmaVersion: 'latest'
   },

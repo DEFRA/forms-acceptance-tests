@@ -24,8 +24,7 @@ export async function recordCreatedForm(
 
   // Best-effort: if allure-playwright is enabled, show it as a parameter too.
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { allure } = require('allure-playwright')
+    const { allure } = await import('allure-playwright')
     allure.parameter('createdForm', form.name)
     if (form.url) {
       allure.parameter('createdFormUrl', form.url)
@@ -34,4 +33,3 @@ export async function recordCreatedForm(
     // noop
   }
 }
-

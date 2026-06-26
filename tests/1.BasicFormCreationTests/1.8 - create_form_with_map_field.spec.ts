@@ -78,7 +78,7 @@ type MyFixtures = {
 
 async function clickMapButton(page: Page, buttonId: string) {
   await page.locator(`#${buttonId}`).evaluate((button) => {
-    ; (button as HTMLButtonElement).click()
+    ;(button as HTMLButtonElement).click()
   })
 }
 

@@ -202,7 +202,10 @@ export class FormPage {
     await this.clickContinueBtn()
 
     if (testInfo) {
-      await recordCreatedForm(testInfo, { name: formName, url: this.page.url() })
+      await recordCreatedForm(testInfo, {
+        name: formName,
+        url: this.page.url()
+      })
     }
   }
 
@@ -265,7 +268,7 @@ export class FormPage {
     await this.questionInput.fill(question)
     await this.shortDescriptionInput.fill(description)
 
-    //select all file types
+    // select all file types
     await this.page.getByRole('checkbox', { name: 'Documents' }).check()
     await this.page.getByRole('checkbox', { name: 'PDF' }).check()
     await this.page.getByRole('checkbox', { name: 'DOC', exact: true }).check()
@@ -309,7 +312,7 @@ export class FormPage {
     await this.changeTeamNameLink.click()
   }
 
-  async setPageHeading(headingText: string) {
+  async setPageHeading(_headingText: string) {
     await this.pageHeadingAndGuidanceCheckbox.check()
     await this.saveChangesButton.click()
   }
