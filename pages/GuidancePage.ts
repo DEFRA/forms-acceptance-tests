@@ -18,7 +18,7 @@ export class GuidancePage {
     this.page = page
     this.mainHeading = page.getByRole('heading', {
       level: 1,
-      name: /Edit page \d+: guidance/
+      name: /(Add|Edit) page \d+: guidance/
     })
     this.pageHeadingInput = page.locator('#pageHeading')
     this.pageHeadingHint = page.locator('#pageHeading-hint')
