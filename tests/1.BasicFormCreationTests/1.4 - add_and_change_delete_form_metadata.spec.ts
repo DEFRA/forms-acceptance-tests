@@ -13,7 +13,7 @@ test('1.4.1 - should add an email address for form submissions', async ({
 }) => {
   // create a form
   const formPage = new FormPage(page)
-  formPage.goTo()
+  await formPage.goTo()
   const formName =
     'Automated test - Playwright form ' +
     Math.random().toString().substring(0, 10)
@@ -43,7 +43,7 @@ test('1.4.2 - should update email address for form submissions', async ({
 }) => {
   // create a form
   const formPage = new FormPage(page)
-  formPage.goTo()
+  await formPage.goTo()
   const formName =
     'Automated test - Playwright form ' +
     Math.random().toString().substring(0, 10)
@@ -103,7 +103,7 @@ test('1.4.3 - should delete an existing draft form', async ({ page }) => {
 test('1.4.4 - should add a phone number for support', async ({ page }) => {
   // Create a form
   const formPage = new FormPage(page)
-  formPage.goTo()
+  await formPage.goTo()
   const formName =
     'Automated test - Playwright form ' +
     Math.random().toString().substring(0, 10)
@@ -128,7 +128,7 @@ test('1.4.4 - should add a phone number for support', async ({ page }) => {
 test('1.4.5 - should update phone number for support', async ({ page }) => {
   // Create a form
   const formPage = new FormPage(page)
-  formPage.goTo()
+  await formPage.goTo()
   const formName =
     'Automated test - Playwright form ' +
     Math.random().toString().substring(0, 10)
@@ -157,7 +157,7 @@ test('1.4.5 - should update phone number for support', async ({ page }) => {
 test('1.4.6 - should add email address for support', async ({ page }) => {
   // Create a form
   const formPage = new FormPage(page)
-  formPage.goTo()
+  await formPage.goTo()
   const formName =
     'Automated test - Playwright form ' +
     Math.random().toString().substring(0, 10)
@@ -186,7 +186,7 @@ test('1.4.6 - should add email address for support', async ({ page }) => {
 test('1.4.7 - should update email address for support', async ({ page }) => {
   // Create a form
   const formPage = new FormPage(page)
-  formPage.goTo()
+  await formPage.goTo()
   const formName =
     'Automated test - Playwright form ' +
     Math.random().toString().substring(0, 10)
@@ -224,7 +224,7 @@ test('1.4.7 - should update email address for support', async ({ page }) => {
 test('1.4.8 - should add online contact link for support', async ({ page }) => {
   // Create a form
   const formPage = new FormPage(page)
-  formPage.goTo()
+  await formPage.goTo()
   const formName =
     'Automated test - Playwright form ' +
     Math.random().toString().substring(0, 10)
@@ -256,7 +256,7 @@ test('1.4.8 - should add online contact link for support', async ({ page }) => {
 test('1.4.9 - should add what happens next', async ({ page }) => {
   // Create a form
   const formPage = new FormPage(page)
-  formPage.goTo()
+  await formPage.goTo()
   const formName =
     'Automated test - Playwright form ' +
     Math.random().toString().substring(0, 10)
@@ -281,7 +281,7 @@ test('1.4.9 - should add what happens next', async ({ page }) => {
 test('1.4.10 - should update what happens next', async ({ page }) => {
   // Create a form
   const formPage = new FormPage(page)
-  formPage.goTo()
+  await formPage.goTo()
   const formName =
     'Automated test - Playwright form ' +
     Math.random().toString().substring(0, 10)

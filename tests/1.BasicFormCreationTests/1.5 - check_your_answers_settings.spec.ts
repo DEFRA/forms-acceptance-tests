@@ -13,7 +13,7 @@ test('1.5.1 - ensure the confirmation email checkbox exists and works as expecte
 }) => {
   // Create a form
   const formPage = new FormPage(page)
-  formPage.goTo()
+  await formPage.goTo()
   const formName = `Automated test - Playwright form ${Math.random().toString().substring(0, 10)} - Summary page`
   await formPage.enterFormName(formName)
   await formPage.selectRadioOption('Environment Agency')
@@ -43,7 +43,7 @@ test('1.5.1 - ensure the confirmation email checkbox exists and works as expecte
   const emailStatusOn = page.getByRole('link', {
     name: 'Turn off confirmation emails'
   })
-  expect(emailStatusOn).toBeVisible()
+  await expect(emailStatusOn).toBeVisible()
   await formPage.confirmationEmailsLink.click()
   const disableEmailsCheckBox = page.getByLabel(
     'Turn off the confirmation email'
@@ -84,7 +84,7 @@ test('1.5.2 - ensure the reference checkbox exists and works as expected', async
 }) => {
   // Create a form
   const formPage = new FormPage(page)
-  formPage.goTo()
+  await formPage.goTo()
   const formName = `Automated test - Playwright form ${Math.random().toString().substring(0, 10)} - Summary page`
   await formPage.enterFormName(formName)
   await formPage.selectRadioOption('Environment Agency')
@@ -106,7 +106,7 @@ test('1.5.2 - ensure the reference checkbox exists and works as expected', async
   const referenceNumberStatus = page.getByRole('link', {
     name: 'Turn on the reference number'
   })
-  expect(referenceNumberStatus).toBeVisible()
+  await expect(referenceNumberStatus).toBeVisible()
   await formPage.referenceNumberLink.click()
   const referenceNumberCheckBox = page.getByLabel(
     'Turn on the reference number'

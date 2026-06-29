@@ -25,9 +25,9 @@ export async function recordCreatedForm(
   // Best-effort: if allure-playwright is enabled, show it as a parameter too.
   try {
     const { allure } = await import('allure-playwright')
-    allure.parameter('createdForm', form.name)
+    await allure.parameter('createdForm', form.name)
     if (form.url) {
-      allure.parameter('createdFormUrl', form.url)
+      await allure.parameter('createdFormUrl', form.url)
     }
   } catch {
     // noop

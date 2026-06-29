@@ -6,7 +6,7 @@ test('1.3.1 - should create a new form with valid data', async ({ page }) => {
   // create a form
   const formPage = new FormPage(page)
 
-  formPage.goTo()
+  await formPage.goTo()
   const formName =
     'Automated test - Playwright form ' +
     Math.random().toString().substring(0, 10)

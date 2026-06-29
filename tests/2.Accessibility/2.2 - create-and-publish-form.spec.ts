@@ -101,7 +101,7 @@ test.describe('Accessibility - full form creation and publish journey', () => {
           .click()
         await runAccessibilityCheck(page, testInfo, 'edit-contact-email')
 
-        test.step('Fill form publish overview fields', async () => {
+        await test.step('Fill form publish overview fields', async () => {
           await page
             .getByRole('textbox', { name: 'Email address' })
             .fill('support@defra.gov.uk')

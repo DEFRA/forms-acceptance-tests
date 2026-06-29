@@ -5,8 +5,8 @@ test.skip('Log out', async ({ page }) => {
   const invalidEmail = 'invalid@fgdfg.com'
 
   const loginPage = new LoginPage(page)
-  loginPage.navigateToLoginPage()
-  loginPage.clickLogOut()
+  await loginPage.navigateToLoginPage()
+  await loginPage.clickLogOut()
   loginPage.clickContinueBtn()
   loginPage.clickUseAnotherAccount()
 

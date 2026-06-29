@@ -8,7 +8,7 @@ test('1.1.1 - should create a new form with short answer field', async ({
   // create a form
   const formPage = new FormPage(page)
   const selectPageTypePage = new SelectPageTypePage(page)
-  formPage.goTo()
+  await formPage.goTo()
   const formName =
     'Automated test - Playwright form ' +
     Math.random().toString().substring(0, 10)
@@ -36,7 +36,7 @@ test('1.1.2 - Missing page heading error when adding second question', async ({
   const formPage = new FormPage(page)
   const selectPageTypePage = new SelectPageTypePage(page)
 
-  formPage.goTo()
+  await formPage.goTo()
   const formName =
     'Automated test - Playwright form ' +
     Math.random().toString().substring(0, 10)
@@ -65,7 +65,7 @@ test('1.1.3- Missing a page type "What kind of page do you need"', async ({
   const formPage = new FormPage(page)
   const selectPageTypePage = new SelectPageTypePage(page)
 
-  formPage.goTo()
+  await formPage.goTo()
   const formName =
     'Automated test - Playwright form ' +
     Math.random().toString().substring(0, 10)
