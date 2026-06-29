@@ -3,6 +3,8 @@ import importX from 'eslint-plugin-import-x'
 import wdioPlugin from 'eslint-plugin-wdio'
 import prettierPlugin from 'eslint-plugin-prettier'
 import prettierConfig from 'eslint-config-prettier'
+import tsParser from '@typescript-eslint/parser'
+import tsPlugin from '@typescript-eslint/eslint-plugin'
 import globals from 'globals'
 
 export default [
@@ -44,6 +46,20 @@ export default [
     rules: {
       'prettier/prettier': 'error',
       'no-console': 'error'
+    }
+  },
+  {
+    files: ['**/*.ts'],
+    plugins: { '@typescript-eslint': tsPlugin },
+    languageOptions: {
+      parser: tsParser
+    },
+    rules: {
+      ...tsPlugin.configs.recommended.rules,
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
+      ]
     }
   },
   prettierConfig

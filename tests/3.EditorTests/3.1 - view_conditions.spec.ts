@@ -33,9 +33,8 @@ const test = base.extend<{
 })
 
 test('3.1.1 - Conditions Manager should display no conditions', async ({
-  page,
   formSetup
-}, testInfo) => {
+}) => {
   const { formPage, pageOverview } = formSetup
   const successBanner = await formPage.successBannerIsDisplayed()
   await expect(successBanner).toBeVisible()

@@ -10,11 +10,11 @@ test('1.6.1 - should navigate to terms and conditions page and agree', async ({
   // Create a form
   const formPage = new FormPage(page)
   await formPage.goTo()
-  const form_name =
+  const formName =
     'Automated test - Playwright form ' +
     Math.random().toString().substring(0, 10)
 
-  await formPage.enterFormName(form_name)
+  await formPage.enterFormName(formName)
   await formPage.selectRadioOption('Environment Agency')
   await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
 
@@ -48,11 +48,11 @@ test('1.6.2 - should show validation error when checkbox is not checked', async 
   // Create a form
   const formPage = new FormPage(page)
   await formPage.goTo()
-  const form_name =
+  const formName =
     'Automated test - Playwright form ' +
     Math.random().toString().substring(0, 10)
 
-  await formPage.enterFormName(form_name)
+  await formPage.enterFormName(formName)
   await formPage.selectRadioOption('Environment Agency')
   await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
 
@@ -77,11 +77,11 @@ test('1.6.3 - should cancel and return to form overview', async ({ page }) => {
   // Create a form
   const formPage = new FormPage(page)
   await formPage.goTo()
-  const form_name =
+  const formName =
     'Automated test - Playwright form ' +
     Math.random().toString().substring(0, 10)
 
-  await formPage.enterFormName(form_name)
+  await formPage.enterFormName(formName)
   await formPage.selectRadioOption('Environment Agency')
   await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
 
@@ -108,11 +108,11 @@ test('1.6.4 - should require terms and conditions before publishing a new form',
   // Create a form with all required metadata
   const formPage = new FormPage(page)
   await formPage.goTo()
-  const form_name =
+  const formName =
     'Automated test - Playwright form ' +
     Math.random().toString().substring(0, 10)
 
-  await formPage.enterFormName(form_name)
+  await formPage.enterFormName(formName)
   await formPage.selectRadioOption('Environment Agency')
   await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
 

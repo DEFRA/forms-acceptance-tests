@@ -56,14 +56,19 @@ async function createAndPublishForm(
   await page.getByRole('button', { name: 'Save and continue' }).click()
 
   // Return to form overview
-  await page.getByRole('navigation').getByRole('link', { name: 'Overview' }).click()
+  await page
+    .getByRole('navigation')
+    .getByRole('link', { name: 'Overview' })
+    .click()
   await page.waitForURL('**/library/**')
 
   // Fill required fields for publishing
   await page
     .getByRole('link', { name: 'Enter email address for support', exact: true })
     .click()
-  await page.getByRole('textbox', { name: 'Email address' }).fill('support@defra.gov.uk')
+  await page
+    .getByRole('textbox', { name: 'Email address' })
+    .fill('support@defra.gov.uk')
   await page
     .getByRole('textbox', { name: 'Response time' })
     .fill('We aim to respond within 2 working days')
@@ -164,40 +169,38 @@ test.describe.serial('1.10 - Published form (live only, no draft)', () => {
   let formSlug: string
   let liveFormUrl: string
 
-  test(
-    '1.10.1 - responses page should load for a live-only form',
-    async ({ page }) => {
-      test.setTimeout(120_000)
+  test('1.10.1 - responses page should load for a live-only form', async ({
+    page
+  }) => {
+    test.setTimeout(120_000)
 
-      const result = await createAndPublishForm(page)
-      formSlug = result.slug
-      liveFormUrl = result.liveFormUrl
+    const result = await createAndPublishForm(page)
+    formSlug = result.slug
+    liveFormUrl = result.liveFormUrl
 
-      const response = await page.goto(`/library/${formSlug}/editor-v2/responses`)
-      expect(response?.status()).not.toBe(404)
-      const heading = page.getByRole('heading', { level: 1 })
-      await expect(heading).toBeVisible()
-      await expect(heading).not.toHaveText(/page not found/i)
-    }
-  )
+    const response = await page.goto(`/library/${formSlug}/editor-v2/responses`)
+    expect(response?.status()).not.toBe(404)
+    const heading = page.getByRole('heading', { level: 1 })
+    await expect(heading).toBeVisible()
+    await expect(heading).not.toHaveText(/page not found/i)
+  })
 
-  test(
-    '1.10.2 - Privacy footer link should load in the runner for a live-only form',
-    async ({ page }) => {
-      await page.goto(liveFormUrl)
+  test('1.10.2 - Privacy footer link should load in the runner for a live-only form', async ({
+    page
+  }) => {
+    await page.goto(liveFormUrl)
 
-      // The Privacy link is in the footer on all runner pages; clicking it on a
-      // live-only form (no draft) previously caused a server error due to Runner attempting
-      // to obtain the draft form definition.
-      const [response] = await Promise.all([
-        page.waitForResponse((resp) => resp.url().includes('/privacy')),
-        page.getByRole('link', { name: 'Privacy' }).click()
-      ])
+    // The Privacy link is in the footer on all runner pages; clicking it on a
+    // live-only form (no draft) previously caused a server error due to Runner attempting
+    // to obtain the draft form definition.
+    const [response] = await Promise.all([
+      page.waitForResponse((resp) => resp.url().includes('/privacy')),
+      page.getByRole('link', { name: 'Privacy' }).click()
+    ])
 
-      expect(response?.status()).not.toBe(404)
-      const heading = page.getByRole('heading', { level: 1 })
-      await expect(heading).toBeVisible()
-      await expect(heading).not.toHaveText(/page not found/i)
-    }
-  )
+    expect(response?.status()).not.toBe(404)
+    const heading = page.getByRole('heading', { level: 1 })
+    await expect(heading).toBeVisible()
+    await expect(heading).not.toHaveText(/page not found/i)
+  })
 })

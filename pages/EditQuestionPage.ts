@@ -35,7 +35,9 @@ export class EditQuestionPage {
     this.page = page
 
     // Initialize locators using ARIA attributes
-    this.pageHeading = page.getByRole('heading', { name: /Edit page \d+: question \d+/ })
+    this.pageHeading = page.getByRole('heading', {
+      name: /Edit page \d+: question \d+/
+    })
     this.questionInput = page.getByRole('textbox', { name: 'Question' })
     this.hintTextInput = page.getByLabel('Hint text (optional)')
     this.optionalCheckbox = page.getByLabel('Make this question optional')
@@ -139,6 +141,12 @@ export class EditQuestionPage {
       .locator('li.app-reorderable-list__item .option-label-display')
       .allTextContents()
     return listItems.map((item) => item.trim())
+  }
+
+  async addAutoCompleteOptions(options: string[]): Promise<void> {
+    // Autocomplete questions use a single textarea where each option is on its
+    // own line, rather than the "Add list item" repeater used by other lists.
+    await this.page.locator('#autoCompleteOptions').fill(options.join('\n'))
   }
 
   async addListItems(items: string[]): Promise<void> {

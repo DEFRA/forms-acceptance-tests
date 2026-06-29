@@ -17,10 +17,10 @@ const test = baseTest.extend<MyFixtures>({
   formPage: async ({ page }, use) => {
     const formPage = new FormPage(page)
     await formPage.goTo()
-    const form_name =
+    const formName =
       'Automated test - Playwright form ' +
       Math.random().toString().substring(0, 10)
-    await formPage.enterFormName(form_name)
+    await formPage.enterFormName(formName)
     await formPage.selectRadioOption('Environment Agency')
     await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
 
