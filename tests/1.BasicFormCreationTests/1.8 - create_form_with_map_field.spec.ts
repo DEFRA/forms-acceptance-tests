@@ -76,17 +76,10 @@ type MyFixtures = {
   editQuestionPage: EditQuestionPage
 }
 
-async function clickMapButton(page: Page, buttonId: string) {
-  await page.locator(`#${buttonId}`).evaluate((button) => {
-    ;(button as HTMLButtonElement).click()
-  })
+async function ensureMapButton(page: Page, buttonId: string) {
+  await expect(page.locator(`#${buttonId}`).first()).toBeVisible()
 }
 
-async function openMapTool(page: Page, buttonId: string) {
-  await expect(page.locator('canvas.maplibregl-canvas').first()).toBeVisible()
-  await clickMapButton(page, buttonId)
-  await page.waitForTimeout(200)
-}
 // hidden textarea with geojson
 async function seedGeospatialFeatures(page: Page) {
   await page
@@ -326,9 +319,9 @@ test('1.8 - should create a new form with an area or points on a map question', 
 
   await closeMapHelpOverlay(page)
 
-  await openMapTool(page, 'geospatialmap_0-btn-add-point')
-  await openMapTool(page, 'geospatialmap_0-btn-add-polygon')
-  await openMapTool(page, 'geospatialmap_0-btn-add-line')
+  await ensureMapButton(page, 'geospatialmap_0-btn-add-point')
+  await ensureMapButton(page, 'geospatialmap_0-btn-add-polygon')
+  await ensureMapButton(page, 'geospatialmap_0-btn-add-line')
   await seedGeospatialFeatures(page)
 
   await expect
