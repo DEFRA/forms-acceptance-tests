@@ -12,7 +12,7 @@ export class UploadPage {
     this.page = page
     this.mainHeading = page.getByRole('heading', { name: /Upload a form/i })
     this.downloadCopyLink = page.getByRole('link', { name: 'download a copy' })
-    this.fileInput = page.locator('input[type="file"][id="formDefinition"]')
+    this.fileInput = page.locator('[name="file"]')
     this.uploadButton = page.getByRole('button', { name: 'Upload form' })
     this.cancelButton = page.getByRole('button', { name: 'Cancel' })
   }
@@ -22,8 +22,12 @@ export class UploadPage {
   }
 
   async uploadFormFile(filePath: string) {
+    await this.fileInput.evaluate(
+      `element => element.style.setProperty('display', 'block')`
+    )
     await this.fileInput.setInputFiles(filePath)
-    await this.uploadButton.click()
+    await this.page.getByText('1 file uploaded', { exact: true }).isVisible()
+    await this.page.waitForTimeout(1000)
   }
 
   async clickCancel() {

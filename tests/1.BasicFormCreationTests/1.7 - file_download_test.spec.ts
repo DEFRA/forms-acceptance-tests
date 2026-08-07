@@ -188,9 +188,10 @@ async function startFormIfRequired(page: Page) {
 }
 
 async function setSupportingEvidenceFile(page: Page) {
-  const fileInput = page.locator('form input[type="file"]').first()
-
-  await expect(fileInput).toBeAttached()
+  const fileInput = page.locator('form [name="file"]').first()
+  await fileInput.evaluate(
+    `element => element.style.setProperty('display', 'block')`
+  )
   await fileInput.setInputFiles(uploadFixturePath)
   await expect
     .poll(
@@ -246,19 +247,17 @@ async function waitForSupportingEvidenceUpload(
       }
     )
     .toBe(true)
-
+  await page.waitForTimeout(1000)
   return uploadResult
 }
 
 async function uploadSupportingEvidence(page: Page) {
   await setSupportingEvidenceFile(page)
-  await page.getByRole('button', { name: 'Upload file' }).click()
 
   let uploadResult = await waitForSupportingEvidenceUpload(page)
 
   if (uploadResult === 'missing-file') {
     await setSupportingEvidenceFile(page)
-    await page.getByRole('button', { name: 'Upload file' }).click()
     uploadResult = await waitForSupportingEvidenceUpload(page)
   }
 
