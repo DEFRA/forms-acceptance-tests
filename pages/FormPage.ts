@@ -66,7 +66,7 @@ export class FormPage {
     this.shortAnswerRadio = page.getByRole('radio', {
       name: 'Short answer (a single line)'
     })
-    this.questionInput = page.locator('#question')
+    this.questionInput = page.getByRole('textbox', { name: 'Question' })
     this.shortDescriptionInput = page.getByRole('textbox', {
       name: 'Short description'
     })
@@ -258,6 +258,7 @@ export class FormPage {
   }
 
   async createWrittenAnswer(question: string, description: string) {
+    await this.questionInput.waitFor({ state: 'visible', timeout: 15000 })
     await this.questionInput.fill(question)
     await this.shortDescriptionInput.fill(description)
     await this.saveAndContinueButton.click()

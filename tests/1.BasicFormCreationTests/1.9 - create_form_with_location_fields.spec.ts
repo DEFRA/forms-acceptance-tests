@@ -94,6 +94,42 @@ test('1.2.9.1 - should create a new form with Easting and Northing field', async
   await expect(editQuestionPage.giveInstructionsCheckbox).toBeChecked()
 })
 
+test('1.2.9.1a - should persist Sites of Special Scientific Interest for Easting and Northing', async ({
+  formPage,
+  selectPageTypePage,
+  selectQuestionTypePage,
+  pageOverview,
+  editQuestionPage
+}) => {
+  await formPage.addNewPageButton.click()
+
+  await selectPageTypePage.choosePageType('question')
+
+  await selectQuestionTypePage.selectQuestionType('location')
+  await selectQuestionTypePage.selectSubtype('eastingNorthing')
+  await selectQuestionTypePage.clickSaveAndContinue()
+
+  await formPage.createWrittenAnswer(
+    'Enter the SSSI location',
+    'easting-northing-sssi'
+  )
+
+  await pageOverview.verifySuccessBanner('Changes saved successfully')
+  await pageOverview.verifyPageHeading('Page 1 overview')
+
+  await pageOverview.clickChangeLinkForQuestionByName('Enter the SSSI location')
+  await editQuestionPage.expandAdditionalSettings()
+  await expect(editQuestionPage.sssiCheckbox).toBeVisible()
+  await editQuestionPage.setSssiCheckbox(true)
+  await editQuestionPage.clickSaveAndContinue()
+
+  await pageOverview.verifySuccessBanner('Changes saved successfully')
+
+  await pageOverview.clickChangeLinkForQuestionByName('Enter the SSSI location')
+  await editQuestionPage.expandAdditionalSettings()
+  await editQuestionPage.expectSssiCheckboxChecked(true)
+})
+
 test('1.2.9.2 - should create a new form with Latitude and Longitude field', async ({
   formPage,
   selectPageTypePage,
@@ -176,6 +212,48 @@ test('1.2.9.3 - should create a new form with OS Grid Reference field', async ({
   )
   await expect(editQuestionPage.optionalCheckbox).toBeChecked()
   await expect(editQuestionPage.giveInstructionsCheckbox).toBeChecked()
+})
+
+// Regression coverage for a known bug: the SSSI setting should persist for OS Grid Reference questions.
+// This test is expected to fail until the bug is fixed.
+test('1.2.9.3a - should persist Sites of Special Scientific Interest for OS Grid Reference', async ({
+  formPage,
+  selectPageTypePage,
+  selectQuestionTypePage,
+  pageOverview,
+  editQuestionPage
+}) => {
+  await formPage.addNewPageButton.click()
+
+  await selectPageTypePage.choosePageType('question')
+
+  await selectQuestionTypePage.selectQuestionType('location')
+  await selectQuestionTypePage.selectSubtype('osGridReference')
+  await selectQuestionTypePage.clickSaveAndContinue()
+
+  await formPage.createWrittenAnswer(
+    'Enter the SSSI OS grid reference',
+    'os-grid-ref-sssi'
+  )
+
+  await pageOverview.verifySuccessBanner('Changes saved successfully')
+  await pageOverview.verifyPageHeading('Page 1 overview')
+
+  await pageOverview.clickChangeLinkForQuestionByName(
+    'Enter the SSSI OS grid reference'
+  )
+  await editQuestionPage.expandAdditionalSettings()
+  await expect(editQuestionPage.sssiCheckbox).toBeVisible()
+  await editQuestionPage.setSssiCheckbox(true)
+  await editQuestionPage.clickSaveAndContinue()
+
+  await pageOverview.verifySuccessBanner('Changes saved successfully')
+
+  await pageOverview.clickChangeLinkForQuestionByName(
+    'Enter the SSSI OS grid reference'
+  )
+  await editQuestionPage.expandAdditionalSettings()
+  await editQuestionPage.expectSssiCheckboxChecked(true)
 })
 
 test('1.2.9.4 - should create a new form with National Grid field number', async ({

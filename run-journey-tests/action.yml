@@ -8,7 +8,7 @@ inputs:
     default: ''
 
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - uses: actions/checkout@v4
       with:
@@ -18,22 +18,22 @@ runs:
     - name: Start environment
       shell: bash
       run: |
-          cd forms-development-tools/test-harness
-          # Create .env file if it doesn't exist
-          if [ ! -f .env ]; then
-            echo "Creating missing .env file"
-            touch .env
-          fi
-          # Create secrets.env file if it doesn't exist
-          if [ ! -f secrets.env ]; then
-            echo "Creating missing secrets.env file"
-            touch secrets.env
-          fi
-          RUN_PARAM=""
-          if [ "${{ inputs.formsDesignerCommitHash }}" != "" ]; then
-            RUN_PARAM="exclude=forms-designer"
-          fi
-          ./run-harness.sh $RUN_PARAM
+        cd forms-development-tools/test-harness
+        # Create .env file if it doesn't exist
+        if [ ! -f .env ]; then
+          echo "Creating missing .env file"
+          touch .env
+        fi
+        # Create secrets.env file if it doesn't exist
+        if [ ! -f secrets.env ]; then
+          echo "Creating missing secrets.env file"
+          touch secrets.env
+        fi
+        RUN_PARAM=""
+        if [ "${{ inputs.formsDesignerCommitHash }}" != "" ]; then
+          RUN_PARAM="exclude=forms-designer"
+        fi
+        ./run-harness.sh $RUN_PARAM
 
     - uses: actions/checkout@v4
       if: ${{ inputs.formsDesignerCommitHash }}
@@ -57,7 +57,7 @@ runs:
     - name: Wait for designer to start serving requests
       if: ${{ inputs.formsDesignerCommitHash }}
       shell: bash
-      run : |
+      run: |
         until curl --output /dev/null --silent --head --fail http://localhost:3000; do
           printf '.'
           sleep 5
@@ -68,7 +68,6 @@ runs:
         repository: DEFRA/forms-acceptance-tests
         ref: ${{ github.ref }}
         path: 'forms-acceptance-tests'
-
 
     - name: Setup the tests
       shell: bash

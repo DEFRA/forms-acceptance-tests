@@ -4,9 +4,9 @@ export default defineConfig({
   globalSetup: require.resolve('./global-setup'),
   globalTeardown: require.resolve('./global-teardown'),
 
-  timeout: 30000,
+  timeout: 15000,
   expect: {
-    timeout: 15000
+    timeout: 5000
   },
   workers: process.env.CI ? 1 : undefined,
 

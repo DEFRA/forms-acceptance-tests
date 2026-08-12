@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test'
+import { Page, Locator, expect } from '@playwright/test'
 
 export class EditQuestionPage {
   readonly page: Page
@@ -9,6 +9,7 @@ export class EditQuestionPage {
   readonly hintTextInput: Locator
   readonly optionalCheckbox: Locator
   readonly giveInstructionsCheckbox: Locator
+  readonly sssiCheckbox: Locator
   readonly shortDescriptionInput: Locator
   readonly declarationTextInput: Locator
   readonly minLengthInput: Locator
@@ -44,6 +45,7 @@ export class EditQuestionPage {
     this.giveInstructionsCheckbox = page.getByLabel(
       'Give instructions to help users answer this question'
     )
+    this.sssiCheckbox = page.getByLabel('Sites of Special Scientific Interest')
     this.shortDescriptionInput = page.getByLabel('Short description')
     this.declarationTextInput = page.getByLabel('Declaration text')
     this.minLengthInput = page.getByLabel('Minimum character length (optional)')
@@ -104,6 +106,26 @@ export class EditQuestionPage {
     } else {
       await this.giveInstructionsCheckbox.uncheck()
     }
+  }
+
+  async setSssiCheckbox(isChecked: boolean) {
+    if (isChecked) {
+      await this.sssiCheckbox.check()
+    } else {
+      await this.sssiCheckbox.uncheck()
+    }
+  }
+
+  async expectSssiCheckboxChecked(isChecked: boolean) {
+    if (isChecked) {
+      await expect(this.sssiCheckbox).toBeChecked()
+    } else {
+      await expect(this.sssiCheckbox).not.toBeChecked()
+    }
+  }
+
+  async expandAdditionalSettings() {
+    await this.page.getByText('Additional settings (optional)').click()
   }
 
   async setAnswerLimits(minLength: string, maxLength: string, regex: string) {

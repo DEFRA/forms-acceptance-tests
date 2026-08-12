@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       formsDesignerCommitHash:
-        description: 'forms-designer commit hash (optional)'     
+        description: 'forms-designer commit hash (optional)'
         required: false
         type: string
   workflow_call:
