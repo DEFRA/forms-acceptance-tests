@@ -66,7 +66,7 @@ export class FormPage {
     this.shortAnswerRadio = page.getByRole('radio', {
       name: 'Short answer (a single line)'
     })
-    this.questionInput = page.getByRole('textbox', { name: 'Question' })
+    this.questionInput = page.locator('input#question')
     this.shortDescriptionInput = page.getByRole('textbox', {
       name: 'Short description'
     })

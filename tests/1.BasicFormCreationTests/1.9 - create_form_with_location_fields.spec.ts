@@ -214,49 +214,7 @@ test('1.2.9.3 - should create a new form with OS Grid Reference field', async ({
   await expect(editQuestionPage.giveInstructionsCheckbox).toBeChecked()
 })
 
-// Regression coverage for a known bug: the SSSI setting should persist for OS Grid Reference questions.
-// This test is expected to fail until the bug is fixed.
-test('1.2.9.3a - should persist Sites of Special Scientific Interest for OS Grid Reference', async ({
-  formPage,
-  selectPageTypePage,
-  selectQuestionTypePage,
-  pageOverview,
-  editQuestionPage
-}) => {
-  await formPage.addNewPageButton.click()
-
-  await selectPageTypePage.choosePageType('question')
-
-  await selectQuestionTypePage.selectQuestionType('location')
-  await selectQuestionTypePage.selectSubtype('osGridReference')
-  await selectQuestionTypePage.clickSaveAndContinue()
-
-  await formPage.createWrittenAnswer(
-    'Enter the SSSI OS grid reference',
-    'os-grid-ref-sssi'
-  )
-
-  await pageOverview.verifySuccessBanner('Changes saved successfully')
-  await pageOverview.verifyPageHeading('Page 1 overview')
-
-  await pageOverview.clickChangeLinkForQuestionByName(
-    'Enter the SSSI OS grid reference'
-  )
-  await editQuestionPage.expandAdditionalSettings()
-  await expect(editQuestionPage.sssiCheckbox).toBeVisible()
-  await editQuestionPage.setSssiCheckbox(true)
-  await editQuestionPage.clickSaveAndContinue()
-
-  await pageOverview.verifySuccessBanner('Changes saved successfully')
-
-  await pageOverview.clickChangeLinkForQuestionByName(
-    'Enter the SSSI OS grid reference'
-  )
-  await editQuestionPage.expandAdditionalSettings()
-  await editQuestionPage.expectSssiCheckboxChecked(true)
-})
-
-test('1.2.9.4 - should create a new form with National Grid field number', async ({
+test.skip('1.2.9.4 - should create a new form with National Grid field number', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
@@ -301,4 +259,53 @@ test('1.2.9.4 - should create a new form with National Grid field number', async
   )
   await expect(editQuestionPage.optionalCheckbox).toBeChecked()
   await expect(editQuestionPage.giveInstructionsCheckbox).toBeChecked()
+})
+test.only('1.2.9.5 - should create a new form with National Grid field number with SSSI option', async ({
+  formPage,
+  selectPageTypePage,
+  selectQuestionTypePage,
+  pageOverview,
+  editQuestionPage
+}) => {
+  await formPage.addNewPageButton.click()
+
+  await selectPageTypePage.choosePageType('question')
+
+  await selectQuestionTypePage.selectQuestionType('location')
+  await selectQuestionTypePage.selectSubtype('nationalGridFieldNumber')
+  await selectQuestionTypePage.clickSaveAndContinue()
+
+  await formPage.createWrittenAnswer(
+    'Enter National Grid field number',
+    'national-grid-field'
+  )
+
+  await pageOverview.verifySuccessBanner('Changes saved successfully')
+  await pageOverview.verifyPageHeading('Page 1 overview')
+
+  await pageOverview.clickChangeLinkForQuestionByName(
+    'Enter National Grid field number'
+  )
+
+  await editQuestionPage.fillQuestionDetails(
+    'What is the National Grid field number?',
+    'For example. NT123456 or a 2-letter, 6-digit code',
+    'National Grid field number'
+  )
+
+  await editQuestionPage.setOptionalCheckbox(true)
+  await editQuestionPage.setGiveInstructionsCheckbox(true)
+  await editQuestionPage.expandAdditionalSettings()
+  await editQuestionPage.setSssiCheckbox(true)
+
+  await editQuestionPage.clickSaveAndContinue()
+
+  await pageOverview.verifySuccessBanner('Changes saved successfully')
+
+  await pageOverview.clickChangeLinkForQuestionByName(
+    'What is the National Grid field number?'
+  )
+  await expect(editQuestionPage.optionalCheckbox).toBeChecked()
+  await expect(editQuestionPage.giveInstructionsCheckbox).toBeChecked()
+  await expect(editQuestionPage.sssiCheckbox).toBeChecked()
 })

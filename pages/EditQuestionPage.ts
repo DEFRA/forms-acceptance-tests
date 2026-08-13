@@ -39,7 +39,7 @@ export class EditQuestionPage {
     this.pageHeading = page.getByRole('heading', {
       name: /Edit page \d+: question \d+/
     })
-    this.questionInput = page.getByRole('textbox', { name: 'Question' })
+    this.questionInput = page.locator('input#question')
     this.hintTextInput = page.getByLabel('Hint text (optional)')
     this.optionalCheckbox = page.getByLabel('Make this question optional')
     this.giveInstructionsCheckbox = page.getByLabel(
@@ -109,6 +109,15 @@ export class EditQuestionPage {
   }
 
   async setSssiCheckbox(isChecked: boolean) {
+    // Ensure the Additional settings section is expanded so the SSSI checkbox is visible
+    if (!(await this.sssiCheckbox.isVisible())) {
+      await this.expandAdditionalSettings()
+      await this.sssiCheckbox.waitFor({ state: 'visible', timeout: 5000 })
+    }
+
+    // Wait for the checkbox to be attached and enabled before interacting
+    await this.sssiCheckbox.waitFor({ state: 'attached', timeout: 5000 })
+
     if (isChecked) {
       await this.sssiCheckbox.check()
     } else {
