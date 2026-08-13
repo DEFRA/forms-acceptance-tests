@@ -78,7 +78,6 @@ export class EditQuestionPage {
     this.doneLink = page.getByRole('link', { name: 'Done' })
     this.pagePreviewLabel = page.getByLabel('Page preview')
     this.questionText = page.getByText('Question')
-    // this.questionText = page.getByText('Question')
   }
 
   async getPageHeadingText(): Promise<string> {

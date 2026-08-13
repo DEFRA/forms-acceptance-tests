@@ -213,7 +213,7 @@ test('1.2.9.3 - should create a new form with OS Grid Reference field', async ({
   await expect(editQuestionPage.giveInstructionsCheckbox).toBeChecked()
 })
 
-test.skip('1.2.9.4 - should create a new form with National Grid field number', async ({
+test('1.2.9.4 - should create a new form with National Grid field number', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
