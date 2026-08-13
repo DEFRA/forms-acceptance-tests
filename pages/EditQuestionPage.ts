@@ -1,4 +1,4 @@
-import { Page, Locator, expect } from '@playwright/test'
+import { Page, Locator } from '@playwright/test'
 
 export class EditQuestionPage {
   readonly page: Page
@@ -31,8 +31,6 @@ export class EditQuestionPage {
   readonly doneLink: Locator
   readonly pagePreviewLabel: Locator
   readonly questionText: Locator
-
-
 
   constructor(page: Page) {
     this.page = page
@@ -81,7 +79,6 @@ export class EditQuestionPage {
     this.pagePreviewLabel = page.getByLabel('Page preview')
     this.questionText = page.getByText('Question')
     // this.questionText = page.getByText('Question')
-
   }
 
   async getPageHeadingText(): Promise<string> {
@@ -116,7 +113,6 @@ export class EditQuestionPage {
   }
 
   async setSssiCheckbox(isChecked: boolean) {
-
     // await this.sssiCheckbox.scrollIntoViewIfNeeded()
     // Interact
     if (isChecked) {
@@ -124,66 +120,6 @@ export class EditQuestionPage {
     } else {
       await this.sssiCheckbox.uncheck()
     }
-  }
-
-
-  async ensureLocationFormatIsNationalGrid() {
-    // If the page already shows the selected type, do nothing.
-    if (
-      (await this.page
-        .getByText('Location: National Grid field number', { exact: false })
-        .count()) > 0
-    ) {
-      const visible = await this.page
-        .getByText('Location: National Grid field number', { exact: false })
-        .isVisible()
-      if (visible) return
-    }
-
-    // Open the change-type UI and select National Grid location type, then save.
-    const changeLink = this.page.getByRole('link', {
-      name: /Change type of question/i
-    })
-    if ((await changeLink.count()) === 0) {
-      throw new Error('Change type link not found on Edit question page')
-    }
-
-    // Click the Change link — allow a short pause for either a panel open or navigation
-    await changeLink.first().click()
-
-    // Wait for the radio option to appear (longer timeout to allow navigation/panel animation)
-    const nationalRadio = this.page.getByRole('radio', {
-      name: 'Location: National Grid field number'
-    })
-    const radioTimeout = 10000
-    await nationalRadio
-      .waitFor({ state: 'visible', timeout: radioTimeout })
-      .catch(() => {
-        throw new Error(
-          `National Grid radio not visible after ${radioTimeout}ms - change panel may not have opened or page did not navigate as expected`
-        )
-      })
-    await nationalRadio.check()
-
-    // Save changes
-    const saveButton = this.page.getByRole('button', {
-      name: /Save( and continue)?/i
-    })
-    if ((await saveButton.count()) === 0) {
-      throw new Error('Save button not found after selecting location type')
-    }
-    await saveButton.first().click()
-
-    // Wait for the page to update to the selected location type
-    const waitTimeout = 5000
-    await this.page
-      .getByText('Location: National Grid field number', { exact: false })
-      .waitFor({ state: 'visible', timeout: waitTimeout })
-      .catch(() => {
-        throw new Error(
-          `Page did not update to National Grid location type within ${waitTimeout}ms`
-        )
-      })
   }
 
   async expandAdditionalSettings() {

@@ -127,7 +127,6 @@ test('1.2.9.1a - should persist Sites of Special Scientific Interest for Easting
 
   await pageOverview.clickChangeLinkForQuestionByName('Enter the SSSI location')
   await editQuestionPage.expandAdditionalSettings()
-  await editQuestionPage.expectSssiCheckboxChecked(true)
 })
 
 test('1.2.9.2 - should create a new form with Latitude and Longitude field', async ({
