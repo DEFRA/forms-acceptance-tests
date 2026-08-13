@@ -177,6 +177,18 @@ export class EditQuestionPage {
   }
 
   async ensureLocationFormatIsNationalGrid() {
+    // If the page already shows the selected type, do nothing.
+    if (
+      (await this.page
+        .getByText('Location: National Grid field number', { exact: false })
+        .count()) > 0
+    ) {
+      const visible = await this.page
+        .getByText('Location: National Grid field number', { exact: false })
+        .isVisible()
+      if (visible) return
+    }
+
     // Open the change-type UI and select National Grid location type, then save.
     const changeLink = this.page.getByRole('link', {
       name: /Change type of question/i
@@ -184,18 +196,20 @@ export class EditQuestionPage {
     if ((await changeLink.count()) === 0) {
       throw new Error('Change type link not found on Edit question page')
     }
+
+    // Click the Change link — allow a short pause for either a panel open or navigation
     await changeLink.first().click()
 
-    // Wait for the radio option to appear
+    // Wait for the radio option to appear (longer timeout to allow navigation/panel animation)
     const nationalRadio = this.page.getByRole('radio', {
       name: 'Location: National Grid field number'
     })
-    const radioTimeout = 5000
+    const radioTimeout = 10000
     await nationalRadio
       .waitFor({ state: 'visible', timeout: radioTimeout })
       .catch(() => {
         throw new Error(
-          `National Grid radio not visible after ${radioTimeout}ms - change panel may not have opened`
+          `National Grid radio not visible after ${radioTimeout}ms - change panel may not have opened or page did not navigate as expected`
         )
       })
     await nationalRadio.check()
