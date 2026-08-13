@@ -295,6 +295,8 @@ test.only('1.2.9.5 - should create a new form with National Grid field number wi
 
   await editQuestionPage.setOptionalCheckbox(true)
   await editQuestionPage.setGiveInstructionsCheckbox(true)
+  // Ensure the location format is set so the SSSI option is rendered
+  await editQuestionPage.ensureLocationFormatIsNationalGrid()
   await editQuestionPage.expandAdditionalSettings()
   await editQuestionPage.setSssiCheckbox(true)
 

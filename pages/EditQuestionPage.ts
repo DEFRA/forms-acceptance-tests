@@ -176,6 +176,51 @@ export class EditQuestionPage {
     }
   }
 
+  async ensureLocationFormatIsNationalGrid() {
+    // Open the change-type UI and select National Grid location type, then save.
+    const changeLink = this.page.getByRole('link', {
+      name: /Change type of question/i
+    })
+    if ((await changeLink.count()) === 0) {
+      throw new Error('Change type link not found on Edit question page')
+    }
+    await changeLink.first().click()
+
+    // Wait for the radio option to appear
+    const nationalRadio = this.page.getByRole('radio', {
+      name: 'Location: National Grid field number'
+    })
+    const radioTimeout = 5000
+    await nationalRadio
+      .waitFor({ state: 'visible', timeout: radioTimeout })
+      .catch(() => {
+        throw new Error(
+          `National Grid radio not visible after ${radioTimeout}ms - change panel may not have opened`
+        )
+      })
+    await nationalRadio.check()
+
+    // Save changes
+    const saveButton = this.page.getByRole('button', {
+      name: /Save( and continue)?/i
+    })
+    if ((await saveButton.count()) === 0) {
+      throw new Error('Save button not found after selecting location type')
+    }
+    await saveButton.first().click()
+
+    // Wait for the page to update to the selected location type
+    const waitTimeout = 5000
+    await this.page
+      .getByText('Location: National Grid field number', { exact: false })
+      .waitFor({ state: 'visible', timeout: waitTimeout })
+      .catch(() => {
+        throw new Error(
+          `Page did not update to National Grid location type within ${waitTimeout}ms`
+        )
+      })
+  }
+
   async expandAdditionalSettings() {
     await this.page.getByText('Additional settings (optional)').click()
   }
