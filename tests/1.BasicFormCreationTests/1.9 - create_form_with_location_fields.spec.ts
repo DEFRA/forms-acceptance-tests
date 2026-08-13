@@ -260,7 +260,8 @@ test.skip('1.2.9.4 - should create a new form with National Grid field number', 
   await expect(editQuestionPage.optionalCheckbox).toBeChecked()
   await expect(editQuestionPage.giveInstructionsCheckbox).toBeChecked()
 })
-test.only('1.2.9.5 - should create a new form with National Grid field number with SSSI option', async ({
+
+test('1.2.9.5 - should create a new form with OS Grid Reference field with SSSI', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
@@ -272,32 +273,24 @@ test.only('1.2.9.5 - should create a new form with National Grid field number wi
   await selectPageTypePage.choosePageType('question')
 
   await selectQuestionTypePage.selectQuestionType('location')
-  await selectQuestionTypePage.selectSubtype('nationalGridFieldNumber')
+  await selectQuestionTypePage.selectSubtype('osGridReference')
   await selectQuestionTypePage.clickSaveAndContinue()
 
-  await formPage.createWrittenAnswer(
-    'Enter National Grid field number',
-    'national-grid-field'
-  )
+  await formPage.createWrittenAnswer('Enter OS grid reference', 'os-grid-ref')
 
   await pageOverview.verifySuccessBanner('Changes saved successfully')
   await pageOverview.verifyPageHeading('Page 1 overview')
 
-  await pageOverview.clickChangeLinkForQuestionByName(
-    'Enter National Grid field number'
-  )
+  await pageOverview.clickChangeLinkForQuestionByName('Enter OS grid reference')
 
   await editQuestionPage.fillQuestionDetails(
-    'What is the National Grid field number?',
-    'For example. NT123456 or a 2-letter, 6-digit code',
-    'National Grid field number'
+    'Provide the OS grid reference',
+    'For example. SK 123 456 or SK123456',
+    'OS grid reference'
   )
 
-  // await editQuestionPage.setOptionalCheckbox(true)
-  // await editQuestionPage.setGiveInstructionsCheckbox(true)
-  // // Ensure the location format is set so the SSSI option is rendered
-  // await editQuestionPage.ensureLocationFormatIsNationalGrid()
-  //await editQuestionPage.expandAdditionalSettings()
+  await editQuestionPage.setOptionalCheckbox(true)
+  await editQuestionPage.setGiveInstructionsCheckbox(true)
   await editQuestionPage.setSssiCheckbox(true)
 
   await editQuestionPage.clickSaveAndContinue()
@@ -305,9 +298,9 @@ test.only('1.2.9.5 - should create a new form with National Grid field number wi
   await pageOverview.verifySuccessBanner('Changes saved successfully')
 
   await pageOverview.clickChangeLinkForQuestionByName(
-    'What is the National Grid field number?'
+    'Provide the OS grid reference'
   )
-  // await expect(editQuestionPage.optionalCheckbox).toBeChecked()
-  // await expect(editQuestionPage.giveInstructionsCheckbox).toBeChecked()
+  await expect(editQuestionPage.optionalCheckbox).toBeChecked()
+  await expect(editQuestionPage.giveInstructionsCheckbox).toBeChecked()
   await expect(editQuestionPage.sssiCheckbox).toBeChecked()
 })

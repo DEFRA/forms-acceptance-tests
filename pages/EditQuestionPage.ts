@@ -126,13 +126,6 @@ export class EditQuestionPage {
     }
   }
 
-  async expectSssiCheckboxChecked(isChecked: boolean) {
-    if (isChecked) {
-      await expect(this.sssiCheckbox).toBeChecked()
-    } else {
-      await expect(this.sssiCheckbox).not.toBeChecked()
-    }
-  }
 
   async ensureLocationFormatIsNationalGrid() {
     // If the page already shows the selected type, do nothing.
