@@ -45,8 +45,10 @@ export class EditQuestionPage {
     this.giveInstructionsCheckbox = page.getByLabel(
       'Give instructions to help users answer this question'
     )
-    // Use stable id for SSSI checkbox to avoid preview/editor ambiguity
-    this.sssiCheckbox = page.locator('input#mapLayers')
+    // Accessible locator for SSSI checkbox (uses visible label)
+    this.sssiCheckbox = page.getByRole('checkbox', {
+      name: 'Sites of Special Scientific Interest'
+    })
     this.shortDescriptionInput = page.getByLabel('Short description')
     this.declarationTextInput = page.getByLabel('Declaration text')
     this.minLengthInput = page.getByLabel('Minimum character length (optional)')
@@ -117,8 +119,10 @@ export class EditQuestionPage {
 
     // Scope to the editor section that contains the question input to avoid preview collisions
     const editorSection = this.page.locator('section:has(input#question)')
-    // Scope to the stable input id inside the editor section
-    const sssi = editorSection.locator('input#mapLayers')
+    // Use an accessible locator scoped to the editor section to avoid preview collisions
+    const sssi = editorSection.getByRole('checkbox', {
+      name: 'Sites of Special Scientific Interest'
+    })
 
     // If the checkbox isn't visible, reveal Additional settings inside the editor section
     if (!(await sssi.isVisible())) {
