@@ -117,15 +117,13 @@ export class EditQuestionPage {
       throw new Error('Cannot manipulate SSSI checkbox: page is already closed')
     }
 
-    // Scope to the editor section that contains the question input to avoid preview collisions
-    const editorSection = this.page.locator('section:has(input#question)')
+    // Prefer the stable id for the checkbox (unique and deterministic)
+    const sssi = this.page.locator('input#mapLayers')
 
-    // Target the stable input id for SSSI inside the editor section
-    const sssi = editorSection.locator('input#mapLayers')
-
-    // If the checkbox isn't visible, reveal the Additional settings panel
+    // If not visible, try to reveal the Additional settings panel.
+    // Use the explicit affordance that the app exposes (toggle button or heading).
     if (!(await sssi.isVisible())) {
-      // Prefer a toggle/button with ARIA or fallback to the heading text
+      const editorSection = this.page.locator('section:has(input#question)')
       const toggle = editorSection.getByRole('button', {
         name: /Additional settings/i
       })
@@ -145,10 +143,22 @@ export class EditQuestionPage {
       }
     }
 
-    // Wait for attached -> visible with a short timeout (10s) so we stay within test timeout
-    await sssi.waitFor({ state: 'attached', timeout: 10000 })
+    const attachedTimeout = 10000
+    await sssi
+      .waitFor({ state: 'attached', timeout: attachedTimeout })
+      .catch(() => {
+        throw new Error(
+          `SSSI checkbox (input#mapLayers) not attached after ${attachedTimeout}ms`
+        )
+      })
     await sssi.scrollIntoViewIfNeeded()
-    await sssi.waitFor({ state: 'visible', timeout: 10000 })
+    await sssi
+      .waitFor({ state: 'visible', timeout: attachedTimeout })
+      .catch(() => {
+        throw new Error(
+          `SSSI checkbox (input#mapLayers) not visible after ${attachedTimeout}ms`
+        )
+      })
 
     // Interact
     if (isChecked) {
