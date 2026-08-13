@@ -109,19 +109,60 @@ export class EditQuestionPage {
   }
 
   async setSssiCheckbox(isChecked: boolean) {
-    // Ensure the Additional settings section is expanded so the SSSI checkbox is visible
-    if (!(await this.sssiCheckbox.isVisible())) {
-      await this.expandAdditionalSettings()
-      await this.sssiCheckbox.waitFor({ state: 'visible', timeout: 5000 })
+    // Fail fast if the page has been closed
+    if (this.page.isClosed && this.page.isClosed()) {
+      throw new Error('Cannot manipulate SSSI checkbox: page is already closed')
     }
 
-    // Wait for the checkbox to be attached and enabled before interacting
-    await this.sssiCheckbox.waitFor({ state: 'attached', timeout: 5000 })
+    // Scope to the editor section that contains the question input to avoid preview collisions
+    const editorSection = this.page.locator('section:has(input#question)')
+    const sssi = editorSection.getByLabel(
+      'Sites of Special Scientific Interest'
+    )
 
+    // If the checkbox isn't visible, reveal Additional settings inside the editor section
+    if (!(await sssi.isVisible())) {
+      // Prefer a specific toggle/button if available
+      const toggle = editorSection.getByRole('button', {
+        name: /Additional settings/i
+      })
+      if ((await toggle.count()) > 0) {
+        const expanded =
+          (await toggle.first().getAttribute('aria-expanded')) === 'true'
+        if (!expanded) await toggle.first().click()
+      } else {
+        // Fallback to clicking visible heading text
+        const heading = editorSection.getByText(
+          'Additional settings (optional)'
+        )
+        if ((await heading.count()) > 0) {
+          await heading
+            .first()
+            .click()
+            .catch(() => {
+              /* ignore if clicking heading doesn't change anything */
+            })
+        }
+      }
+    }
+
+    // Wait for the checkbox to be attached & visible (longer timeout for CI)
+    await sssi.waitFor({ state: 'attached', timeout: 30000 })
+    await sssi.scrollIntoViewIfNeeded()
+    await sssi.waitFor({ state: 'visible', timeout: 30000 })
+
+    // Ensure the checkbox exists in the scoped editor area
+    if ((await sssi.count()) === 0) {
+      throw new Error(
+        'SSSI checkbox not found in editor section after revealing Additional settings'
+      )
+    }
+
+    // Interact
     if (isChecked) {
-      await this.sssiCheckbox.check()
+      await sssi.check()
     } else {
-      await this.sssiCheckbox.uncheck()
+      await sssi.uncheck()
     }
   }
 
