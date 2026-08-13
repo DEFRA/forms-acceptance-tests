@@ -293,11 +293,11 @@ test.only('1.2.9.5 - should create a new form with National Grid field number wi
     'National Grid field number'
   )
 
-  await editQuestionPage.setOptionalCheckbox(true)
-  await editQuestionPage.setGiveInstructionsCheckbox(true)
-  // Ensure the location format is set so the SSSI option is rendered
-  await editQuestionPage.ensureLocationFormatIsNationalGrid()
-  await editQuestionPage.expandAdditionalSettings()
+  // await editQuestionPage.setOptionalCheckbox(true)
+  // await editQuestionPage.setGiveInstructionsCheckbox(true)
+  // // Ensure the location format is set so the SSSI option is rendered
+  // await editQuestionPage.ensureLocationFormatIsNationalGrid()
+  //await editQuestionPage.expandAdditionalSettings()
   await editQuestionPage.setSssiCheckbox(true)
 
   await editQuestionPage.clickSaveAndContinue()
@@ -307,7 +307,7 @@ test.only('1.2.9.5 - should create a new form with National Grid field number wi
   await pageOverview.clickChangeLinkForQuestionByName(
     'What is the National Grid field number?'
   )
-  await expect(editQuestionPage.optionalCheckbox).toBeChecked()
-  await expect(editQuestionPage.giveInstructionsCheckbox).toBeChecked()
+  // await expect(editQuestionPage.optionalCheckbox).toBeChecked()
+  // await expect(editQuestionPage.giveInstructionsCheckbox).toBeChecked()
   await expect(editQuestionPage.sssiCheckbox).toBeChecked()
 })

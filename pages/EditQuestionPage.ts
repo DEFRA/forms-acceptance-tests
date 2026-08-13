@@ -32,6 +32,8 @@ export class EditQuestionPage {
   readonly pagePreviewLabel: Locator
   readonly questionText: Locator
 
+
+
   constructor(page: Page) {
     this.page = page
 
@@ -78,6 +80,8 @@ export class EditQuestionPage {
     this.doneLink = page.getByRole('link', { name: 'Done' })
     this.pagePreviewLabel = page.getByLabel('Page preview')
     this.questionText = page.getByText('Question')
+    // this.questionText = page.getByText('Question')
+
   }
 
   async getPageHeadingText(): Promise<string> {
@@ -112,59 +116,13 @@ export class EditQuestionPage {
   }
 
   async setSssiCheckbox(isChecked: boolean) {
-    // Fail fast if the page has been closed
-    if (this.page.isClosed && this.page.isClosed()) {
-      throw new Error('Cannot manipulate SSSI checkbox: page is already closed')
-    }
 
-    // Prefer the stable id for the checkbox (unique and deterministic)
-    const sssi = this.page.locator('input#mapLayers')
-
-    // If not visible, try to reveal the Additional settings panel.
-    // Use the explicit affordance that the app exposes (toggle button or heading).
-    if (!(await sssi.isVisible())) {
-      const editorSection = this.page.locator('section:has(input#question)')
-      const toggle = editorSection.getByRole('button', {
-        name: /Additional settings/i
-      })
-      if ((await toggle.count()) > 0) {
-        const expanded =
-          (await toggle.first().getAttribute('aria-expanded')) === 'true'
-        if (!expanded) await toggle.first().click()
-      } else {
-        const heading = editorSection.getByText(
-          'Additional settings (optional)'
-        )
-        if ((await heading.count()) > 0)
-          await heading
-            .first()
-            .click()
-            .catch(() => {})
-      }
-    }
-
-    const attachedTimeout = 10000
-    await sssi
-      .waitFor({ state: 'attached', timeout: attachedTimeout })
-      .catch(() => {
-        throw new Error(
-          `SSSI checkbox (input#mapLayers) not attached after ${attachedTimeout}ms`
-        )
-      })
-    await sssi.scrollIntoViewIfNeeded()
-    await sssi
-      .waitFor({ state: 'visible', timeout: attachedTimeout })
-      .catch(() => {
-        throw new Error(
-          `SSSI checkbox (input#mapLayers) not visible after ${attachedTimeout}ms`
-        )
-      })
-
+    // await this.sssiCheckbox.scrollIntoViewIfNeeded()
     // Interact
     if (isChecked) {
-      await sssi.check()
+      await this.sssiCheckbox.check()
     } else {
-      await sssi.uncheck()
+      await this.sssiCheckbox.uncheck()
     }
   }
 
