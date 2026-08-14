@@ -6,7 +6,7 @@ export default defineConfig({
 
   timeout: 8000,
   expect: {
-  timeout: 2000
+    timeout: 2000
   },
   workers: process.env.CI ? 1 : undefined,
 
