@@ -9,6 +9,7 @@ export class EditQuestionPage {
   readonly hintTextInput: Locator
   readonly optionalCheckbox: Locator
   readonly giveInstructionsCheckbox: Locator
+  readonly sssiCheckbox: Locator
   readonly shortDescriptionInput: Locator
   readonly declarationTextInput: Locator
   readonly minLengthInput: Locator
@@ -44,6 +45,10 @@ export class EditQuestionPage {
     this.giveInstructionsCheckbox = page.getByLabel(
       'Give instructions to help users answer this question'
     )
+    // Accessible locator for SSSI checkbox (uses visible label)
+    this.sssiCheckbox = page.getByRole('checkbox', {
+      name: 'Sites of Special Scientific Interest'
+    })
     this.shortDescriptionInput = page.getByLabel('Short description')
     this.declarationTextInput = page.getByLabel('Declaration text')
     this.minLengthInput = page.getByLabel('Minimum character length (optional)')
@@ -106,6 +111,18 @@ export class EditQuestionPage {
     }
   }
 
+  async setSssiCheckbox(isChecked: boolean) {
+    if (isChecked) {
+      await this.sssiCheckbox.check()
+    } else {
+      await this.sssiCheckbox.uncheck()
+    }
+  }
+
+  async expandAdditionalSettings() {
+    await this.page.getByText('Additional settings (optional)').click()
+  }
+
   async setAnswerLimits(minLength: string, maxLength: string, regex: string) {
     await this.minLengthInput.fill(minLength)
     await this.maxLengthInput.fill(maxLength)
@@ -154,7 +171,7 @@ export class EditQuestionPage {
       await this.addItemButton.click()
 
       // Wait for the item input to be visible and interactable
-      await this.itemTextBox.waitFor({ state: 'visible', timeout: 10000 })
+      await this.itemTextBox.waitFor({ state: 'visible', timeout: 3000 })
       await this.itemTextBox.click()
       await this.itemTextBox.fill(item)
 
@@ -165,7 +182,7 @@ export class EditQuestionPage {
       await this.page.waitForTimeout(2000)
       // Wait for network to be idle to ensure the item is fully saved
       await this.page
-        .waitForLoadState('networkidle', { timeout: 5000 })
+        .waitForLoadState('networkidle', { timeout: 2000 })
         .catch(() => {
           // If networkidle times out, continue anyway
         })

@@ -355,3 +355,50 @@ test('1.8 - should create a new form with an area or points on a map question', 
     page.getByRole('heading', { name: 'Form submitted' })
   ).toBeVisible()
 })
+
+test('1.8.0 - should create and save an area or points on a map subtype question', async ({
+  page,
+  formPage,
+  selectPageTypePage,
+  selectQuestionTypePage,
+  pageOverview,
+  editQuestionPage
+}) => {
+  test.setTimeout(120_000)
+
+  const questionTitle = 'Mark the protected area on the map'
+
+  await formPage.addNewPageButton.click()
+
+  await selectPageTypePage.choosePageType('question')
+
+  await selectQuestionTypePage.selectQuestionType('location')
+  await selectQuestionTypePage.selectSubtype('areaOrPointsOnMap')
+  await selectQuestionTypePage.clickSaveAndContinue()
+
+  await expect(
+    page.getByRole('heading', { name: 'Using maps in your form' })
+  ).toBeVisible()
+
+  await formPage.createWrittenAnswer(
+    questionTitle,
+    'protected-area-map-question'
+  )
+
+  await pageOverview.verifySuccessBanner('Changes saved successfully')
+  await pageOverview.verifyPageHeading('Page 1 overview')
+
+  await pageOverview.clickChangeLinkForQuestionByName(questionTitle)
+
+  await editQuestionPage.fillQuestionDetails(
+    questionTitle,
+    'Use the map to mark the protected area or points of interest.',
+    'Protected area location'
+  )
+  await editQuestionPage.clickSaveAndContinue()
+
+  await pageOverview.verifySuccessBanner('Changes saved successfully')
+
+  await pageOverview.clickChangeLinkForQuestionByName(questionTitle)
+  await expect(editQuestionPage.questionInput).toHaveValue(questionTitle)
+})
