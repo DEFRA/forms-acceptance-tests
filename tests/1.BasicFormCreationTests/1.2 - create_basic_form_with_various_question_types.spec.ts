@@ -315,9 +315,12 @@ test('1.2.10 - should create a new form with a payment field', async ({
   // Configure the payment
   await formPage.paymentAmountInput.fill('15.75')
   await formPage.paymentDescriptionInput.fill('Licence fee payment')
-  await formPage.paymentTestApiKey.fill(
-    'api_test_cgq90r4sk7un3gp5rkqk1bmgu389dhfd30i92cpgl7i1h2b5i9lgbki02'
-  )
+  const paymentApiKey = process.env.PAYMENT_TEST_API_KEY
+  if (!paymentApiKey)
+    throw new Error(
+      'PAYMENT_TEST_API_KEY environment variable is required for payment tests'
+    )
+  await formPage.paymentTestApiKey.fill(paymentApiKey)
   await formPage.saveAndContinueButton.click()
 
   // Verify success banner

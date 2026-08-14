@@ -39,7 +39,7 @@ export class EditQuestionPage {
     this.pageHeading = page.getByRole('heading', {
       name: /Edit page \d+: question \d+/
     })
-    this.questionInput = page.locator('input#question')
+    this.questionInput = page.getByRole('textbox', { name: 'Question' })
     this.hintTextInput = page.getByLabel('Hint text (optional)')
     this.optionalCheckbox = page.getByLabel('Make this question optional')
     this.giveInstructionsCheckbox = page.getByLabel(
@@ -112,8 +112,6 @@ export class EditQuestionPage {
   }
 
   async setSssiCheckbox(isChecked: boolean) {
-    // await this.sssiCheckbox.scrollIntoViewIfNeeded()
-    // Interact
     if (isChecked) {
       await this.sssiCheckbox.check()
     } else {
@@ -173,7 +171,7 @@ export class EditQuestionPage {
       await this.addItemButton.click()
 
       // Wait for the item input to be visible and interactable
-      await this.itemTextBox.waitFor({ state: 'visible', timeout: 10000 })
+      await this.itemTextBox.waitFor({ state: 'visible', timeout: 3000 })
       await this.itemTextBox.click()
       await this.itemTextBox.fill(item)
 
@@ -184,7 +182,7 @@ export class EditQuestionPage {
       await this.page.waitForTimeout(2000)
       // Wait for network to be idle to ensure the item is fully saved
       await this.page
-        .waitForLoadState('networkidle', { timeout: 5000 })
+        .waitForLoadState('networkidle', { timeout: 2000 })
         .catch(() => {
           // If networkidle times out, continue anyway
         })

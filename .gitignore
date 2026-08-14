@@ -14,3 +14,4 @@ FAILED
 user.json
 playwright-report/
 test-results/
+.env
