@@ -45,13 +45,9 @@ export class GuidancePage {
   async setExitPage(checked: boolean) {
     await expect(this.exitPageCheckbox).toBeVisible()
     if (checked) {
-      if (!(await this.exitPageCheckbox.isChecked())) {
-        await this.exitPageCheckbox.check()
-      }
+      await this.exitPageCheckbox.check()
     } else {
-      if (await this.exitPageCheckbox.isChecked()) {
-        await this.exitPageCheckbox.uncheck()
-      }
+      await this.exitPageCheckbox.uncheck()
     }
   }
 
