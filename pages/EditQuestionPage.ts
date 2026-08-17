@@ -178,8 +178,6 @@ export class EditQuestionPage {
       // Click save and wait for the form to update
       await this.saveItemButton.click()
 
-      // Wait for the item to be saved - wait for the item text box to be cleared or add item button to be visible again
-      await this.page.waitForTimeout(2000)
       // Wait for network to be idle to ensure the item is fully saved
       await this.page
         .waitForLoadState('networkidle', { timeout: 2000 })
