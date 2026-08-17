@@ -171,26 +171,19 @@ export class EditQuestionPage {
       await this.addItemButton.click()
 
       // Wait for the item input to be visible and interactable
-      await this.itemTextBox.waitFor({ state: 'visible', timeout: 3000 })
-      await this.itemTextBox.click()
-      await this.itemTextBox.fill(item)
+      await this.itemTextBox.waitFor({ state: 'visible', timeout: 10000 })
+
+      // Use fill() directly rather than click() then fill() — fill focuses and types reliably
+      await this.itemTextBox.fill(item, { timeout: 5000 })
 
       // Click save and wait for the form to update
       await this.saveItemButton.click()
 
-      // Wait for the item to be saved - wait for the item text box to be cleared or add item button to be visible again
-      await this.page.waitForTimeout(2000)
-      // Wait for network to be idle to ensure the item is fully saved
       await this.page
-        .waitForLoadState('networkidle', { timeout: 2000 })
-        .catch(() => {
-          // If networkidle times out, continue anyway
+        .waitForLoadState('networkidle', { timeout: 5000 })
+        .catch(async () => {
+          await this.page.waitForTimeout(500)
         })
     }
   }
-
-  // async addFruitListItems() {
-  //     const fruits = ['apple', 'banana', 'grapes'];
-  //     await this.addListItems(fruits);
-  // }
 }
