@@ -102,8 +102,7 @@ test('1.12a - short answer preview shows answer-limits section and error message
   selectPageTypePage,
   selectQuestionTypePage,
   pageOverview,
-  editQuestionPage,
-  page
+  editQuestionPage
 }) => {
   // Add a new short answer question
   await formPage.addNewPageButton.click()
@@ -193,7 +192,7 @@ test('1.12b - long answer additional settings persist (min/max/regex/classes)', 
 
   // Expand additional settings and set constraints
   await editQuestionPage.expandAdditionalSettings()
-  await editQuestionPage.setAnswerLimits('50', '500', '^[A-Za-z0-9\s\.,-]+$')
+  await editQuestionPage.setAnswerLimits('50', '500', '^[A-Za-z0-9,-]+$')
   await editQuestionPage.setClasses('govuk-textarea--large')
 
   // Save and verify success
@@ -220,8 +219,7 @@ test('1.12c - long answer preview shows answer-limits section and error messages
   selectPageTypePage,
   selectQuestionTypePage,
   pageOverview,
-  editQuestionPage,
-  page
+  editQuestionPage
 }) => {
   // Add a new long answer question
   await formPage.addNewPageButton.click()
