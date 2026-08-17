@@ -144,3 +144,49 @@ test('1.11a - should allow minimum and maximum date month year values', async ({
   await expect(secondDate.getByLabel('Month')).toHaveValue('11')
   await expect(secondDate.getByLabel('Year')).toHaveValue('2024')
 })
+
+// Max days in the past / future tests
+test('1.11c - should allow maximum days in the past and maximum days in the future (optional) for day/month/year', async ({
+  formPage,
+  selectPageTypePage,
+  selectQuestionTypePage,
+  pageOverview,
+  page
+}) => {
+  await formPage.addNewPageButton.click()
+  await selectPageTypePage.choosePageType('question')
+  await selectQuestionTypePage.selectQuestionType('date')
+  await selectQuestionTypePage.selectSubtype('dateMonthYear')
+  await selectQuestionTypePage.clickSaveAndContinue()
+
+  await formPage.createWrittenAnswer('When did the event happen?', 'event date')
+  await pageOverview.verifySuccessBanner('Changes saved successfully')
+
+  await pageOverview.clickChangeLinkForQuestionByName(
+    'When did the event happen?'
+  )
+  await page.getByText('Additional settings (optional)').click()
+
+  // Use the visible labels for these fields and fill them
+  const maxPastField = page.getByLabel('Max days in the past (optional)')
+  const maxFutureField = page.getByLabel('Max days in the future (optional)')
+
+  await maxPastField.fill('30')
+  await maxFutureField.fill('60')
+
+  await page.getByRole('button', { name: 'Save and continue' }).click()
+  await pageOverview.verifySuccessBanner('Changes saved successfully')
+
+  // Re-open and verify persisted values
+  await pageOverview.clickChangeLinkForQuestionByName(
+    'When did the event happen?'
+  )
+  await page.getByText('Additional settings (optional)').click()
+
+  await expect(page.getByLabel('Max days in the past (optional)')).toHaveValue(
+    '30'
+  )
+  await expect(
+    page.getByLabel('Max days in the future (optional)')
+  ).toHaveValue('60')
+})
