@@ -387,7 +387,7 @@ test('1.2.12 - should create a new form with Checkbox field', async ({
   expect(actualListItems).toEqual(fruits)
 })
 
-test.only('1.2.13 - should create a new form with Select field', async ({
+test('1.2.13 - should create a new form with Select field', async ({
   formPage,
   pageOverview,
   selectPageTypePage,
