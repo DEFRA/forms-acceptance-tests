@@ -1,7 +1,7 @@
 import { Page, Locator, expect } from '@playwright/test'
+import { BasePage } from '~/pages/BasePage.js'
 
-export class GuidancePage {
-  readonly page: Page
+export class GuidancePage extends BasePage {
   readonly mainHeading: Locator
   readonly pageHeadingInput: Locator
   readonly pageHeadingHint: Locator
@@ -15,7 +15,7 @@ export class GuidancePage {
   readonly manageConditionsButton: Locator
 
   constructor(page: Page) {
-    this.page = page
+    super(page)
     this.mainHeading = this.getMainHeadingLocator()
     this.pageHeadingInput = page.locator('#pageHeading')
     this.pageHeadingHint = page.locator('#pageHeading-hint')
@@ -53,15 +53,6 @@ export class GuidancePage {
     } else {
       await this.exitPageCheckbox.uncheck()
     }
-  }
-
-  async waitForNetworkIdle() {
-    // Wait for network to be idle to ensure the item is fully saved
-    await this.page
-      .waitForLoadState('networkidle', { timeout: 500 })
-      .catch(() => {
-        // If networkidle times out, continue anyway
-      })
   }
 
   async save() {

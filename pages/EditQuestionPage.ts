@@ -1,8 +1,7 @@
 import { Page, Locator } from '@playwright/test'
+import { BasePage } from '~/pages/BasePage.js'
 
-export class EditQuestionPage {
-  readonly page: Page
-
+export class EditQuestionPage extends BasePage {
   // Locators for page elements
   readonly pageHeading: Locator
   readonly questionInput: Locator
@@ -33,7 +32,7 @@ export class EditQuestionPage {
   readonly questionText: Locator
 
   constructor(page: Page) {
-    this.page = page
+    super(page)
 
     // Initialize locators using ARIA attributes
     this.pageHeading = page.getByRole('heading', {
@@ -179,11 +178,7 @@ export class EditQuestionPage {
       // Click save and wait for the form to update
       await this.saveItemButton.click()
 
-      await this.page
-        .waitForLoadState('networkidle', { timeout: 5000 })
-        .catch(async () => {
-          await this.page.waitForTimeout(500)
-        })
+      await this.waitForNetworkIdle()
     }
   }
 }
