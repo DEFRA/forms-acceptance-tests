@@ -82,6 +82,12 @@ export class GuidancePage {
   }
 
   async verifyStructureAfterSaving() {
+    // Wait for network to be idle to ensure the item is fully saved
+    await this.page
+      .waitForLoadState('networkidle', { timeout: 2000 })
+      .catch(() => {
+        // If networkidle times out, continue anyway
+      })
     await expect(this.mainHeading).toBeVisible()
     await expect(this.pageHeadingInput).toBeVisible()
     await expect(this.pageHeadingHint).toBeVisible()
