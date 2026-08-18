@@ -55,6 +55,15 @@ export class GuidancePage {
     }
   }
 
+  async waitForNetworkIdle() {
+    // Wait for network to be idle to ensure the item is fully saved
+    await this.page
+      .waitForLoadState('networkidle', { timeout: 500 })
+      .catch(() => {
+        // If networkidle times out, continue anyway
+      })
+  }
+
   async save() {
     await this.saveButton.click()
   }
@@ -72,6 +81,7 @@ export class GuidancePage {
   }
 
   async verifyStructureBeforeSaving() {
+    await this.waitForNetworkIdle()
     await expect(this.getMainHeadingLocator()).toBeVisible()
     await expect(this.pageHeadingInput).toBeVisible()
     await expect(this.pageHeadingHint).toBeVisible()
@@ -86,6 +96,7 @@ export class GuidancePage {
   }
 
   async verifyStructureAfterSaving() {
+    await this.waitForNetworkIdle()
     await expect(this.getMainHeadingLocator()).toBeVisible()
     await expect(this.pageHeadingInput).toBeVisible()
     await expect(this.pageHeadingHint).toBeVisible()
