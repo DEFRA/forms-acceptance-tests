@@ -16,10 +16,7 @@ export class GuidancePage {
 
   constructor(page: Page) {
     this.page = page
-    this.mainHeading = page.getByRole('heading', {
-      level: 1,
-      name: /(Add|Edit) page \d+: guidance/
-    })
+    this.mainHeading = this.getMainHeadingLocator()
     this.pageHeadingInput = page.locator('#pageHeading')
     this.pageHeadingHint = page.locator('#pageHeading-hint')
     this.guidanceTextInput = page.locator('#guidanceText')
@@ -31,6 +28,13 @@ export class GuidancePage {
     this.deleteLink = page.getByRole('link', { name: 'Delete page' })
     this.manageConditionsButton = page.getByRole('button', {
       name: 'Manage conditions'
+    })
+  }
+
+  getMainHeadingLocator() {
+    return this.page.getByRole('heading', {
+      level: 1,
+      name: /(Add|Edit) page \d+: guidance/
     })
   }
 
@@ -51,6 +55,15 @@ export class GuidancePage {
     }
   }
 
+  async waitForNetworkIdle() {
+    // Wait for network to be idle to ensure the item is fully saved
+    await this.page
+      .waitForLoadState('networkidle', { timeout: 500 })
+      .catch(() => {
+        // If networkidle times out, continue anyway
+      })
+  }
+
   async save() {
     await this.saveButton.click()
   }
@@ -68,7 +81,8 @@ export class GuidancePage {
   }
 
   async verifyStructureBeforeSaving() {
-    await expect(this.mainHeading).toBeVisible()
+    await this.waitForNetworkIdle()
+    await expect(this.getMainHeadingLocator()).toBeVisible()
     await expect(this.pageHeadingInput).toBeVisible()
     await expect(this.pageHeadingHint).toBeVisible()
     await expect(this.guidanceTextInput).toBeVisible()
@@ -82,7 +96,8 @@ export class GuidancePage {
   }
 
   async verifyStructureAfterSaving() {
-    await expect(this.mainHeading).toBeVisible()
+    await this.waitForNetworkIdle()
+    await expect(this.getMainHeadingLocator()).toBeVisible()
     await expect(this.pageHeadingInput).toBeVisible()
     await expect(this.pageHeadingHint).toBeVisible()
     await expect(this.guidanceTextInput).toBeVisible()

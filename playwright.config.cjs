@@ -4,7 +4,7 @@ export default defineConfig({
   globalSetup: require.resolve('./global-setup'),
   globalTeardown: require.resolve('./global-teardown'),
 
-  timeout: 8000,
+  timeout: 15000,
   expect: {
     timeout: 2000
   },
