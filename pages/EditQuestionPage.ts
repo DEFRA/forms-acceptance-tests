@@ -1,8 +1,7 @@
 import { Page, Locator } from '@playwright/test'
+import { BasePage } from '~/pages/BasePage.js'
 
-export class EditQuestionPage {
-  readonly page: Page
-
+export class EditQuestionPage extends BasePage {
   // Locators for page elements
   readonly pageHeading: Locator
   readonly questionInput: Locator
@@ -33,7 +32,7 @@ export class EditQuestionPage {
   readonly questionText: Locator
 
   constructor(page: Page) {
-    this.page = page
+    super(page)
 
     // Initialize locators using ARIA attributes
     this.pageHeading = page.getByRole('heading', {
@@ -171,24 +170,15 @@ export class EditQuestionPage {
       await this.addItemButton.click()
 
       // Wait for the item input to be visible and interactable
-      await this.itemTextBox.waitFor({ state: 'visible', timeout: 3000 })
-      await this.itemTextBox.click()
-      await this.itemTextBox.fill(item)
+      await this.itemTextBox.waitFor({ state: 'visible', timeout: 10000 })
+
+      // Use fill() directly rather than click() then fill() — fill focuses and types reliably
+      await this.itemTextBox.fill(item, { timeout: 5000 })
 
       // Click save and wait for the form to update
       await this.saveItemButton.click()
 
-      // Wait for network to be idle to ensure the item is fully saved
-      await this.page
-        .waitForLoadState('networkidle', { timeout: 2000 })
-        .catch(() => {
-          // If networkidle times out, continue anyway
-        })
+      await this.waitForNetworkIdle()
     }
   }
-
-  // async addFruitListItems() {
-  //     const fruits = ['apple', 'banana', 'grapes'];
-  //     await this.addListItems(fruits);
-  // }
 }
