@@ -122,10 +122,12 @@ export class EditQuestionPage extends BasePage {
     await this.page.getByText('Additional settings (optional)').click()
   }
 
-  async setAnswerLimits(minLength: string, maxLength: string, regex: string) {
+  async setAnswerLimits(minLength: string, maxLength: string, regex?: string) {
     await this.minLengthInput.fill(minLength)
     await this.maxLengthInput.fill(maxLength)
-    await this.regexInput.fill(regex)
+    if (regex !== undefined) {
+      await this.regexInput.fill(regex)
+    }
   }
 
   async enterDeclarationText(declarationText: string) {
