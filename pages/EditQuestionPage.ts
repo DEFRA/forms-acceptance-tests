@@ -30,6 +30,12 @@ export class EditQuestionPage extends BasePage {
   readonly doneLink: Locator
   readonly pagePreviewLabel: Locator
   readonly questionText: Locator
+  readonly dateRangeHint: Locator
+  readonly firstDateFieldset: Locator
+  readonly secondDateFieldset: Locator
+  readonly maxDaysInPastInput: Locator
+  readonly maxDaysInFutureInput: Locator
+  readonly errorSummary: Locator
 
   constructor(page: Page) {
     super(page)
@@ -77,6 +83,22 @@ export class EditQuestionPage extends BasePage {
     this.doneLink = page.getByRole('link', { name: 'Done' })
     this.pagePreviewLabel = page.getByLabel('Page preview')
     this.questionText = page.getByText('Question')
+    this.dateRangeHint = page.getByText(
+      'If the date must be between two dates (optional)'
+    )
+    this.firstDateFieldset = page
+      .locator('fieldset')
+      .filter({ hasText: 'First date' })
+      .first()
+    this.secondDateFieldset = page
+      .locator('fieldset')
+      .filter({ hasText: 'Second date' })
+      .first()
+    this.maxDaysInPastInput = page.getByLabel('Max days in the past (optional)')
+    this.maxDaysInFutureInput = page.getByLabel(
+      'Max days in the future (optional)'
+    )
+    this.errorSummary = page.locator('.govuk-error-summary')
   }
 
   async getPageHeadingText(): Promise<string> {
@@ -122,10 +144,12 @@ export class EditQuestionPage extends BasePage {
     await this.page.getByText('Additional settings (optional)').click()
   }
 
-  async setAnswerLimits(minLength: string, maxLength: string, regex: string) {
+  async setAnswerLimits(minLength: string, maxLength: string, regex?: string) {
     await this.minLengthInput.fill(minLength)
     await this.maxLengthInput.fill(maxLength)
-    await this.regexInput.fill(regex)
+    if (regex !== undefined) {
+      await this.regexInput.fill(regex)
+    }
   }
 
   async enterDeclarationText(declarationText: string) {
@@ -134,6 +158,34 @@ export class EditQuestionPage extends BasePage {
 
   async setClasses(classes: string) {
     await this.classesInput.fill(classes)
+  }
+
+  async setDateFieldset(
+    fieldset: Locator,
+    parts: { day?: string; month?: string; year?: string }
+  ) {
+    if (parts.day !== undefined) {
+      await fieldset.getByLabel('Day').fill(parts.day)
+    }
+    if (parts.month !== undefined) {
+      await fieldset.getByLabel('Month').fill(parts.month)
+    }
+    if (parts.year !== undefined) {
+      await fieldset.getByLabel('Year').fill(parts.year)
+    }
+  }
+
+  async setFirstDate(parts: { day?: string; month?: string; year?: string }) {
+    await this.setDateFieldset(this.firstDateFieldset, parts)
+  }
+
+  async setSecondDate(parts: { day?: string; month?: string; year?: string }) {
+    await this.setDateFieldset(this.secondDateFieldset, parts)
+  }
+
+  async setMaxDaysLimits(maxDaysInPast: string, maxDaysInFuture: string) {
+    await this.maxDaysInPastInput.fill(maxDaysInPast)
+    await this.maxDaysInFutureInput.fill(maxDaysInFuture)
   }
 
   async clickSaveAndContinue() {
