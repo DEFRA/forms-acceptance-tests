@@ -15,6 +15,12 @@ export class EditQuestionPage extends BasePage {
   readonly maxLengthInput: Locator
   readonly regexInput: Locator
   readonly classesInput: Locator
+  readonly lowestNumber: Locator
+  readonly highestNumber: Locator
+  readonly precisionNumber: Locator
+  readonly prefixNumber: Locator
+  readonly suffixNumber: Locator
+
   readonly saveAndContinueButton: Locator
   readonly deleteQuestionLink: Locator
   readonly previewPageButton: Locator
@@ -99,6 +105,11 @@ export class EditQuestionPage extends BasePage {
       'Max days in the future (optional)'
     )
     this.errorSummary = page.locator('.govuk-error-summary')
+    this.lowestNumber = page.locator('#min')
+    this.highestNumber = page.locator('#max')
+    this.precisionNumber = page.locator('#precision')
+    this.prefixNumber = page.locator('#prefix')
+    this.suffixNumber = page.locator('#suffix')
   }
 
   async getPageHeadingText(): Promise<string> {
@@ -143,6 +154,27 @@ export class EditQuestionPage extends BasePage {
   async expandAdditionalSettings() {
     await this.page.getByText('Additional settings (optional)').click()
   }
+
+  async setLowestNumber(lowestNum?: string): Promise<void> {
+    await this.lowestNumber.fill(lowestNum);
+  }
+
+  async setHighestNumber(highestNum?: string): Promise<void> {
+    await this.highestNumber.fill(highestNum);
+  }
+
+  async setPrecision(precision?: string): Promise<void> {
+    await this.precisionNumber.fill(precision);
+  }
+
+  async setPrefix(prefix?: string): Promise<void> {
+    await this.prefixNumber.fill(prefix);
+  }
+
+  async setSuffix(suffix?: string): Promise<void> {
+    await this.suffixNumber.fill(suffix);
+  }
+
 
   async setAnswerLimits(minLength: string, maxLength: string, regex?: string) {
     await this.minLengthInput.fill(minLength)
