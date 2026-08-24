@@ -86,10 +86,10 @@ test('should assign pages to Section One and Section Two', async ({ page }) => {
 
   const previewPanel = page.locator('[role="tabpanel"]')
   await expect(previewPanel).toContainText('Section One')
-  await expect(previewPanel).toContainText('Question One')
-  await expect(previewPanel).toContainText('Question Two')
+  await expect(previewPanel).toContainText('Q1 desc')
+  await expect(previewPanel).toContainText('Q2 desc')
   await expect(previewPanel).toContainText('Section Two')
-  await expect(previewPanel).toContainText('Question Three')
+  await expect(previewPanel).toContainText('Q3 desc')
 })
 
 test('should reassign a question from Section One to Section Two', async ({
@@ -197,10 +197,10 @@ test('should reassign a question from Section One to Section Two', async ({
 
   const previewPanel = page.locator('[role="tabpanel"]')
   await expect(previewPanel).toContainText('Section One')
-  await expect(previewPanel).toContainText('Question One')
+  await expect(previewPanel).toContainText('Q1 desc')
   await expect(previewPanel).toContainText('Section Two')
-  await expect(previewPanel).toContainText('Question Two')
-  await expect(previewPanel).toContainText('Question Three')
+  await expect(previewPanel).toContainText('Q2 desc')
+  await expect(previewPanel).toContainText('Q3 desc')
 })
 
 test('should be able to reorder sections', async ({ page }) => {
