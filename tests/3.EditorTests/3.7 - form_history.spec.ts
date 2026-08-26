@@ -6,10 +6,10 @@ import {
 
 test('should show draft edit history after adding questions across edit sessions', async ({
   page
-}) => {
+}, testInfo) => {
   test.slow() // as we have to wait for the history to update
   const { formName, formPage, selectPageTypePage, selectQuestionTypePage } =
-    await createDraftFormWithDefaults(page, 'History test form')
+    await createDraftFormWithDefaults(page, 'History test form', testInfo)
 
   // First edit session: add 2 questions.
   await addWrittenQuestionPage(

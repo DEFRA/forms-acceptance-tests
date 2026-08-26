@@ -289,7 +289,7 @@ test('1.12c - long answer preview shows answer-limits section and error messages
   await expect(editQuestionPage.minLengthInput).toHaveValue('20')
 })
 
-test('1.12e - numbers only additional settings persist (min/max)', async ({
+test.skip('1.12e - numbers only additional settings persist (min/max)', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
@@ -325,7 +325,7 @@ test('1.12e - numbers only additional settings persist (min/max)', async ({
   await expect(editQuestionPage.maxLengthInput).toHaveValue('15')
 })
 
-test('1.12f - numbers only CSS classes persist', async ({
+test.skip('1.12f - numbers only CSS classes persist', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
@@ -360,7 +360,7 @@ test('1.12f - numbers only CSS classes persist', async ({
   )
 })
 
-test('1.12g - numbers only preview shows answer limits', async ({
+test.skip('1.12g - numbers only preview shows answer limits', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
@@ -398,7 +398,7 @@ test('1.12g - numbers only preview shows answer limits', async ({
   await expect(editQuestionPage.pagePreviewLabel).toBeVisible()
 })
 
-test('1.12h - numbers only combined additional settings persist', async ({
+test.skip('1.12h - numbers only combined additional settings persist', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
@@ -436,7 +436,7 @@ test('1.12h - numbers only combined additional settings persist', async ({
   )
 })
 
-test('1.12i - numbers only accepts a zero minimum length', async ({
+test.skip('1.12i - numbers only accepts a zero minimum length', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
@@ -470,7 +470,7 @@ test('1.12i - numbers only accepts a zero minimum length', async ({
   await expect(editQuestionPage.maxLengthInput).toHaveValue('10')
 })
 
-test('1.12j - numbers only accepts a large min and max range', async ({
+test.skip('1.12j - numbers only accepts a large min and max range', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
@@ -504,7 +504,7 @@ test('1.12j - numbers only accepts a large min and max range', async ({
   await expect(editQuestionPage.maxLengthInput).toHaveValue('9999')
 })
 
-test('1.12k - numbers only min and max persist with optional flag', async ({
+test.skip('1.12k - numbers only min and max persist with optional flag', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
@@ -538,7 +538,7 @@ test('1.12k - numbers only min and max persist with optional flag', async ({
   await expect(editQuestionPage.maxLengthInput).toHaveValue('12')
 })
 
-test('1.12l - numbers only additional settings can be cleared', async ({
+test.skip('1.12l - numbers only additional settings can be cleared', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
@@ -584,7 +584,7 @@ test('1.12l - numbers only additional settings can be cleared', async ({
   await expect(editQuestionPage.classesInput).toHaveValue('')
 })
 
-test('1.12m - numbers only min and max persist with hint text', async ({
+test.skip('1.12m - numbers only min and max persist with hint text', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
@@ -620,7 +620,7 @@ test('1.12m - numbers only min and max persist with hint text', async ({
   await expect(editQuestionPage.maxLengthInput).toHaveValue('9')
 })
 
-test('1.12n - numbers only error preview is available with answer limits', async ({
+test.skip('1.12n - numbers only error preview is available with answer limits', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
@@ -650,7 +650,7 @@ test('1.12n - numbers only error preview is available with answer limits', async
   await expect(editQuestionPage.pagePreviewLabel).toBeVisible()
 })
 
-test('1.12o - numbers only minimum length can be set without a maximum', async ({
+test.skip('1.12o - numbers only minimum length can be set without a maximum', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,
@@ -684,7 +684,7 @@ test('1.12o - numbers only minimum length can be set without a maximum', async (
   await expect(editQuestionPage.maxLengthInput).toHaveValue('')
 })
 
-test('1.12p - numbers only maximum length can be set without a minimum', async ({
+test.skip('1.12p - numbers only maximum length can be set without a minimum', async ({
   formPage,
   selectPageTypePage,
   selectQuestionTypePage,

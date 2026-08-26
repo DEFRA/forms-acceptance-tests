@@ -1,26 +1,21 @@
 import { test, expect } from '@playwright/test'
-import { FormPage } from '~/pages/FormPage.js'
 import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
 import { SelectQuestionTypePage } from '~/pages/SelectQuestionTypePage.js'
 import { PageOverview } from '~/pages/PageOverview.js'
 import { EditConditionPage } from '~/pages/EditConditionPage.js'
 import { ManagerConditionsPage } from '~/pages/ManagerConditionsPage.js'
+import { createDraftForm } from '~/tests/utils/createDraftForm.js'
 
 test('should create a condition for Yes/No and apply it to page 2', async ({
   page
-}) => {
+}, testInfo) => {
   // Step 1: Create a form
-  const formPage = new FormPage(page)
+  const { formPage } = await createDraftForm(page, testInfo, {
+    formNamePrefix: 'Condition test form'
+  })
   const selectPageTypePage = new SelectPageTypePage(page)
   const selectQuestionTypePage = new SelectQuestionTypePage(page)
   const pageOverview = new PageOverview(page)
-  await formPage.goTo()
-  const formName =
-    'Condition test form ' + Math.random().toString().substring(2, 8)
-  await formPage.enterFormName(formName)
-  await formPage.selectRadioOption('Environment Agency')
-  await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
-  await formPage.editDraft()
 
   // Step 2: Add a Yes/No component to Page 1
   await formPage.addNewPageButton.click()
@@ -85,19 +80,14 @@ test('should create a condition for Yes/No and apply it to page 2', async ({
 
 test('should not allow creating two conditions with the same name', async ({
   page
-}) => {
+}, testInfo) => {
   // Setup: Create a form and add a Yes/No question
-  const formPage = new FormPage(page)
+  const { formPage } = await createDraftForm(page, testInfo, {
+    formNamePrefix: 'Duplicate condition test'
+  })
   const selectPageTypePage = new SelectPageTypePage(page)
   const selectQuestionTypePage = new SelectQuestionTypePage(page)
   const pageOverview = new PageOverview(page)
-  await formPage.goTo()
-  const formName =
-    'Duplicate condition test ' + Math.random().toString().substring(2, 8)
-  await formPage.enterFormName(formName)
-  await formPage.selectRadioOption('Environment Agency')
-  await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
-  await formPage.editDraft()
   await formPage.addNewPageButton.click()
   await selectPageTypePage.choosePageType('question')
   await selectQuestionTypePage.selectQuestionType('list')

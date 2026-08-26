@@ -155,26 +155,25 @@ export class EditQuestionPage extends BasePage {
     await this.page.getByText('Additional settings (optional)').click()
   }
 
-  async setLowestNumber(lowestNum?: string): Promise<void> {
-    await this.lowestNumber.fill(lowestNum);
+  async setLowestNumber(lowestNum: string): Promise<void> {
+    await this.lowestNumber.fill(lowestNum)
   }
 
-  async setHighestNumber(highestNum?: string): Promise<void> {
-    await this.highestNumber.fill(highestNum);
+  async setHighestNumber(highestNum: string): Promise<void> {
+    await this.highestNumber.fill(highestNum)
   }
 
-  async setPrecision(precision?: string): Promise<void> {
-    await this.precisionNumber.fill(precision);
+  async setPrecision(precision: string): Promise<void> {
+    await this.precisionNumber.fill(precision)
   }
 
-  async setPrefix(prefix?: string): Promise<void> {
-    await this.prefixNumber.fill(prefix);
+  async setPrefix(prefix: string): Promise<void> {
+    await this.prefixNumber.fill(prefix)
   }
 
-  async setSuffix(suffix?: string): Promise<void> {
-    await this.suffixNumber.fill(suffix);
+  async setSuffix(suffix: string): Promise<void> {
+    await this.suffixNumber.fill(suffix)
   }
-
 
   async setAnswerLimits(minLength: string, maxLength: string, regex?: string) {
     await this.minLengthInput.fill(minLength)
