@@ -1,6 +1,7 @@
 #!/bin/sh
 
 echo "run_id: $RUN_ID"
+npm run install:playwright:ci
 npm test
 
 npm run report:publish
