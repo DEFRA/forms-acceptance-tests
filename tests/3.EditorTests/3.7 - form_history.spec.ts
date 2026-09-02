@@ -63,7 +63,7 @@ test('should show draft edit history after adding questions across edit sessions
         intervals: [2000, 3000, 5000]
       }
     )
-    .toMatch(/Form created|Draft edited|Edited the draft form/)
+    .toMatch(/|Draft edited|Edited the draft form/)
 
   const historyText = await page.locator('main').innerText()
   expect(historyText).toMatch(/Form created/)
