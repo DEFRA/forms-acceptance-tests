@@ -4,6 +4,11 @@ echo "run_id: $RUN_ID"
 npm run install:playwright:ci
 npm test
 
+if [ "$(ls allure-results 2>/dev/null | wc -l)" -eq 0 ]; then
+  echo "No test results generated"
+  exit 1
+fi
+
 npm run report:publish
 publish_exit_code=$?
 
