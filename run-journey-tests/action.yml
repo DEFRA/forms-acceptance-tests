@@ -74,8 +74,6 @@ runs:
       run: |
         cd forms-acceptance-tests
         npm i
-        set HTTPS_PROXY=http://localhost:3128
-        npx playwright install --with-deps
     - name: Setup environment variables
       shell: bash
       run: |
@@ -97,6 +95,10 @@ runs:
       shell: bash
       run: |
         cd forms-acceptance-tests
+        echo "Setting the proxy"
+        set HTTPS_PROXY=http://localhost:3128
+        echo "Installing Playwright"
+        npx playwright install --with-deps
         npm run test:playwright
     - name: report
       if: always()
