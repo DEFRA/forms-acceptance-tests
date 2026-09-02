@@ -95,11 +95,6 @@ runs:
       shell: bash
       run: |
         cd forms-acceptance-tests
-        echo "Setting the proxy"
-        HTTP_PROXY=http://localhost:3128
-        HTTPS_PROXY=http://localhost:3128
-        echo "Installing Playwright"
-        npx playwright install --with-deps
         npm run test:playwright
     - name: report
       if: always()
