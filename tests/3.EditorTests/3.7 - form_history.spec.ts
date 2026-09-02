@@ -52,18 +52,15 @@ test('should show draft edit history after adding questions across edit sessions
   ).toBeVisible()
 
   // as history can take some time to update, polling the page for a min
-  await expect
-    .poll(
-      async () => {
-        await page.reload()
-        return await page.locator('main').innerText()
-      },
-      {
-        timeout: 60000,
-        intervals: [2000, 3000, 5000]
-      }
+  await expect(async () => {
+    await page.reload()
+    await expect(page.locator('main')).toHaveText(
+      /Draft edited|Edited the draft form/
     )
-    .toMatch(/|Draft edited|Edited the draft form/)
+  }).toPass({
+    timeout: 60_000,
+    intervals: [2_000, 3_000, 5_000]
+  })
 
   const historyText = await page.locator('main').innerText()
   expect(historyText).toMatch(/Form created/)
