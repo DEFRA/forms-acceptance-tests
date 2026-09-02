@@ -16,7 +16,7 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf allure-results && rm -rf allure-report",
-    "install:playwright": "HTTP_PROXY=http://localhost:3128 && HTTPS_PROXY=http://localhost:3128 && npx playwright install",
+    "install:playwright": "sudo HTTP_PROXY=http://localhost:3128 && sudo HTTPS_PROXY=http://localhost:3128 && npx playwright install",
     "test": "npm run install:playwright && npm run test:playwright",
     "test:acc": "npm run test:playwright -- --project='accessibility'",
     "test:browserstack": "npm run clean && wdio run wdio.browserstack.conf.js",
