@@ -1,9 +1,10 @@
 #!/bin/sh
 
 echo "run_id: $RUN_ID"
-# Force sources to be downloaded via apt using https (not http)
-sed -i 's/http:\/\//https:\/\//g' /etc/apt/sources.list /etc/apt/sources.list.d/* || true
-npm run install:playwright:ci
+npm install playwright-core
+export HTTP_PROXY=http://localhost:3128
+export HTTPS_PROXY=http://localhost:3128
+PLAYWRIGHT_CHROMIUM_HERMETIC_EXECUTABLE=1 npx playwright install chromium
 npm test
 
 if [ "$(ls allure-results 2>/dev/null | wc -l)" -eq 0 ]; then
