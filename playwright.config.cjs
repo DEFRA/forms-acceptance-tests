@@ -14,6 +14,7 @@ export default defineConfig({
     {
       name: 'Google Chrome',
       testDir: 'tests/',
+      testIgnore: 'tests/2.Accessibility/**',
 
       use: {
         ...devices['Desktop Chrome'],

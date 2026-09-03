@@ -1,23 +1,12 @@
 import { expect, test } from '@playwright/test'
-import { FormPage } from '~/pages/FormPage.js'
 import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
+import { createDraftForm } from '~/tests/utils/createDraftForm.js'
 test('3.3.1 - should error when adding a page with a duplicate name', async ({
   page
-}) => {
+}, testInfo) => {
   // create a form
-  const formPage = new FormPage(page)
+  const { formPage } = await createDraftForm(page, testInfo)
   const selectPageTypePage = new SelectPageTypePage(page)
-  await formPage.goTo()
-  const formName =
-    'Automated test - Playwright form ' +
-    Math.random().toString().substring(0, 10)
-
-  await formPage.enterFormName(formName)
-  await formPage.selectRadioOption('Environment Agency')
-  await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
-
-  // Edit draft
-  await formPage.editDraft()
 
   // Add a new question page
 
