@@ -1,6 +1,8 @@
 #!/bin/sh
 
 echo "run_id: $RUN_ID"
+# Force sources to be downloaded via apt using https (not http)
+sudo sed -i 's/http:\/\//https:\/\//g' /etc/apt/sources.list /etc/apt/sources.list.d/* || true
 npm run install:playwright:ci
 npm test
 
