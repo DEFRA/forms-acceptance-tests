@@ -127,6 +127,9 @@ test.describe('Accessibility - heading hierarchy and accessibility checks across
         .getByRole('textbox', { name: 'Enter a name for your form' })
         .fill(formName)
       await page.getByRole('button', { name: 'Continue' }).click()
+      // Click the second continue button on the
+      // interstitial page to proceed to the organisation page
+      await page.getByRole('button', { name: 'Continue' }).click()
 
       await page.getByRole('radio', { name: 'Defra' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
