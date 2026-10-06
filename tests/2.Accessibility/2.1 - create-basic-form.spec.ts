@@ -29,6 +29,10 @@ test.describe('Accessibility - create a form with short answer field', () => {
       await assertHeadingHierarchy(page)
       // Continue through the form creation wizard
       await page.getByRole('button', { name: 'Continue' }).click()
+
+      // Click the second continue button on the
+      // interstitial page to proceed to the organisation page
+      await page.getByRole('button', { name: 'Continue' }).click()
       await page.getByRole('radio', { name: 'Defra' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
