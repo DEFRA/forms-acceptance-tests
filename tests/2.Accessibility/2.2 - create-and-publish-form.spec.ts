@@ -27,6 +27,9 @@ test.describe('Accessibility - full form creation and publish journey', () => {
         .fill(formName)
       await page.getByRole('button', { name: 'Continue' }).click()
 
+      // Click the second continue button on the
+      // interstitial page to proceed to the organisation page
+      await page.getByRole('button', { name: 'Continue' }).click()
       // Step 3 – Organisation details
       await page.waitForURL('**/create/organisation')
       await runAccessibilityCheck(page, testInfo, 'create-organisation')
