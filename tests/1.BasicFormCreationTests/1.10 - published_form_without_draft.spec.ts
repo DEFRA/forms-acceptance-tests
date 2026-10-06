@@ -23,6 +23,10 @@ async function createAndPublishForm(
     .fill(formName)
   await page.getByRole('button', { name: 'Continue' }).click()
 
+  // Click the second continue button on the
+  // interstitial page to proceed to the organisation page
+  await page.getByRole('button', { name: 'Continue' }).click()
+
   await page.getByRole('radio', { name: 'Environment Agency' }).check()
   await page.getByRole('button', { name: 'Continue' }).click()
 
