@@ -3,6 +3,7 @@ import { FormPage } from '~/pages/FormPage.js'
 import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
 import { PageOverview } from '~/pages/PageOverview.js'
 import { EditConditionPage } from '~/pages/EditConditionPage.js'
+import { createDraftForm } from '~/tests/utils/createDraftForm.js'
 
 // Custom fixture for form creation
 const test = base.extend<{
@@ -14,17 +15,9 @@ const test = base.extend<{
   }
 }>({
   async formSetup({ page }, use, testInfo) {
-    const formPage = new FormPage(page)
+    const { formName, formPage } = await createDraftForm(page, testInfo)
     const selectPageTypePage = new SelectPageTypePage(page)
     const pageOverview = new PageOverview(page)
-    await formPage.goTo()
-    const formName =
-      'Automated test - Playwright form ' +
-      Math.random().toString().substring(0, 10)
-    await formPage.enterFormName(formName, testInfo)
-    await formPage.selectRadioOption('Environment Agency')
-    await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
-    await formPage.editDraft()
     await formPage.addNewPageButton.click()
     await selectPageTypePage.choosePageType('question')
     await formPage.addNewQuestionPage('What is your name?', 'Your name')

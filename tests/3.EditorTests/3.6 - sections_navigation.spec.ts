@@ -4,9 +4,15 @@ import {
   createDraftFormWithDefaults
 } from '~/tests/3.EditorTests/utils.js'
 
-test('should assign pages to Section One and Section Two', async ({ page }) => {
+test('should assign pages to Section One and Section Two', async ({
+  page
+}, testInfo) => {
   const { formPage, selectPageTypePage, selectQuestionTypePage } =
-    await createDraftFormWithDefaults(page, 'Sections assignment form')
+    await createDraftFormWithDefaults(
+      page,
+      'Sections assignment form',
+      testInfo
+    )
 
   await addWrittenQuestionPage(
     formPage,
@@ -94,9 +100,9 @@ test('should assign pages to Section One and Section Two', async ({ page }) => {
 
 test('should reassign a question from Section One to Section Two', async ({
   page
-}) => {
+}, testInfo) => {
   const { formPage, selectPageTypePage, selectQuestionTypePage } =
-    await createDraftFormWithDefaults(page, 'Sections reassign form')
+    await createDraftFormWithDefaults(page, 'Sections reassign form', testInfo)
 
   await addWrittenQuestionPage(
     formPage,
@@ -203,9 +209,9 @@ test('should reassign a question from Section One to Section Two', async ({
   await expect(previewPanel).toContainText('Q3 desc')
 })
 
-test('should be able to reorder sections', async ({ page }) => {
+test('should be able to reorder sections', async ({ page }, testInfo) => {
   const { formPage, selectPageTypePage, selectQuestionTypePage } =
-    await createDraftFormWithDefaults(page, 'Sections reorder form')
+    await createDraftFormWithDefaults(page, 'Sections reorder form', testInfo)
 
   await addWrittenQuestionPage(
     formPage,

@@ -6,6 +6,7 @@ import { EditQuestionPage } from '~/pages/EditQuestionPage.js'
 import { EditConditionPage } from '~/pages/EditConditionPage.js'
 import { GuidancePage } from '~/pages/GuidancePage.js'
 import { PageConditionsPage } from '~/pages/PageConditionsPage.js'
+import { createDraftForm } from '~/tests/utils/createDraftForm.js'
 
 /**
  * 3.9 - Range of answers in a condition
@@ -257,23 +258,15 @@ test.describe.serial('3.9 - Range of answers in a condition', () => {
   }, testInfo) => {
     test.setTimeout(240_000)
 
-    const formPage = new FormPage(page)
+    const { formPage } = await createDraftForm(page, testInfo, {
+      formNamePrefix: 'Range of answers in a condition'
+    })
     const selectPageTypePage = new SelectPageTypePage(page)
     const selectQuestionTypePage = new SelectQuestionTypePage(page)
     const editQuestionPage = new EditQuestionPage(page)
     const editConditionPage = new EditConditionPage(page)
     const guidancePage = new GuidancePage(page)
     const pageConditionsPage = new PageConditionsPage(page)
-
-    // Create the draft form
-    await formPage.goTo()
-    const formName =
-      'Range of answers in a condition ' +
-      Math.random().toString().substring(2, 8)
-    await formPage.enterFormName(formName, testInfo)
-    await formPage.selectRadioOption('Environment Agency')
-    await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
-    await formPage.editDraft()
 
     // Add one question page per list type (pages 1-4)
     for (const spec of questionSpecs) {

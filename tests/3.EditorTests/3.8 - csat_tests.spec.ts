@@ -1,12 +1,12 @@
-import { expect, Page, test } from '@playwright/test'
+import { expect, Page, test, TestInfo } from '@playwright/test'
 import {
   addWrittenQuestionPage,
   createDraftFormWithDefaults
 } from '~/tests/3.EditorTests/utils.js'
 
-async function createDraftWithTwoQuestions(page: Page) {
+async function createDraftWithTwoQuestions(page: Page, testInfo: TestInfo) {
   const { formPage, selectPageTypePage, selectQuestionTypePage } =
-    await createDraftFormWithDefaults(page, 'CSAT feedback toggle')
+    await createDraftFormWithDefaults(page, 'CSAT feedback toggle', testInfo)
 
   await addWrittenQuestionPage(
     formPage,
@@ -68,8 +68,8 @@ test('should not redirect to GOV.UK feedback page when "Remove GOV.UK feedback p
   page
 }: {
   page: Page
-}) => {
-  await createDraftWithTwoQuestions(page)
+}, testInfo) => {
+  await createDraftWithTwoQuestions(page, testInfo)
   await openUserFeedbackSettings(page)
 
   await page
@@ -89,10 +89,10 @@ test('should not redirect to GOV.UK feedback page when "Remove GOV.UK feedback p
 
 test('should redirect to GOV.UK feedback page when "Remove GOV.UK feedback page" is unchecked (default)', async ({
   page
-}) => {
+}, testInfo) => {
   test.setTimeout(180_000)
 
-  await createDraftWithTwoQuestions(page)
+  await createDraftWithTwoQuestions(page, testInfo)
   await openUserFeedbackSettings(page)
 
   const removeFeedbackCheckbox = page.getByRole('checkbox', {

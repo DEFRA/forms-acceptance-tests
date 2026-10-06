@@ -2,6 +2,7 @@ import { test as baseTest, expect, type Page } from '@playwright/test'
 
 import { EditQuestionPage } from '~/pages/EditQuestionPage.js'
 import { FormPage } from '~/pages/FormPage.js'
+import { createDraftForm } from '~/tests/utils/createDraftForm.js'
 import { PageOverview } from '~/pages/PageOverview.js'
 import { PrivacyNoticePage } from '~/pages/PrivacyNoticePage.js'
 import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
@@ -222,16 +223,9 @@ async function startFormIfRequired(page: Page) {
 
 const test = baseTest.extend<MyFixtures>({
   formPage: async ({ page }, use, testInfo) => {
-    const formPage = new FormPage(page)
-    await formPage.goTo()
-    const formName =
-      'Automated test - Playwright map form ' +
-      Math.random().toString().substring(0, 10)
-
-    await formPage.enterFormName(formName, testInfo)
-    await formPage.selectRadioOption('Environment Agency')
-    await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
-    await formPage.editDraft()
+    const { formPage } = await createDraftForm(page, testInfo, {
+      formNamePrefix: 'Automated test - Playwright map form'
+    })
 
     await use(formPage)
   },
