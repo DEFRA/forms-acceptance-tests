@@ -201,6 +201,10 @@ export class FormPage {
     await this.formName.fill(formName)
     await this.clickContinueBtn()
 
+    // Click the second continue button on the
+    // interstitial page to proceed to the organisation page
+    await this.clickContinueBtn()
+
     if (testInfo) {
       await recordCreatedForm(testInfo, {
         name: formName,
