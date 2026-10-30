@@ -1,5 +1,10 @@
 import { Page, Locator, expect } from '@playwright/test'
 
+// interactive-map renamed this class in 0.0.56. Matching both names keeps these
+// tests passing for services on either side of that upgrade
+const MAP_SEARCH_BUTTON =
+  'button.im-c-map-button:is(.im-c-search-open-button, .im-c-map-button--search)'
+
 export class SubmissionMapReviewPage {
   readonly page: Page
   readonly mainHeading: Locator
@@ -71,16 +76,10 @@ export class SubmissionMapReviewPage {
       await expect(await map.locator('canvas.maplibregl-canvas').count()).toBe(
         count
       )
-      await expect(
-        await map
-          .locator('button.im-c-map-button.im-c-search-open-button')
-          .count()
-      ).toBe(count)
+      await expect(await map.locator(MAP_SEARCH_BUTTON).count()).toBe(count)
     } else {
       await expect(map.locator('canvas.maplibregl-canvas')).toBeVisible()
-      await expect(
-        map.locator('button.im-c-map-button.im-c-search-open-button')
-      ).toBeVisible()
+      await expect(map.locator(MAP_SEARCH_BUTTON)).toBeVisible()
     }
   }
 }
