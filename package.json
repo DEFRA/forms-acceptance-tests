@@ -4,7 +4,8 @@
   "type": "module",
   "description": "",
   "engines": {
-    "node": ">=22"
+    "node": "^24.19.0",
+    "npm": "^11.17.0 || >=12.0.2"
   },
   "author": "Defra DDTS",
   "license": "OGL-UK-3.0",
@@ -68,5 +69,13 @@
     "husky": "9.1.7",
     "neostandard": "0.13.0",
     "prettier": "3.8.3"
+  },
+  "allowScripts": {
+    "edgedriver": true,
+    "esbuild": true,
+    "fsevents": true,
+    "geckodriver": true,
+    "protobufjs": true,
+    "unrs-resolver": true
   }
 }
