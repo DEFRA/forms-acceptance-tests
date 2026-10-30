@@ -1,5 +1,4 @@
-ARG PARENT_VERSION=latest-24
-FROM defradigital/node-development:${PARENT_VERSION} AS development
+FROM node:24-slim
 
 ENV TZ="Europe/London"
 ENV headless=true

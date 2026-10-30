@@ -69,5 +69,13 @@
     "husky": "9.1.7",
     "neostandard": "0.13.0",
     "prettier": "3.8.3"
+  },
+  "allowScripts": {
+    "edgedriver": true,
+    "esbuild": true,
+    "fsevents": true,
+    "geckodriver": true,
+    "protobufjs": true,
+    "unrs-resolver": true
   }
 }
