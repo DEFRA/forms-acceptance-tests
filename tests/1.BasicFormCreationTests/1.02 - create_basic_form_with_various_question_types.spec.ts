@@ -6,6 +6,7 @@ import { PageOverview } from '~/pages/PageOverview.js'
 import { faker } from '@faker-js/faker/locale/en'
 import { EditQuestionPage } from '~/pages/EditQuestionPage.js'
 import { GuidancePage } from '~/pages/GuidancePage.js'
+import { createDraftForm } from '~/tests/utils/createDraftForm.js'
 
 // Declare the types of your fixtures
 type MyFixtures = {
@@ -20,17 +21,7 @@ type MyFixtures = {
 // Rename the extended test object to avoid conflicts
 const test = baseTest.extend<MyFixtures>({
   formPage: async ({ page }, use, testInfo) => {
-    const formPage = new FormPage(page) // Initialize FormPage using the page object
-    await formPage.goTo()
-    const formName =
-      'Automated test - Playwright form ' +
-      Math.random().toString().substring(0, 10)
-    await formPage.enterFormName(formName, testInfo)
-    await formPage.selectRadioOption('Environment Agency')
-    await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
-
-    // Edit draft
-    await formPage.editDraft()
+    const { formPage } = await createDraftForm(page, testInfo)
 
     await use(formPage) // Provide the fixture for use in tests
   },

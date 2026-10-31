@@ -1,4 +1,4 @@
-import { chromium, FullConfig } from '@playwright/test'
+import { chromium, type FullConfig, type Page } from '@playwright/test'
 import path from 'node:path'
 import { LoginPage } from '~/pages/LoginPage.js'
 import dotenv from 'dotenv'
@@ -10,6 +10,41 @@ const __dirname = path.dirname('playwright/.auth/user.json')
 
 const authFile = path.join(__dirname, 'user.json')
 const TWENTY_MINUTES = 20 * 60 * 1000
+const STARTUP_TIMEOUT = 30_000
+const RETRY_INTERVAL = 2_000
+
+function getLibraryUrl() {
+  const baseUrl =
+    process.env.BASE_URL ??
+    process.env.DESIGNER_BASE_URL ??
+    'http://localhost:3000'
+
+  return new URL('/library', baseUrl).toString()
+}
+
+async function waitForDesigner(page: Page) {
+  const libraryUrl = getLibraryUrl()
+  const deadline = Date.now() + STARTUP_TIMEOUT
+  let lastError: unknown
+
+  while (Date.now() < deadline) {
+    try {
+      await page.goto(libraryUrl, {
+        timeout: RETRY_INTERVAL,
+        waitUntil: 'domcontentloaded'
+      })
+      return
+    } catch (error) {
+      lastError = error
+      await new Promise((resolve) => setTimeout(resolve, RETRY_INTERVAL))
+    }
+  }
+
+  throw new Error(
+    `Forms Designer did not become available at ${libraryUrl} within ${STARTUP_TIMEOUT / 1000} seconds. Start the test harness or set BASE_URL to a running environment.`,
+    { cause: lastError }
+  )
+}
 
 async function globalSetup(_config: FullConfig) {
   let shouldLogin = true
@@ -39,7 +74,7 @@ async function globalSetup(_config: FullConfig) {
     }
 
     const loginPage = new LoginPage(page, displayName)
-    await page.goto('http://localhost:3000/library')
+    await waitForDesigner(page)
     await loginPage.login(email, password)
     await loginPage.verifyUserLoggedIn()
     await page.context().storageState({ path: authFile })
