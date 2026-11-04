@@ -1,23 +1,22 @@
-FROM node:22.13.1-slim
+FROM node:24-slim
 
 ENV TZ="Europe/London"
+ENV headless=true
 
 USER root
 
-RUN apt-get update -qq \
-    && apt-get install -qqy \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    openjdk-17-jre-headless \
     curl \
-    zip \
-    openjdk-17-jre-headless
-
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
-    && unzip awscliv2.zip \
-    && ./aws/install
+    awscli \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 COPY . .
-RUN npm install
+RUN npm install \
+    && npx playwright install chromium --with-deps
 
 ENTRYPOINT [ "./entrypoint.sh" ]
 

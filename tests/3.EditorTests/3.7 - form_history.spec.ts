@@ -55,23 +55,16 @@ test('should show draft edit history after adding questions across edit sessions
     page.getByRole('heading', { name: /Form history/ })
   ).toBeVisible()
 
-  // As history can take some time to update, poll until the edit-session
-  // entries actually show up. "Form created" is present from the very first
-  // load, so it can't be part of this match — including it let the poll
-  // exit immediately, before the edit entries this test is waiting for had
-  // any chance to appear.
-  await expect
-    .poll(
-      async () => {
-        await page.reload()
-        return await page.locator('main').innerText()
-      },
-      {
-        timeout: 60000,
-        intervals: [2000, 3000, 5000]
-      }
+  // as history can take some time to update, polling the page for a min
+  await expect(async () => {
+    await page.reload()
+    await expect(page.locator('main')).toHaveText(
+      /Draft edited|Edited the draft form/
     )
-    .toMatch(/Draft edited|Edited the draft form/)
+  }).toPass({
+    timeout: 60_000,
+    intervals: [2_000, 3_000, 5_000]
+  })
 
   const historyText = await raceAgainstAccessDenied(page, () =>
     page.locator('main').innerText()

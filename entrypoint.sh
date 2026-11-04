@@ -1,7 +1,14 @@
 #!/bin/sh
 
 echo "run_id: $RUN_ID"
+export HTTP_PROXY=http://localhost:3128
+export HTTPS_PROXY=http://localhost:3128
 npm test
+
+if [ "$(ls allure-results 2>/dev/null | wc -l)" -eq 0 ]; then
+  echo "No test results generated"
+  exit 1
+fi
 
 npm run report:publish
 publish_exit_code=$?
