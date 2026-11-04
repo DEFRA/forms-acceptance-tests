@@ -25,9 +25,11 @@ export async function recordCreatedForm(
   // Best-effort: if allure-playwright is enabled, show it as a parameter too.
   try {
     const { allure } = await import('allure-playwright')
-    await allure.parameter('createdForm', form.name)
+    // These values change every run. Excluding them keeps the test's Allure
+    // history ID stable, so results still link across runs.
+    await allure.parameter('createdForm', form.name, { excluded: true })
     if (form.url) {
-      await allure.parameter('createdFormUrl', form.url)
+      await allure.parameter('createdFormUrl', form.url, { excluded: true })
     }
   } catch {
     // noop

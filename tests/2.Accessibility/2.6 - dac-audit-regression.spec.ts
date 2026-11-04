@@ -1,5 +1,4 @@
-import { expect } from '@playwright/test'
-import { test } from '~/fixtures/main.js'
+import { test, expect } from '~/fixtures/main.js'
 import { runAccessibilityCheck } from './accessibilityChecker.js'
 import {
   assertHeadingHierarchy,

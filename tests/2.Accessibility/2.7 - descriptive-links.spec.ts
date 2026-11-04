@@ -1,4 +1,4 @@
-import { test } from '~/fixtures/main.js'
+import { test, expect } from '~/fixtures/main.js'
 import { assertActionLinksHaveHiddenContext } from '~/tests/2.Accessibility/customA11yAssertions.js'
 
 test.describe('Accessibility - descriptive action links', () => {
@@ -16,7 +16,7 @@ test.describe('Accessibility - descriptive action links', () => {
       await assertActionLinksHaveHiddenContext(page, 'Forms library')
 
       await libraryPage.clickCreateForm()
-      await page.waitForURL('**/create/title')
+      await page.waitForURL('**/create/title', { timeout: 5000 })
       await assertActionLinksHaveHiddenContext(page, 'Create form - title')
 
       await page
@@ -28,7 +28,7 @@ test.describe('Accessibility - descriptive action links', () => {
       // interstitial page to proceed to the organisation page
       await page.getByRole('button', { name: 'Continue' }).click()
 
-      await page.waitForURL('**/create/organisation')
+      await page.waitForURL('**/create/organisation', { timeout: 5000 })
       await assertActionLinksHaveHiddenContext(
         page,
         'Create form - organisation'
@@ -37,7 +37,7 @@ test.describe('Accessibility - descriptive action links', () => {
       await page.getByRole('radio', { name: 'Defra' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
-      await page.waitForURL('**/create/team')
+      await page.waitForURL('**/create/team', { timeout: 5000 })
       await assertActionLinksHaveHiddenContext(
         page,
         'Create form - team details'
@@ -51,18 +51,18 @@ test.describe('Accessibility - descriptive action links', () => {
         .fill('a11y-qa@defra.gov.uk')
       await page.getByRole('button', { name: 'Save and continue' }).click()
 
-      await page.waitForURL(/\/library\/[^/?#]+$/)
+      await page.waitForURL(/\/library\/[^/?#]+$/, { timeout: 5000 })
       await assertActionLinksHaveHiddenContext(page, 'Form overview')
 
       await page.getByRole('button', { name: 'Edit draft' }).click()
-      await page.waitForURL('**/editor-v2/pages**')
+      await page.waitForURL('**/editor-v2/pages**', { timeout: 5000 })
       await assertActionLinksHaveHiddenContext(
         page,
         'Editor - add and edit pages'
       )
 
       await page.getByRole('button', { name: 'Add new page' }).click()
-      await page.waitForURL('**/editor-v2/page')
+      await page.waitForURL('**/editor-v2/page', { timeout: 5000 })
       await assertActionLinksHaveHiddenContext(
         page,
         'Editor - choose page type'
@@ -71,7 +71,7 @@ test.describe('Accessibility - descriptive action links', () => {
       await page.getByRole('radio', { name: 'Question page' }).check()
       await page.getByRole('button', { name: 'Save and continue' }).click()
 
-      await page.waitForURL('**/question/**/type/**')
+      await page.waitForURL('**/question/**/type/**', { timeout: 5000 })
       await assertActionLinksHaveHiddenContext(
         page,
         'Editor - choose question type'
@@ -83,7 +83,7 @@ test.describe('Accessibility - descriptive action links', () => {
         .check()
       await page.getByRole('button', { name: 'Save and continue' }).click()
 
-      await page.waitForURL('**/question/**/details/**')
+      await page.waitForURL('**/question/**/details/**', { timeout: 5000 })
       await assertActionLinksHaveHiddenContext(
         page,
         'Editor - question details'
@@ -95,25 +95,27 @@ test.describe('Accessibility - descriptive action links', () => {
         .fill('Your name')
       await page.getByRole('button', { name: 'Save and continue' }).click()
 
-      await page.waitForURL('**/questions')
+      await page.waitForURL('**/questions', { timeout: 5000 })
       await assertActionLinksHaveHiddenContext(page, 'Editor - page overview')
 
       await page
         .getByRole('navigation')
         .getByRole('link', { name: 'Editor' })
         .click()
-      await page.waitForURL('**/editor-v2/pages**')
+      await page.waitForURL('**/editor-v2/pages**', { timeout: 5000 })
       await page
         .getByRole('link', { name: 'Edit (Check your answers)' })
         .click()
-      await page.waitForURL('**/check-answers-settings')
+      await page.waitForURL('**/check-answers-settings', { timeout: 5000 })
       await assertActionLinksHaveHiddenContext(
         page,
         'Check answers settings - overview'
       )
 
       await page.getByRole('link', { name: 'Sections', exact: true }).click()
-      await page.waitForURL('**/check-answers-settings/sections')
+      await page.waitForURL('**/check-answers-settings/sections', {
+        timeout: 5000
+      })
       await assertActionLinksHaveHiddenContext(
         page,
         'Check answers settings - sections'
@@ -124,9 +126,9 @@ test.describe('Accessibility - descriptive action links', () => {
         .getByRole('textbox', { name: 'Section heading' })
         .fill('Section One')
       await page.getByRole('button', { name: '+ Add section heading' }).click()
-      await page
-        .getByRole('heading', { name: 'Section 1: Section One' })
-        .waitFor({ state: 'visible' })
+      await expect(
+        page.getByRole('heading', { name: 'Section 1: Section One' })
+      ).toBeVisible()
       await assertActionLinksHaveHiddenContext(
         page,
         'Check answers settings - section one'
@@ -135,9 +137,9 @@ test.describe('Accessibility - descriptive action links', () => {
         .getByRole('textbox', { name: 'Section heading' })
         .fill('Section Two')
       await page.getByRole('button', { name: '+ Add section heading' }).click()
-      await page
-        .getByRole('heading', { name: 'Section 2: Section Two' })
-        .waitFor({ state: 'visible' })
+      await expect(
+        page.getByRole('heading', { name: 'Section 2: Section Two' })
+      ).toBeVisible()
       await assertActionLinksHaveHiddenContext(
         page,
         'Check answers settings - section two'
@@ -146,7 +148,7 @@ test.describe('Accessibility - descriptive action links', () => {
       await page
         .getByRole('button', { name: 'Re-order sections', exact: true })
         .click()
-      await page.waitForURL('**/sections-reorder')
+      await page.waitForURL('**/sections-reorder', { timeout: 5000 })
       await assertActionLinksHaveHiddenContext(
         page,
         'Check answers settings - sections reorder'
@@ -160,9 +162,9 @@ test.describe('Accessibility - descriptive action links', () => {
       await page
         .getByRole('link', { name: 'Page overview', exact: true })
         .click()
-      await page
-        .getByRole('heading', { name: /Edit settings.*page overview/ })
-        .waitFor({ state: 'visible' })
+      await expect(
+        page.getByRole('heading', { name: /Edit settings.*page overview/ })
+      ).toBeVisible()
       await assertActionLinksHaveHiddenContext(
         page,
         'Check answers settings - page overview'

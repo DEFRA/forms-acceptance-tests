@@ -1,12 +1,24 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from '~/fixtures/main.js'
+import type { Locator, Page } from '@playwright/test'
 import {
   addWrittenQuestionPage,
   createDraftFormWithDefaults
 } from '~/tests/3.EditorTests/utils.js'
+import { selectOptionOrFailFast } from '~/tests/utils/selectOptionSafely.js'
 
-test('should assign pages to Section One and Section Two', async ({ page }) => {
+async function selectSectionOption(page: Page, select: Locator, label: string) {
+  await selectOptionOrFailFast(page, select, { label })
+}
+
+test('should assign pages to Section One and Section Two', async ({
+  page
+}, testInfo) => {
   const { formPage, selectPageTypePage, selectQuestionTypePage } =
-    await createDraftFormWithDefaults(page, 'Sections assignment form')
+    await createDraftFormWithDefaults(
+      page,
+      'Sections assignment form',
+      testInfo
+    )
 
   await addWrittenQuestionPage(
     formPage,
@@ -55,19 +67,29 @@ test('should assign pages to Section One and Section Two', async ({ page }) => {
   ).toBeVisible()
 
   const questionOneRow = page.locator('li', { hasText: 'Question One' }).first()
-  await questionOneRow.locator('select').selectOption({ label: 'Section One' })
+  await selectSectionOption(
+    page,
+    questionOneRow.locator('select'),
+    'Section One'
+  )
   await questionOneRow.getByRole('button', { name: 'Assign' }).click()
 
   const questionTwoRow = page.locator('li', { hasText: 'Question Two' }).first()
-  await questionTwoRow.locator('select').selectOption({ label: 'Section One' })
+  await selectSectionOption(
+    page,
+    questionTwoRow.locator('select'),
+    'Section One'
+  )
   await questionTwoRow.getByRole('button', { name: 'Assign' }).click()
 
   const questionThreeRow = page
     .locator('li', { hasText: 'Question Three' })
     .first()
-  await questionThreeRow
-    .locator('select')
-    .selectOption({ label: 'Section Two' })
+  await selectSectionOption(
+    page,
+    questionThreeRow.locator('select'),
+    'Section Two'
+  )
   await questionThreeRow.getByRole('button', { name: 'Assign' }).click()
 
   const sectionOneAssigned = page
@@ -94,9 +116,9 @@ test('should assign pages to Section One and Section Two', async ({ page }) => {
 
 test('should reassign a question from Section One to Section Two', async ({
   page
-}) => {
+}, testInfo) => {
   const { formPage, selectPageTypePage, selectQuestionTypePage } =
-    await createDraftFormWithDefaults(page, 'Sections reassign form')
+    await createDraftFormWithDefaults(page, 'Sections reassign form', testInfo)
 
   await addWrittenQuestionPage(
     formPage,
@@ -144,19 +166,29 @@ test('should reassign a question from Section One to Section Two', async ({
 
   // assign question one and two to section one, question three to section two
   const questionOneRow = page.locator('li', { hasText: 'Question One' }).first()
-  await questionOneRow.locator('select').selectOption({ label: 'Section One' })
+  await selectSectionOption(
+    page,
+    questionOneRow.locator('select'),
+    'Section One'
+  )
   await questionOneRow.getByRole('button', { name: 'Assign' }).click()
 
   const questionTwoRow = page.locator('li', { hasText: 'Question Two' }).first()
-  await questionTwoRow.locator('select').selectOption({ label: 'Section One' })
+  await selectSectionOption(
+    page,
+    questionTwoRow.locator('select'),
+    'Section One'
+  )
   await questionTwoRow.getByRole('button', { name: 'Assign' }).click()
 
   const questionThreeRow = page
     .locator('li', { hasText: 'Question Three' })
     .first()
-  await questionThreeRow
-    .locator('select')
-    .selectOption({ label: 'Section Two' })
+  await selectSectionOption(
+    page,
+    questionThreeRow.locator('select'),
+    'Section Two'
+  )
   await questionThreeRow.getByRole('button', { name: 'Assign' }).click()
 
   const sectionOneAssigned = page.getByRole('heading', {
@@ -184,9 +216,11 @@ test('should reassign a question from Section One to Section Two', async ({
   const questionTwoUnassignedRow = page
     .locator('li', { hasText: 'Question Two' })
     .first()
-  await questionTwoUnassignedRow
-    .locator('select')
-    .selectOption({ label: 'Section Two' })
+  await selectSectionOption(
+    page,
+    questionTwoUnassignedRow.locator('select'),
+    'Section Two'
+  )
   await questionTwoUnassignedRow.getByRole('button', { name: 'Assign' }).click()
 
   await expect(sectionOneParent).toContainText('Question One')
@@ -203,9 +237,9 @@ test('should reassign a question from Section One to Section Two', async ({
   await expect(previewPanel).toContainText('Q3 desc')
 })
 
-test('should be able to reorder sections', async ({ page }) => {
+test('should be able to reorder sections', async ({ page }, testInfo) => {
   const { formPage, selectPageTypePage, selectQuestionTypePage } =
-    await createDraftFormWithDefaults(page, 'Sections reorder form')
+    await createDraftFormWithDefaults(page, 'Sections reorder form', testInfo)
 
   await addWrittenQuestionPage(
     formPage,
@@ -244,11 +278,19 @@ test('should be able to reorder sections', async ({ page }) => {
 
   // assign quetion one to section one, question two to section two
   const questionOneRow = page.locator('li', { hasText: 'Question One' }).first()
-  await questionOneRow.locator('select').selectOption({ label: 'Section One' })
+  await selectSectionOption(
+    page,
+    questionOneRow.locator('select'),
+    'Section One'
+  )
   await questionOneRow.getByRole('button', { name: 'Assign' }).click()
 
   const questionTwoRow = page.locator('li', { hasText: 'Question Two' }).first()
-  await questionTwoRow.locator('select').selectOption({ label: 'Section Two' })
+  await selectSectionOption(
+    page,
+    questionTwoRow.locator('select'),
+    'Section Two'
+  )
   await questionTwoRow.getByRole('button', { name: 'Assign' }).click()
 
   const sectionOneAssigned = page
@@ -268,7 +310,7 @@ test('should be able to reorder sections', async ({ page }) => {
   await page
     .getByRole('button', { name: 'Re-order sections', exact: true })
     .click()
-  await page.waitForURL('**/sections-reorder**')
+  await page.waitForURL('**/sections-reorder**', { timeout: 5000 })
   // move section1 down
   await page
     .locator('li', { hasText: 'Section 1: Section One' })

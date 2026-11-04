@@ -1,4 +1,8 @@
 import { defineConfig, devices } from '@playwright/test'
+import dotenv from 'dotenv'
+
+// Load .env here too, so BASE_URL applies to the tests as well as global setup.
+dotenv.config()
 
 export default defineConfig({
   globalSetup: require.resolve('./global-setup'),
@@ -14,6 +18,7 @@ export default defineConfig({
     {
       name: 'Google Chrome',
       testDir: 'tests/',
+      testIgnore: 'tests/2.Accessibility/**',
 
       use: {
         ...devices['Desktop Chrome'],

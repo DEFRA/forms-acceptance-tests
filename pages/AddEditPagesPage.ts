@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 export class AddEditPagesPage {
   readonly page: Page
@@ -43,31 +44,45 @@ export class AddEditPagesPage {
   }
 
   async clickAddNewPage() {
-    await this.addNewPageButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.addNewPageButton.click()
+    )
   }
 
   async clickManageConditions() {
-    await this.manageConditionsButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.manageConditionsButton.click()
+    )
   }
 
   async clickUploadForm() {
-    await this.uploadFormButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.uploadFormButton.click()
+    )
   }
 
   async clickDownloadForm() {
-    await this.downloadFormButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.downloadFormButton.click()
+    )
   }
 
   async clickDownloadCopyLink() {
-    await this.downloadCopyLink.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.downloadCopyLink.click()
+    )
   }
 
   async clickSummaryCardEdit() {
-    await this.summaryCardEditLink.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.summaryCardEditLink.click()
+    )
   }
 
   async clickSummaryCardPreview() {
-    await this.summaryCardPreviewLink.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.summaryCardPreviewLink.click()
+    )
   }
 
   async verifyMainHeading() {
@@ -79,6 +94,8 @@ export class AddEditPagesPage {
   }
 
   async clickBackToFormOverview() {
-    await this.backToFormOverviewLink.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.backToFormOverviewLink.click()
+    )
   }
 }

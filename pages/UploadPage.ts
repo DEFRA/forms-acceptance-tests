@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 export class UploadPage {
   readonly page: Page
@@ -18,7 +19,9 @@ export class UploadPage {
   }
 
   async clickDownloadCopyLink() {
-    await this.downloadCopyLink.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.downloadCopyLink.click()
+    )
   }
 
   async uploadFormFile(filePath: string) {
@@ -26,12 +29,13 @@ export class UploadPage {
       `element => element.style.setProperty('display', 'block')`
     )
     await this.fileInput.setInputFiles(filePath)
-    await this.page.getByText('1 file uploaded', { exact: true }).isVisible()
-    await this.page.waitForTimeout(1000)
+    await expect(
+      this.page.getByText('1 file uploaded', { exact: true })
+    ).toBeVisible()
   }
 
   async clickCancel() {
-    await this.cancelButton.click()
+    await raceAgainstAccessDenied(this.page, () => this.cancelButton.click())
   }
 
   async verifyMainHeading() {

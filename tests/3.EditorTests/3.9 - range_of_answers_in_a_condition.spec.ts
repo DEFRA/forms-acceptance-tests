@@ -1,4 +1,5 @@
-import { test, expect, Page } from '@playwright/test'
+import { test, expect } from '~/fixtures/main.js'
+import type { Page } from '@playwright/test'
 import { FormPage } from '~/pages/FormPage.js'
 import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
 import { SelectQuestionTypePage } from '~/pages/SelectQuestionTypePage.js'
@@ -6,6 +7,7 @@ import { EditQuestionPage } from '~/pages/EditQuestionPage.js'
 import { EditConditionPage } from '~/pages/EditConditionPage.js'
 import { GuidancePage } from '~/pages/GuidancePage.js'
 import { PageConditionsPage } from '~/pages/PageConditionsPage.js'
+import { createDraftForm } from '~/tests/utils/createDraftForm.js'
 
 /**
  * 3.9 - Range of answers in a condition
@@ -103,9 +105,9 @@ async function addListQuestion(
   await formPage.shortDescriptionInput.fill(spec.shortDescription)
 
   if (spec.subtype === 'autocomplete') {
-    await editQuestionPage.addAutoCompleteOptions([...spec.options])
+    await editQuestionPage.listFields.addAutoCompleteOptions([...spec.options])
   } else {
-    await editQuestionPage.addListItems([...spec.options])
+    await editQuestionPage.listFields.addItems([...spec.options])
   }
 
   await editQuestionPage.clickSaveAndContinue()
@@ -221,12 +223,16 @@ async function answerAutocomplete(page: Page, value: string) {
   const enhancedInput = page.locator('input.autocomplete__input')
   await enhancedInput
     .waitFor({ state: 'visible', timeout: 3000 })
-    .catch(() => {})
+    .catch((error: Error) => {
+      // A timeout just means the enhancement hasn't run — fall through to the
+      // native <select> path below. Any other error should still surface.
+      if (error.name !== 'TimeoutError') throw error
+    })
 
   if (await enhancedInput.count()) {
     await enhancedInput.fill(value)
     const option = page.locator('li[role="option"]', { hasText: value }).first()
-    await option.waitFor({ state: 'visible' })
+    await expect(option).toBeVisible()
     await option.click()
   } else {
     await page.getByLabel(/Which country/i).selectOption({ label: value })
@@ -257,23 +263,15 @@ test.describe.serial('3.9 - Range of answers in a condition', () => {
   }, testInfo) => {
     test.setTimeout(240_000)
 
-    const formPage = new FormPage(page)
+    const { formPage } = await createDraftForm(page, testInfo, {
+      formNamePrefix: 'Range of answers in a condition'
+    })
     const selectPageTypePage = new SelectPageTypePage(page)
     const selectQuestionTypePage = new SelectQuestionTypePage(page)
     const editQuestionPage = new EditQuestionPage(page)
     const editConditionPage = new EditConditionPage(page)
     const guidancePage = new GuidancePage(page)
     const pageConditionsPage = new PageConditionsPage(page)
-
-    // Create the draft form
-    await formPage.goTo()
-    const formName =
-      'Range of answers in a condition ' +
-      Math.random().toString().substring(2, 8)
-    await formPage.enterFormName(formName, testInfo)
-    await formPage.selectRadioOption('Environment Agency')
-    await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
-    await formPage.editDraft()
 
     // Add one question page per list type (pages 1-4)
     for (const spec of questionSpecs) {

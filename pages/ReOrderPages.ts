@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 export class ReOrderPages {
   readonly page: Page
@@ -35,7 +36,9 @@ export class ReOrderPages {
       .locator('..')
       .locator('..')
       .locator('..')
-    await item.getByRole('button', { name: /Up/ }).first().click()
+    await raceAgainstAccessDenied(this.page, () =>
+      item.getByRole('button', { name: /Up/ }).first().click()
+    )
   }
 
   async movePageDown(pageTitle: string) {
@@ -45,11 +48,15 @@ export class ReOrderPages {
       .locator('..')
       .locator('..')
       .locator('..')
-    await item.getByRole('button', { name: /Down/ }).first().click()
+    await raceAgainstAccessDenied(this.page, () =>
+      item.getByRole('button', { name: /Down/ }).first().click()
+    )
   }
 
   async saveChanges() {
-    await this.saveChangesButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.saveChangesButton.click()
+    )
   }
 
   async verifyStructure() {

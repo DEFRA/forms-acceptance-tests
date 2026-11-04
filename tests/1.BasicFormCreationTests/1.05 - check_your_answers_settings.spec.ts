@@ -1,5 +1,7 @@
 import { FormPage } from '~/pages/FormPage.js'
-import { expect, test, Page } from '@playwright/test'
+import { test, expect } from '~/fixtures/main.js'
+import type { Page } from '@playwright/test'
+import { createDraftForm } from '~/tests/utils/createDraftForm.js'
 
 /**
  * Tests the following:
@@ -10,21 +12,15 @@ import { expect, test, Page } from '@playwright/test'
  */
 test('1.5.1 - ensure the confirmation email checkbox exists and works as expected', async ({
   page
-}) => {
+}, testInfo) => {
   // Create a form
-  const formPage = new FormPage(page)
-  await formPage.goTo()
-  const formName = `Automated test - Playwright form ${Math.random().toString().substring(0, 10)} - Summary page`
-  await formPage.enterFormName(formName)
-  await formPage.selectRadioOption('Environment Agency')
-  await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
-
-  // Edit draft
-  await formPage.editDraft()
+  const { formPage } = await createDraftForm(page, testInfo, {
+    formNamePrefix: 'Automated test - Playwright form - Summary page'
+  })
 
   // Wait for navigation to the editor pages
-  await page.waitForURL(/\/editor-v2\//)
-  await page.waitForLoadState('networkidle')
+  await page.waitForURL(/\/editor-v2\//, { timeout: 5000 })
+  await page.waitForLoadState('networkidle', { timeout: 5000 })
 
   // Check the summary page controller
   // (should be SummaryPageWithConfirmationEmailController to indicate confirmation emails are enabled)
@@ -81,21 +77,15 @@ test('1.5.1 - ensure the confirmation email checkbox exists and works as expecte
  */
 test('1.5.2 - ensure the reference checkbox exists and works as expected', async ({
   page
-}) => {
+}, testInfo) => {
   // Create a form
-  const formPage = new FormPage(page)
-  await formPage.goTo()
-  const formName = `Automated test - Playwright form ${Math.random().toString().substring(0, 10)} - Summary page`
-  await formPage.enterFormName(formName)
-  await formPage.selectRadioOption('Environment Agency')
-  await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
-
-  // Edit draft
-  await formPage.editDraft()
+  const { formPage } = await createDraftForm(page, testInfo, {
+    formNamePrefix: 'Automated test - Playwright form - Summary page'
+  })
 
   // Wait for navigation to the editor pages
-  await page.waitForURL(/\/editor-v2\//)
-  await page.waitForLoadState('networkidle')
+  await page.waitForURL(/\/editor-v2\//, { timeout: 5000 })
+  await page.waitForLoadState('networkidle', { timeout: 5000 })
 
   // Edit the 'check your answers' page
   await formPage.goToPages()

@@ -1,4 +1,6 @@
 import { Page, Locator } from '@playwright/test'
+import { selectOptionOrFailFast } from '~/tests/utils/selectOptionSafely.js'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 export class LibraryPage {
   readonly page: Page
@@ -37,22 +39,30 @@ export class LibraryPage {
   }
 
   async clickCreateForm() {
-    await this.createNewFormButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.createNewFormButton.click()
+    )
   }
 
   async clearFilters() {
-    await this.clearFiltersButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.clearFiltersButton.click()
+    )
   }
 
   async deleteForm() {
-    await this.deleteButton.click() // Click the delete button
-    await this.page.getByRole('button', { name: 'Delete form' }).click() // Confirm deletion
+    // Click the delete button
+    await raceAgainstAccessDenied(this.page, () => this.deleteButton.click())
+    // Confirm deletion
+    await raceAgainstAccessDenied(this.page, () =>
+      this.page.getByRole('button', { name: 'Delete form' }).click()
+    )
   }
 
   // Method to select a sort option and trigger sorting
   async sortBy(optionValue: string) {
-    await this.sortSelect.selectOption(optionValue)
-    await this.sortButton.click()
+    await selectOptionOrFailFast(this.page, this.sortSelect, optionValue)
+    await raceAgainstAccessDenied(this.page, () => this.sortButton.click())
   }
 
   // Method to get the list of form names in the table (desktop view)

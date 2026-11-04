@@ -1,4 +1,4 @@
-import { test as baseTest, expect } from '@playwright/test'
+import { test as baseTest, expect } from '~/fixtures/main.js'
 import { FormPage } from '~/pages/FormPage.js'
 import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
 import { SelectQuestionTypePage } from '~/pages/SelectQuestionTypePage.js'
@@ -6,6 +6,7 @@ import { PageOverview } from '~/pages/PageOverview.js'
 import { faker } from '@faker-js/faker/locale/en'
 import { EditQuestionPage } from '~/pages/EditQuestionPage.js'
 import { GuidancePage } from '~/pages/GuidancePage.js'
+import { createDraftForm } from '~/tests/utils/createDraftForm.js'
 
 // Declare the types of your fixtures
 type MyFixtures = {
@@ -20,17 +21,7 @@ type MyFixtures = {
 // Rename the extended test object to avoid conflicts
 const test = baseTest.extend<MyFixtures>({
   formPage: async ({ page }, use, testInfo) => {
-    const formPage = new FormPage(page) // Initialize FormPage using the page object
-    await formPage.goTo()
-    const formName =
-      'Automated test - Playwright form ' +
-      Math.random().toString().substring(0, 10)
-    await formPage.enterFormName(formName, testInfo)
-    await formPage.selectRadioOption('Environment Agency')
-    await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
-
-    // Edit draft
-    await formPage.editDraft()
+    const { formPage } = await createDraftForm(page, testInfo)
 
     await use(formPage) // Provide the fixture for use in tests
   },
@@ -376,14 +367,14 @@ test('1.2.12 - should create a new form with Checkbox field', async ({
 
   // add fruits to item list
   const fruits = ['apple', 'banana', 'grapes']
-  await editQuestionPage.addListItems(fruits)
+  await editQuestionPage.listFields.addItems(fruits)
   await editQuestionPage.clickSaveAndContinue()
   await pageOverview.successBannerIsDisplayed()
   await pageOverview.clickChangeLinkForQuestionByName('Select your interests')
 
   // assert lis items
   await editQuestionPage.getPageHeadingText()
-  const actualListItems = await editQuestionPage.getListItems()
+  const actualListItems = await editQuestionPage.listFields.getItems()
   expect(actualListItems).toEqual(fruits)
 })
 
@@ -412,14 +403,14 @@ test('1.2.13 - should create a new form with Select field', async ({
 
   // Add options to item list
   const options = ['England', 'Scotland', 'Wales', 'Northern Ireland']
-  await editQuestionPage.addListItems(options)
+  await editQuestionPage.listFields.addItems(options)
   await editQuestionPage.clickSaveAndContinue()
   await pageOverview.successBannerIsDisplayed()
   await pageOverview.clickChangeLinkForQuestionByName('Select your country')
 
   // Assert list items
   await editQuestionPage.getPageHeadingText()
-  const actualListItems = await editQuestionPage.getListItems()
+  const actualListItems = await editQuestionPage.listFields.getItems()
   expect(actualListItems).toEqual(options)
 })
 
@@ -480,7 +471,7 @@ test('1.2.15 - should create a new form with guidance page', async ({
 
   // Add options to item list
   const options = ['England', 'Scotland', 'Wales', 'Northern Ireland']
-  await editQuestionPage.addListItems(options)
+  await editQuestionPage.listFields.addItems(options)
   await editQuestionPage.clickSaveAndContinue()
   await pageOverview.successBannerIsDisplayed()
 

@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 export class PageOverview {
   readonly page: Page
@@ -88,7 +89,7 @@ export class PageOverview {
 
   async clickChangeLinkForQuestionByName(questionName: string) {
     // Wait for the page to be fully loaded
-    await this.page.waitForLoadState('networkidle')
+    await this.page.waitForLoadState('networkidle', { timeout: 5000 })
 
     // Wait for the success banner to appear and disappear (if present)
     const successBanner = this.page.locator('text=Changes saved successfully')
@@ -101,8 +102,8 @@ export class PageOverview {
       `dd.govuk-summary-list__value >> text=${questionName} >> .. >> dd.govuk-summary-list__actions >> a.govuk-link`,
       { hasText: 'Change' }
     )
-    await changeLink.waitFor({ state: 'visible', timeout: 30000 })
-    await changeLink.click()
+    await expect(changeLink).toBeVisible({ timeout: 30000 })
+    await raceAgainstAccessDenied(this.page, () => changeLink.click())
   }
 
   async verifyPageHeading(expectedHeading: string) {
@@ -116,15 +117,19 @@ export class PageOverview {
   }
 
   async previewPage() {
-    await this.previewPageButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.previewPageButton.click()
+    )
   }
 
   async addAnotherQuestion() {
-    await this.addAnotherQuestionButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.addAnotherQuestionButton.click()
+    )
   }
 
   async deletePage() {
-    await this.deletePageLink.click()
+    await raceAgainstAccessDenied(this.page, () => this.deletePageLink.click())
   }
 
   async configurePageHeadingAndGuidance(
@@ -132,7 +137,7 @@ export class PageOverview {
     guidanceText: string
   ) {
     await this.pageHeadingCheckbox.check()
-    await this.pageHeadingInput.waitFor({ state: 'visible' })
+    await expect(this.pageHeadingInput).toBeVisible()
     await this.pageHeadingInput.fill(pageHeading)
     await this.guidanceTextInput.fill(guidanceText)
   }
@@ -149,12 +154,16 @@ export class PageOverview {
   }
 
   async saveChanges() {
-    await this.saveChangesButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.saveChangesButton.click()
+    )
   }
 
   async clickConditionsTab() {
-    await this.conditionsTabLink.click()
-    await this.conditionsTitle.waitFor({ state: 'visible' })
+    await raceAgainstAccessDenied(this.page, () =>
+      this.conditionsTabLink.click()
+    )
+    await expect(this.conditionsTitle).toBeVisible()
   }
 
   async verifyNoConditionsState() {
@@ -163,13 +172,19 @@ export class PageOverview {
   }
 
   async goToCreateNewCondition() {
-    await this.conditionsManagerLink.click()
-    await this.createNewConditionLink.waitFor({ state: 'visible' })
-    await this.createNewConditionLink.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.conditionsManagerLink.click()
+    )
+    await expect(this.createNewConditionLink).toBeVisible()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.createNewConditionLink.click()
+    )
   }
 
   async clickReorderPages() {
-    await this.reorderPagesButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.reorderPagesButton.click()
+    )
   }
 
   async getPageTitles(): Promise<string[]> {

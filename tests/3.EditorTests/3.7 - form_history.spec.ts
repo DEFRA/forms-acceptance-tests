@@ -1,15 +1,19 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from '~/fixtures/main.js'
 import {
   addWrittenQuestionPage,
   createDraftFormWithDefaults
 } from '~/tests/3.EditorTests/utils.js'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 test('should show draft edit history after adding questions across edit sessions', async ({
   page
-}) => {
-  test.slow() // as we have to wait for the history to update
+}, testInfo) => {
+  // Explicit budget rather than test.slow()'s 3x multiplier (45s): the
+  // history-consistency poll below is itself allowed up to 60s, so the
+  // overall test needs comfortably more than that plus setup time.
+  test.setTimeout(120_000)
   const { formName, formPage, selectPageTypePage, selectQuestionTypePage } =
-    await createDraftFormWithDefaults(page, 'History test form')
+    await createDraftFormWithDefaults(page, 'History test form', testInfo)
 
   // First edit session: add 2 questions.
   await addWrittenQuestionPage(
@@ -62,7 +66,9 @@ test('should show draft edit history after adding questions across edit sessions
     intervals: [2_000, 3_000, 5_000]
   })
 
-  const historyText = await page.locator('main').innerText()
+  const historyText = await raceAgainstAccessDenied(page, () =>
+    page.locator('main').innerText()
+  )
   expect(historyText).toMatch(/Form created/)
   expect(historyText).toMatch(/Draft edited|Edited the draft form/)
   expect(historyText).toContain(`Created a new form named '${formName}'`)
@@ -74,7 +80,9 @@ test('should show draft edit history after adding questions across edit sessions
   const historyPanel = page
     .getByRole('heading', { name: 'History', exact: true })
     .locator('../..')
-  const historyPanelText = await historyPanel.innerText()
+  const historyPanelText = await raceAgainstAccessDenied(page, () =>
+    historyPanel.innerText()
+  )
   expect(historyPanelText).toMatch(/Form created/)
   expect(historyPanelText).toMatch(/Draft edited|Edited the draft form/)
 })

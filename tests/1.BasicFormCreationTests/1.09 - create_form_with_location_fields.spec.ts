@@ -1,9 +1,10 @@
-import { test as baseTest, expect } from '@playwright/test'
+import { test as baseTest, expect } from '~/fixtures/main.js'
 import { FormPage } from '~/pages/FormPage.js'
 import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
 import { SelectQuestionTypePage } from '~/pages/SelectQuestionTypePage.js'
 import { PageOverview } from '~/pages/PageOverview.js'
 import { EditQuestionPage } from '~/pages/EditQuestionPage.js'
+import { createDraftForm } from '~/tests/utils/createDraftForm.js'
 
 type MyFixtures = {
   formPage: FormPage
@@ -14,18 +15,8 @@ type MyFixtures = {
 }
 
 const test = baseTest.extend<MyFixtures>({
-  formPage: async ({ page }, use) => {
-    const formPage = new FormPage(page)
-    await formPage.goTo()
-    const formName =
-      'Automated test - Playwright form ' +
-      Math.random().toString().substring(0, 10)
-    await formPage.enterFormName(formName)
-    await formPage.selectRadioOption('Environment Agency')
-    await formPage.fillTeamDetails('Team A', 'test@test.gov.uk')
-
-    // Edit draft
-    await formPage.editDraft()
+  formPage: async ({ page }, use, testInfo) => {
+    const { formPage } = await createDraftForm(page, testInfo)
 
     await use(formPage)
   },
@@ -118,7 +109,6 @@ test('1.2.9.1a - should persist Sites of Special Scientific Interest for Easting
   await pageOverview.verifyPageHeading('Page 1 overview')
 
   await pageOverview.clickChangeLinkForQuestionByName('Enter the SSSI location')
-  await editQuestionPage.expandAdditionalSettings()
   await expect(editQuestionPage.sssiCheckbox).toBeVisible()
   await editQuestionPage.setSssiCheckbox(true)
   await editQuestionPage.clickSaveAndContinue()
@@ -126,7 +116,6 @@ test('1.2.9.1a - should persist Sites of Special Scientific Interest for Easting
   await pageOverview.verifySuccessBanner('Changes saved successfully')
 
   await pageOverview.clickChangeLinkForQuestionByName('Enter the SSSI location')
-  await editQuestionPage.expandAdditionalSettings()
   await expect(editQuestionPage.sssiCheckbox).toBeChecked()
 })
 

@@ -1,4 +1,5 @@
-import { test, expect, type Page } from '@playwright/test'
+import { test, expect } from '~/fixtures/main.js'
+import type { Page } from '@playwright/test'
 import { FormPage } from '~/pages/FormPage.js'
 import { AddEditPagesPage } from '~/pages/AddEditPagesPage.js'
 import { UploadPage } from '~/pages/UploadPage.js'

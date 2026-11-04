@@ -1,4 +1,6 @@
 import { Page, Locator } from '@playwright/test'
+import { selectOptionOrFailFast } from '~/tests/utils/selectOptionSafely.js'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 export class EditConditionPage {
   readonly page: Page
@@ -44,17 +46,25 @@ export class EditConditionPage {
   async checkAllComponentsAreDisplayed() {}
 
   async selectQuestion(label: string) {
-    await this.selectQuestionDropdown.selectOption({ label })
-    await this.selectQuestionButton.click()
+    await selectOptionOrFailFast(this.page, this.selectQuestionDropdown, {
+      label
+    })
+    await raceAgainstAccessDenied(this.page, () =>
+      this.selectQuestionButton.click()
+    )
   }
 
   async selectOperator(label: string) {
-    await this.operatorDropdown.selectOption({ label })
-    await this.selectOperatorButton.click()
+    await selectOptionOrFailFast(this.page, this.operatorDropdown, { label })
+    await raceAgainstAccessDenied(this.page, () =>
+      this.selectOperatorButton.click()
+    )
   }
 
   async addAnotherCondition() {
-    await this.addAnotherConditionButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.addAnotherConditionButton.click()
+    )
   }
 
   async setConditionName(name: string) {
@@ -62,11 +72,13 @@ export class EditConditionPage {
   }
 
   async saveCondition() {
-    await this.saveConditionButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.saveConditionButton.click()
+    )
   }
 
   async cancel() {
-    await this.cancelLink.click()
+    await raceAgainstAccessDenied(this.page, () => this.cancelLink.click())
   }
 
   async enterValue(value: string) {
