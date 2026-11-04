@@ -1,4 +1,5 @@
-import { expect, Page, test, TestInfo } from '@playwright/test'
+import { test, expect } from '~/fixtures/main.js'
+import type { Page, TestInfo } from '@playwright/test'
 import {
   addWrittenQuestionPage,
   createDraftFormWithDefaults

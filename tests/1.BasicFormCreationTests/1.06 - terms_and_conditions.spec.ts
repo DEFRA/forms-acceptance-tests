@@ -1,8 +1,9 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from '~/fixtures/main.js'
 import { FormPage } from '~/pages/FormPage.js'
 import { TermsAndConditionsPage } from '~/pages/TermsAndConditionsPage.js'
 import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
 import { PrivacyNoticePage } from '~/pages/PrivacyNoticePage.js'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 test('1.6.1 - should navigate to terms and conditions page and agree', async ({
   page
@@ -24,7 +25,7 @@ test('1.6.1 - should navigate to terms and conditions page and agree', async ({
 
   // Click the 'Incomplete' link to navigate to T&C page
   await incompleteLink.click()
-  await page.waitForURL('**/edit/terms-and-conditions')
+  await page.waitForURL('**/edit/terms-and-conditions', { timeout: 5000 })
 
   // Verify T&C page is displayed
   const termsAndConditionsPage = new TermsAndConditionsPage(page)
@@ -35,7 +36,7 @@ test('1.6.1 - should navigate to terms and conditions page and agree', async ({
   await termsAndConditionsPage.clickSaveAndContinue()
 
   // Verify redirected back to overview with success notification
-  await page.waitForURL('**/library/**')
+  await page.waitForURL('**/library/**', { timeout: 5000 })
   await expect(page.getByText('Terms and conditions accepted')).toBeVisible()
 
   // Verify T&C now shows as 'Agreed'
@@ -59,7 +60,7 @@ test('1.6.2 - should show validation error when checkbox is not checked', async 
   // Navigate to T&C page
   const incompleteLink = page.getByRole('link', { name: 'Incomplete' })
   await incompleteLink.click()
-  await page.waitForURL('**/edit/terms-and-conditions')
+  await page.waitForURL('**/edit/terms-and-conditions', { timeout: 5000 })
 
   // Submit without checking the checkbox
   const termsAndConditionsPage = new TermsAndConditionsPage(page)
@@ -88,14 +89,14 @@ test('1.6.3 - should cancel and return to form overview', async ({ page }) => {
   // Navigate to T&C page
   const incompleteLink = page.getByRole('link', { name: 'Incomplete' })
   await incompleteLink.click()
-  await page.waitForURL('**/edit/terms-and-conditions')
+  await page.waitForURL('**/edit/terms-and-conditions', { timeout: 5000 })
 
   // Click cancel
   const termsAndConditionsPage = new TermsAndConditionsPage(page)
   await termsAndConditionsPage.clickCancel()
 
   // Verify redirected back to overview
-  await page.waitForURL('**/library/**')
+  await page.waitForURL('**/library/**', { timeout: 5000 })
 
   // Verify T&C still shows as 'Incomplete'
   await expect(page.getByRole('link', { name: 'Incomplete' })).toBeVisible()
@@ -127,14 +128,14 @@ test('1.6.4 - should require terms and conditions before publishing a new form',
   // Navigate back to overview
   const nav = page.getByRole('navigation')
   await nav.getByRole('link', { name: 'Overview' }).click()
-  await page.waitForURL('**/library/**')
+  await page.waitForURL('**/library/**', { timeout: 5000 })
 
   // Fill required overview fields
 
   // Email address for support
-  await page
-    .getByRole('link', { name: 'Enter email address for support' })
-    .click()
+  await raceAgainstAccessDenied(page, () =>
+    page.getByRole('link', { name: 'Enter email address for support' }).click()
+  )
   await page
     .getByRole('textbox', { name: 'Email address' })
     .fill('support@defra.gov.uk')
@@ -192,27 +193,27 @@ test('1.6.4 - should require terms and conditions before publishing a new form',
     .getByRole('textbox', { name: 'Text to describe the contact link' })
     .fill('Online contact form')
   await page.getByRole('button', { name: 'Save and continue' }).click()
-  await page.waitForURL('**/library/**')
+  await page.waitForURL('**/library/**', { timeout: 5000 })
 
   // Agree to terms and conditions
   const incompleteLink = page.getByRole('link', { name: 'Incomplete' })
   await incompleteLink.click()
-  await page.waitForURL('**/edit/terms-and-conditions')
+  await page.waitForURL('**/edit/terms-and-conditions', { timeout: 5000 })
 
   const termsAndConditionsPage = new TermsAndConditionsPage(page)
   await termsAndConditionsPage.agreeToTerms()
   await termsAndConditionsPage.clickSaveAndContinue()
-  await page.waitForURL('**/library/**')
+  await page.waitForURL('**/library/**', { timeout: 5000 })
 
   // Verify T&C shows as 'Agreed'
   await expect(page.getByText('Agreed')).toBeVisible()
 
   // Make draft live
   await page.getByRole('button', { name: 'Make draft live' }).click()
-  await page.waitForURL('**/make-draft-live**')
+  await page.waitForURL('**/make-draft-live**', { timeout: 5000 })
   await page.getByRole('button', { name: 'Make draft live' }).click()
 
   // Verify form is now live
-  await page.waitForURL('**/library/**')
-  await page.getByText('Live').first().waitFor()
+  await page.waitForURL('**/library/**', { timeout: 5000 })
+  await expect(page.getByText('Live').first()).toBeVisible()
 })

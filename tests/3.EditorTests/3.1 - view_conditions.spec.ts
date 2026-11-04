@@ -1,4 +1,4 @@
-import { expect, test as base } from '@playwright/test'
+import { test as base, expect } from '~/fixtures/main.js'
 import { FormPage } from '~/pages/FormPage.js'
 import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
 import { PageOverview } from '~/pages/PageOverview.js'
@@ -44,11 +44,11 @@ test('3.1.2 - should create a condition', async ({ page, formSetup }) => {
   const editConditionPage = new EditConditionPage(page)
   await editConditionPage.selectQuestion('Page 1: What is your name?')
   // Wait for the page to be fully loaded
-  await page.waitForLoadState('networkidle')
+  await page.waitForLoadState('networkidle', { timeout: 5000 })
 
   await editConditionPage.selectOperator('Is')
   // Wait for the page to be fully loaded
-  await page.waitForLoadState('networkidle')
+  await page.waitForLoadState('networkidle', { timeout: 5000 })
 
   const valueInput = page.locator('input[name="items[0][value]"]')
   if (await valueInput.isVisible()) {

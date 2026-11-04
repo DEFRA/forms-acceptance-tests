@@ -1,4 +1,4 @@
-import { test as baseTest, expect } from '@playwright/test'
+import { test as baseTest, expect } from '~/fixtures/main.js'
 import { FormPage } from '~/pages/FormPage.js'
 import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
 import { SelectQuestionTypePage } from '~/pages/SelectQuestionTypePage.js'
@@ -109,7 +109,6 @@ test('1.2.9.1a - should persist Sites of Special Scientific Interest for Easting
   await pageOverview.verifyPageHeading('Page 1 overview')
 
   await pageOverview.clickChangeLinkForQuestionByName('Enter the SSSI location')
-  await editQuestionPage.expandAdditionalSettings()
   await expect(editQuestionPage.sssiCheckbox).toBeVisible()
   await editQuestionPage.setSssiCheckbox(true)
   await editQuestionPage.clickSaveAndContinue()
@@ -117,7 +116,6 @@ test('1.2.9.1a - should persist Sites of Special Scientific Interest for Easting
   await pageOverview.verifySuccessBanner('Changes saved successfully')
 
   await pageOverview.clickChangeLinkForQuestionByName('Enter the SSSI location')
-  await editQuestionPage.expandAdditionalSettings()
   await expect(editQuestionPage.sssiCheckbox).toBeChecked()
 })
 

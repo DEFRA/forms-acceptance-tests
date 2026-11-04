@@ -1,4 +1,4 @@
-import { test as baseTest, expect } from '@playwright/test'
+import { test as baseTest, expect } from '~/fixtures/main.js'
 import { FormPage } from '~/pages/FormPage.js'
 import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
 import { SelectQuestionTypePage } from '~/pages/SelectQuestionTypePage.js'
@@ -367,14 +367,14 @@ test('1.2.12 - should create a new form with Checkbox field', async ({
 
   // add fruits to item list
   const fruits = ['apple', 'banana', 'grapes']
-  await editQuestionPage.addListItems(fruits)
+  await editQuestionPage.listFields.addItems(fruits)
   await editQuestionPage.clickSaveAndContinue()
   await pageOverview.successBannerIsDisplayed()
   await pageOverview.clickChangeLinkForQuestionByName('Select your interests')
 
   // assert lis items
   await editQuestionPage.getPageHeadingText()
-  const actualListItems = await editQuestionPage.getListItems()
+  const actualListItems = await editQuestionPage.listFields.getItems()
   expect(actualListItems).toEqual(fruits)
 })
 
@@ -403,14 +403,14 @@ test('1.2.13 - should create a new form with Select field', async ({
 
   // Add options to item list
   const options = ['England', 'Scotland', 'Wales', 'Northern Ireland']
-  await editQuestionPage.addListItems(options)
+  await editQuestionPage.listFields.addItems(options)
   await editQuestionPage.clickSaveAndContinue()
   await pageOverview.successBannerIsDisplayed()
   await pageOverview.clickChangeLinkForQuestionByName('Select your country')
 
   // Assert list items
   await editQuestionPage.getPageHeadingText()
-  const actualListItems = await editQuestionPage.getListItems()
+  const actualListItems = await editQuestionPage.listFields.getItems()
   expect(actualListItems).toEqual(options)
 })
 
@@ -471,7 +471,7 @@ test('1.2.15 - should create a new form with guidance page', async ({
 
   // Add options to item list
   const options = ['England', 'Scotland', 'Wales', 'Northern Ireland']
-  await editQuestionPage.addListItems(options)
+  await editQuestionPage.listFields.addItems(options)
   await editQuestionPage.clickSaveAndContinue()
   await pageOverview.successBannerIsDisplayed()
 

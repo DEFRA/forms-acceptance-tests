@@ -1,4 +1,4 @@
-import { test } from '@playwright/test'
+import { test } from '~/fixtures/main.js'
 import { runAccessibilityCheck } from './accessibilityChecker.js'
 import { RUNNER_BASE_URL, RUNNER_PATHS } from './constants.js'
 

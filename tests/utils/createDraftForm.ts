@@ -27,13 +27,17 @@ export async function createDraftForm(
   const formPage = new FormPage(page)
   const formName = `${formNamePrefix} ${randomUUID()}`
 
-  await formPage.goTo()
-  await formPage.enterFormName(formName)
-  await formPage.selectRadioOption(organisation)
-  await formPage.fillTeamDetails(teamName, teamEmail)
-  await formPage.editDraft()
-
-  await recordCreatedForm(testInfo, { name: formName, url: page.url() })
+  try {
+    await formPage.goTo()
+    await formPage.enterFormName(formName)
+    await formPage.selectRadioOption(organisation)
+    await formPage.fillTeamDetails(teamName, teamEmail)
+    await formPage.editDraft()
+    await page.waitForURL(/\/editor-v2\//)
+  } finally {
+    // Record even if setup fails, so a part-created form can still be traced.
+    await recordCreatedForm(testInfo, { name: formName, url: page.url() })
+  }
 
   return { formName, formPage }
 }

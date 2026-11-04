@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 export class PageListingPage {
   readonly page: Page
@@ -46,27 +47,37 @@ export class PageListingPage {
   }
 
   async clickAddNewPage() {
-    await this.addNewPageButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.addNewPageButton.click()
+    )
   }
 
   async clickReorderPages() {
-    await this.reorderPagesButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.reorderPagesButton.click()
+    )
   }
 
   async clickPreviewForm() {
-    await this.previewFormLink.click()
+    await raceAgainstAccessDenied(this.page, () => this.previewFormLink.click())
   }
 
   async clickManageConditions() {
-    await this.manageConditionsButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.manageConditionsButton.click()
+    )
   }
 
   async clickUploadForm() {
-    await this.uploadFormButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.uploadFormButton.click()
+    )
   }
 
   async clickDownloadForm() {
-    await this.downloadFormButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.downloadFormButton.click()
+    )
   }
 
   async getPageSummaryCardByTitle(title: string): Promise<Locator> {

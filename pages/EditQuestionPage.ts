@@ -1,8 +1,19 @@
 import { Page, Locator } from '@playwright/test'
 import { BasePage } from '~/pages/BasePage.js'
+import { QuestionAnswerLimitsFields } from '~/pages/QuestionAnswerLimitsFields.js'
+import { QuestionNumberRangeFields } from '~/pages/QuestionNumberRangeFields.js'
+import { QuestionDateRangeFields } from '~/pages/QuestionDateRangeFields.js'
+import { QuestionListFields } from '~/pages/QuestionListFields.js'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 export class EditQuestionPage extends BasePage {
-  // Locators for page elements
+  // Field sections for question-type-specific controls
+  readonly answerLimits: QuestionAnswerLimitsFields
+  readonly numberRange: QuestionNumberRangeFields
+  readonly dateRange: QuestionDateRangeFields
+  readonly listFields: QuestionListFields
+
+  // Locators for elements common to every question type
   readonly pageHeading: Locator
   readonly questionInput: Locator
   readonly hintTextInput: Locator
@@ -11,24 +22,11 @@ export class EditQuestionPage extends BasePage {
   readonly sssiCheckbox: Locator
   readonly shortDescriptionInput: Locator
   readonly declarationTextInput: Locator
-  readonly minLengthInput: Locator
-  readonly maxLengthInput: Locator
-  readonly regexInput: Locator
-  readonly classesInput: Locator
-  readonly lowestNumber: Locator
-  readonly highestNumber: Locator
-  readonly precisionNumber: Locator
-  readonly prefixNumber: Locator
-  readonly suffixNumber: Locator
 
   readonly saveAndContinueButton: Locator
   readonly deleteQuestionLink: Locator
   readonly previewPageButton: Locator
   readonly previewErrorMessagesButton: Locator
-  readonly addItemButton: Locator
-  readonly itemTextBox: Locator
-  readonly saveItemButton: Locator
-  readonly radioHint: Locator
   readonly advancedFeaturesLink: Locator
   readonly uniqueIdentifierInput: Locator
   readonly cancelLink: Locator
@@ -36,15 +34,15 @@ export class EditQuestionPage extends BasePage {
   readonly doneLink: Locator
   readonly pagePreviewLabel: Locator
   readonly questionText: Locator
-  readonly dateRangeHint: Locator
-  readonly firstDateFieldset: Locator
-  readonly secondDateFieldset: Locator
-  readonly maxDaysInPastInput: Locator
-  readonly maxDaysInFutureInput: Locator
   readonly errorSummary: Locator
 
   constructor(page: Page) {
     super(page)
+
+    this.answerLimits = new QuestionAnswerLimitsFields(page)
+    this.numberRange = new QuestionNumberRangeFields(page)
+    this.dateRange = new QuestionDateRangeFields(page)
+    this.listFields = new QuestionListFields(page)
 
     // Initialize locators using ARIA attributes
     this.pageHeading = page.getByRole('heading', {
@@ -62,10 +60,6 @@ export class EditQuestionPage extends BasePage {
     })
     this.shortDescriptionInput = page.getByLabel('Short description')
     this.declarationTextInput = page.getByLabel('Declaration text')
-    this.minLengthInput = page.getByLabel('Minimum character length (optional)')
-    this.maxLengthInput = page.getByLabel('Maximum character length (optional)')
-    this.regexInput = page.getByLabel('Regex (optional)')
-    this.classesInput = page.getByLabel('Classes (optional)')
     this.saveAndContinueButton = page.getByRole('button', {
       name: 'Save and continue'
     })
@@ -76,10 +70,6 @@ export class EditQuestionPage extends BasePage {
     this.previewErrorMessagesButton = page.getByRole('button', {
       name: 'Preview error messages'
     })
-    this.addItemButton = page.getByRole('button', { name: 'Add item to list' })
-    this.itemTextBox = page.getByRole('textbox', { name: 'Item' })
-    this.saveItemButton = page.getByRole('button', { name: 'Save item' })
-    this.radioHint = page.locator('#radioHint')
     this.advancedFeaturesLink = page.getByText('Advanced features')
     this.uniqueIdentifierInput = page.getByRole('textbox', {
       name: 'Unique identifier (optional)'
@@ -89,27 +79,10 @@ export class EditQuestionPage extends BasePage {
     this.doneLink = page.getByRole('link', { name: 'Done' })
     this.pagePreviewLabel = page.getByLabel('Page preview')
     this.questionText = page.getByText('Question')
-    this.dateRangeHint = page.getByText(
-      'If the date must be between two dates (optional)'
+    // data-module excludes the example error summary in the preview panel
+    this.errorSummary = page.locator(
+      '.govuk-error-summary[data-module="govuk-error-summary"]'
     )
-    this.firstDateFieldset = page
-      .locator('fieldset')
-      .filter({ hasText: 'First date' })
-      .first()
-    this.secondDateFieldset = page
-      .locator('fieldset')
-      .filter({ hasText: 'Second date' })
-      .first()
-    this.maxDaysInPastInput = page.getByLabel('Max days in the past (optional)')
-    this.maxDaysInFutureInput = page.getByLabel(
-      'Max days in the future (optional)'
-    )
-    this.errorSummary = page.locator('.govuk-error-summary')
-    this.lowestNumber = page.locator('#min')
-    this.highestNumber = page.locator('#max')
-    this.precisionNumber = page.locator('#precision')
-    this.prefixNumber = page.locator('#prefix')
-    this.suffixNumber = page.locator('#suffix')
   }
 
   async getPageHeadingText(): Promise<string> {
@@ -152,116 +125,45 @@ export class EditQuestionPage extends BasePage {
   }
 
   async expandAdditionalSettings() {
-    await this.page.getByText('Additional settings (optional)').click()
-  }
+    const summary = this.page.locator('summary', {
+      hasText: 'Additional settings (optional)'
+    })
+    const details = this.page.locator('details').filter({ has: summary })
 
-  async setLowestNumber(lowestNum: string): Promise<void> {
-    await this.lowestNumber.fill(lowestNum)
-  }
-
-  async setHighestNumber(highestNum: string): Promise<void> {
-    await this.highestNumber.fill(highestNum)
-  }
-
-  async setPrecision(precision: string): Promise<void> {
-    await this.precisionNumber.fill(precision)
-  }
-
-  async setPrefix(prefix: string): Promise<void> {
-    await this.prefixNumber.fill(prefix)
-  }
-
-  async setSuffix(suffix: string): Promise<void> {
-    await this.suffixNumber.fill(suffix)
-  }
-
-  async setAnswerLimits(minLength: string, maxLength: string, regex?: string) {
-    await this.minLengthInput.fill(minLength)
-    await this.maxLengthInput.fill(maxLength)
-    if (regex !== undefined) {
-      await this.regexInput.fill(regex)
-    }
+    // The section is already open once settings have been saved, and clicking
+    // it then would close it.
+    await raceAgainstAccessDenied(this.page, async () => {
+      if ((await details.getAttribute('open')) === null) {
+        await summary.click()
+      }
+    })
   }
 
   async enterDeclarationText(declarationText: string) {
     await this.declarationTextInput.fill(declarationText)
   }
 
-  async setClasses(classes: string) {
-    await this.classesInput.fill(classes)
-  }
-
-  async setDateFieldset(
-    fieldset: Locator,
-    parts: { day?: string; month?: string; year?: string }
-  ) {
-    if (parts.day !== undefined) {
-      await fieldset.getByLabel('Day').fill(parts.day)
-    }
-    if (parts.month !== undefined) {
-      await fieldset.getByLabel('Month').fill(parts.month)
-    }
-    if (parts.year !== undefined) {
-      await fieldset.getByLabel('Year').fill(parts.year)
-    }
-  }
-
-  async setFirstDate(parts: { day?: string; month?: string; year?: string }) {
-    await this.setDateFieldset(this.firstDateFieldset, parts)
-  }
-
-  async setSecondDate(parts: { day?: string; month?: string; year?: string }) {
-    await this.setDateFieldset(this.secondDateFieldset, parts)
-  }
-
-  async setMaxDaysLimits(maxDaysInPast: string, maxDaysInFuture: string) {
-    await this.maxDaysInPastInput.fill(maxDaysInPast)
-    await this.maxDaysInFutureInput.fill(maxDaysInFuture)
-  }
-
   async clickSaveAndContinue() {
-    await this.saveAndContinueButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.saveAndContinueButton.click()
+    )
   }
 
   async clickDeleteQuestion() {
-    await this.deleteQuestionLink.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.deleteQuestionLink.click()
+    )
   }
 
   async clickPreviewPage() {
-    await this.previewPageButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.previewPageButton.click()
+    )
   }
 
   async clickPreviewErrorMessages() {
-    await this.previewErrorMessagesButton.click()
-  }
-
-  async getListItems(): Promise<string[]> {
-    const listItems = await this.page
-      .locator('li.app-reorderable-list__item .option-label-display')
-      .allTextContents()
-    return listItems.map((item) => item.trim())
-  }
-
-  async addAutoCompleteOptions(options: string[]): Promise<void> {
-    // Autocomplete questions use a single textarea where each option is on its
-    // own line, rather than the "Add list item" repeater used by other lists.
-    await this.page.locator('#autoCompleteOptions').fill(options.join('\n'))
-  }
-
-  async addListItems(items: string[]): Promise<void> {
-    for (const item of items) {
-      await this.addItemButton.click()
-
-      // Wait for the item input to be visible and interactable
-      await this.itemTextBox.waitFor({ state: 'visible', timeout: 10000 })
-
-      // Use fill() directly rather than click() then fill() — fill focuses and types reliably
-      await this.itemTextBox.fill(item, { timeout: 5000 })
-
-      // Click save and wait for the form to update
-      await this.saveItemButton.click()
-
-      await this.waitForNetworkIdle()
-    }
+    await raceAgainstAccessDenied(this.page, () =>
+      this.previewErrorMessagesButton.click()
+    )
   }
 }

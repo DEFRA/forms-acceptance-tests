@@ -1,5 +1,4 @@
-import { expect } from '@playwright/test'
-import { test } from '~/fixtures/main.js'
+import { test, expect } from '~/fixtures/main.js'
 import { assertHeadingHierarchy } from '~/tests/2.Accessibility/customA11yAssertions.js'
 import { runAccessibilityCheck } from '~/tests/2.Accessibility/accessibilityChecker.js'
 
@@ -140,14 +139,14 @@ test.describe('Accessibility - heading hierarchy and accessibility checks across
       await page.getByRole('button', { name: 'Save and continue' }).click()
 
       await page.getByRole('button', { name: 'Edit draft' }).click()
-      await page.waitForURL('**/editor-v2/pages**')
+      await page.waitForURL('**/editor-v2/pages**', { timeout: 5000 })
 
       await page.getByRole('button', { name: 'Add new page' }).click()
-      await page.waitForURL('**/editor-v2/page')
+      await page.waitForURL('**/editor-v2/page', { timeout: 5000 })
       await page.getByRole('radio', { name: 'Question page' }).check()
       await page.getByRole('button', { name: 'Save and continue' }).click()
 
-      await page.waitForURL('**/question/**/type/**')
+      await page.waitForURL('**/question/**/type/**', { timeout: 5000 })
 
       for (const scenario of QUESTION_TYPE_SCENARIOS) {
         await test.step(`Heading hierarchy and accessibility checks: ${scenario.label}`, async () => {
@@ -183,7 +182,7 @@ test.describe('Accessibility - heading hierarchy and accessibility checks across
           )
 
           await page.goBack()
-          await page.waitForURL('**/question/**/type/**')
+          await page.waitForURL('**/question/**/type/**', { timeout: 5000 })
         })
       }
     }

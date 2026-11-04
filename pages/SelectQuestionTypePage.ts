@@ -1,4 +1,5 @@
 import { Page, Locator } from '@playwright/test'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 export class SelectQuestionTypePage {
   readonly page: Page
@@ -95,6 +96,8 @@ export class SelectQuestionTypePage {
   }
 
   async clickSaveAndContinue() {
-    await this.saveAndContinueButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.saveAndContinueButton.click()
+    )
   }
 }

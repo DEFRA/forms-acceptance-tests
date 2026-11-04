@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 export class TermsAndConditionsPage {
   readonly page: Page
@@ -36,11 +37,13 @@ export class TermsAndConditionsPage {
   }
 
   async clickSaveAndContinue() {
-    await this.saveAndContinueButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.saveAndContinueButton.click()
+    )
   }
 
   async clickCancel() {
-    await this.cancelButton.click()
+    await raceAgainstAccessDenied(this.page, () => this.cancelButton.click())
   }
 
   async getErrorMessage(): Promise<string> {

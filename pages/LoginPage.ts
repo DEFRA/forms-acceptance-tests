@@ -1,4 +1,5 @@
-import { Page, Locator } from '@playwright/test'
+import { Page, Locator, expect } from '@playwright/test'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 export class LoginPage {
   readonly page: Page
@@ -33,7 +34,7 @@ export class LoginPage {
   }
 
   async clickLogOut() {
-    await this.signOut.click()
+    await raceAgainstAccessDenied(this.page, () => this.signOut.click())
   }
 
   async isInvalidUsernameErrorMessageDisplayed() {
@@ -45,15 +46,15 @@ export class LoginPage {
   async login(email: string, password: string) {
     await this.emailInput.fill(email)
     await this.passwordInput.fill(password)
-    await this.signInButton.click()
+    await raceAgainstAccessDenied(this.page, () => this.signInButton.click())
   }
 
   async enterInvalidUserName(email: string) {
     await this.emailInput.fill(email)
-    await this.signInButton.click()
+    await raceAgainstAccessDenied(this.page, () => this.signInButton.click())
   }
 
   async verifyUserLoggedIn() {
-    await this.userProfileLink.waitFor({ state: 'visible' })
+    await expect(this.userProfileLink).toBeVisible({ timeout: 10000 })
   }
 }

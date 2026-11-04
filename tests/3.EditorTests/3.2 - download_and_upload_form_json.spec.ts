@@ -1,4 +1,5 @@
-import { test, expect, type Page } from '@playwright/test'
+import { test, expect } from '~/fixtures/main.js'
+import type { Page } from '@playwright/test'
 import { FormPage } from '~/pages/FormPage.js'
 import { AddEditPagesPage } from '~/pages/AddEditPagesPage.js'
 import { UploadPage } from '~/pages/UploadPage.js'
@@ -51,7 +52,7 @@ function readAndParseJsonFile(filePath: string) {
   return json
 }
 
-test.skip('3.2.1 - Download form as JSON (both ways)', async ({ page }) => {
+test('3.2.1 - Download form as JSON (both ways)', async ({ page }) => {
   // Create a form
   const formPage = new FormPage(page)
   const addEditPagesPage = new AddEditPagesPage(page)

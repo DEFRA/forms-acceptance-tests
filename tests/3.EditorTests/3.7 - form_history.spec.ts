@@ -1,13 +1,17 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from '~/fixtures/main.js'
 import {
   addWrittenQuestionPage,
   createDraftFormWithDefaults
 } from '~/tests/3.EditorTests/utils.js'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 test('should show draft edit history after adding questions across edit sessions', async ({
   page
 }, testInfo) => {
-  test.slow() // as we have to wait for the history to update
+  // Explicit budget rather than test.slow()'s 3x multiplier (45s): the
+  // history-consistency poll below is itself allowed up to 60s, so the
+  // overall test needs comfortably more than that plus setup time.
+  test.setTimeout(120_000)
   const { formName, formPage, selectPageTypePage, selectQuestionTypePage } =
     await createDraftFormWithDefaults(page, 'History test form', testInfo)
 
@@ -51,7 +55,11 @@ test('should show draft edit history after adding questions across edit sessions
     page.getByRole('heading', { name: /Form history/ })
   ).toBeVisible()
 
-  // as history can take some time to update, polling the page for a min
+  // As history can take some time to update, poll until the edit-session
+  // entries actually show up. "Form created" is present from the very first
+  // load, so it can't be part of this match — including it let the poll
+  // exit immediately, before the edit entries this test is waiting for had
+  // any chance to appear.
   await expect
     .poll(
       async () => {
@@ -63,9 +71,11 @@ test('should show draft edit history after adding questions across edit sessions
         intervals: [2000, 3000, 5000]
       }
     )
-    .toMatch(/Form created|Draft edited|Edited the draft form/)
+    .toMatch(/Draft edited|Edited the draft form/)
 
-  const historyText = await page.locator('main').innerText()
+  const historyText = await raceAgainstAccessDenied(page, () =>
+    page.locator('main').innerText()
+  )
   expect(historyText).toMatch(/Form created/)
   expect(historyText).toMatch(/Draft edited|Edited the draft form/)
   expect(historyText).toContain(`Created a new form named '${formName}'`)
@@ -77,7 +87,9 @@ test('should show draft edit history after adding questions across edit sessions
   const historyPanel = page
     .getByRole('heading', { name: 'History', exact: true })
     .locator('../..')
-  const historyPanelText = await historyPanel.innerText()
+  const historyPanelText = await raceAgainstAccessDenied(page, () =>
+    historyPanel.innerText()
+  )
   expect(historyPanelText).toMatch(/Form created/)
   expect(historyPanelText).toMatch(/Draft edited|Edited the draft form/)
 })

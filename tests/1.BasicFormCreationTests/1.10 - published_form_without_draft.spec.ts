@@ -1,7 +1,9 @@
-import { expect, test, type Page } from '@playwright/test'
+import { test, expect } from '~/fixtures/main.js'
+import type { Page } from '@playwright/test'
 
 import { PrivacyNoticePage } from '~/pages/PrivacyNoticePage.js'
 import { TermsAndConditionsPage } from '~/pages/TermsAndConditionsPage.js'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 /**
  * Creates a live form with the draft version deleted and returns the slug and live form URL.
@@ -32,7 +34,7 @@ async function createAndPublishForm(
     .fill('test@test.gov.uk')
   await page.getByRole('button', { name: 'Save and continue' }).click()
 
-  await page.waitForURL('**/library/**')
+  await page.waitForURL('**/library/**', { timeout: 5000 })
   const slug = page.url().match(/\/library\/([^/?#]+)/)?.[1]
   if (!slug) {
     throw new Error('Could not extract form slug from URL')
@@ -40,7 +42,7 @@ async function createAndPublishForm(
 
   // Add a question page (required to publish)
   await page.getByRole('button', { name: 'Edit draft' }).click()
-  await page.waitForURL('**/editor-v2/pages**')
+  await page.waitForURL('**/editor-v2/pages**', { timeout: 5000 })
   await page.getByRole('button', { name: 'Add new page' }).click()
   await page.getByRole('radio', { name: 'Question page' }).check()
   await page.getByRole('button', { name: 'Save and continue' }).click()
@@ -60,7 +62,7 @@ async function createAndPublishForm(
     .getByRole('navigation')
     .getByRole('link', { name: 'Overview' })
     .click()
-  await page.waitForURL('**/library/**')
+  await page.waitForURL('**/library/**', { timeout: 5000 })
 
   // Fill required fields for publishing
   await page
@@ -74,7 +76,9 @@ async function createAndPublishForm(
     .fill('We aim to respond within 2 working days')
   await page.getByRole('button', { name: 'Save and continue' }).click()
 
-  await page.getByRole('link', { name: 'Enter what happens next' }).click()
+  await raceAgainstAccessDenied(page, () =>
+    page.getByRole('link', { name: 'Enter what happens next' }).click()
+  )
   await page
     .getByRole('textbox', {
       name: 'What will happen after a user submits a form?'
@@ -121,31 +125,31 @@ async function createAndPublishForm(
     .getByRole('textbox', { name: 'Text to describe the contact link' })
     .fill('Online contact form')
   await page.getByRole('button', { name: 'Save and continue' }).click()
-  await page.waitForURL('**/library/**')
+  await page.waitForURL('**/library/**', { timeout: 5000 })
 
   // Agree to T&Cs
   await page.getByRole('link', { name: 'Incomplete' }).click()
-  await page.waitForURL('**/edit/terms-and-conditions')
+  await page.waitForURL('**/edit/terms-and-conditions', { timeout: 5000 })
   const termsPage = new TermsAndConditionsPage(page)
   await termsPage.agreeToTerms()
   await termsPage.clickSaveAndContinue()
-  await page.waitForURL('**/library/**')
+  await page.waitForURL('**/library/**', { timeout: 5000 })
 
   // Make draft live
   await page.getByRole('button', { name: 'Make draft live' }).click()
-  await page.waitForURL('**/make-draft-live**')
+  await page.waitForURL('**/make-draft-live**', { timeout: 5000 })
   await page.getByRole('button', { name: 'Make draft live' }).click()
-  await page.waitForURL('**/library/**')
+  await page.waitForURL('**/library/**', { timeout: 5000 })
   await expect(page.getByText('Live').first()).toBeVisible()
 
   // Create a new draft from the live form, then immediately delete it so the
   // form ends up in the "live only, no draft" state that these tests target
   await page.getByRole('button', { name: 'Create draft to edit' }).click()
-  await page.waitForURL('**/library/**')
+  await page.waitForURL('**/library/**', { timeout: 5000 })
   await page.getByRole('link', { name: 'Delete draft' }).click()
-  await page.waitForURL('**/delete-draft**')
+  await page.waitForURL('**/delete-draft**', { timeout: 5000 })
   await page.getByRole('button', { name: 'Delete draft' }).click()
-  await page.waitForURL('**/library')
+  await page.waitForURL('**/library', { timeout: 5000 })
   await page.goto(`/library/${slug}`)
 
   const liveLink = page

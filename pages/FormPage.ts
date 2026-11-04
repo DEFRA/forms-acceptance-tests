@@ -1,5 +1,6 @@
 import { Page, Locator, TestInfo } from '@playwright/test'
 import { recordCreatedForm } from '~/tests/utils/reporting.js'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 export class FormPage {
   readonly page: Page
@@ -178,11 +179,13 @@ export class FormPage {
   }
 
   async clickMigrate() {
-    await this.migrateButton.click()
+    await raceAgainstAccessDenied(this.page, () => this.migrateButton.click())
   }
 
   async clickBackToAddEditPages() {
-    await this.backToAddEditPages.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.backToAddEditPages.click()
+    )
   }
 
   async selectRadioOption(value: string) {
@@ -194,11 +197,15 @@ export class FormPage {
   }
 
   async clickContinueBtn() {
-    await this.continueBtn.click()
+    await raceAgainstAccessDenied(this.page, () => this.continueBtn.click())
   }
 
   async enterFormName(formName: string, testInfo?: TestInfo) {
     await this.formName.fill(formName)
+    await this.clickContinueBtn()
+
+    // Click the second continue button on the
+    // interstitial page to proceed to the organisation page
     await this.clickContinueBtn()
 
     if (testInfo) {
@@ -212,11 +219,13 @@ export class FormPage {
   async fillTeamDetails(teamName: string, email: string) {
     await this.teamNameInput.fill(teamName)
     await this.teamEmailInput.fill(email)
-    await this.saveAndContinueButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.saveAndContinueButton.click()
+    )
   }
 
   async editDraft() {
-    await this.editDraftButton.click()
+    await raceAgainstAccessDenied(this.page, () => this.editDraftButton.click())
   }
 
   async goToConditionsPage() {
@@ -251,16 +260,22 @@ export class FormPage {
   async addNewQuestionPage(question: string, description: string) {
     await this.writtenAnswerRadio.check()
     await this.shortAnswerRadio.check()
-    await this.saveAndContinueButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.saveAndContinueButton.click()
+    )
     await this.questionInput.fill(question)
     await this.shortDescriptionInput.fill(description)
-    await this.saveAndContinueButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.saveAndContinueButton.click()
+    )
   }
 
   async createWrittenAnswer(question: string, description: string) {
     await this.questionInput.fill(question)
     await this.shortDescriptionInput.fill(description)
-    await this.saveAndContinueButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.saveAndContinueButton.click()
+    )
   }
 
   async createFileUpload(question: string, description: string) {
@@ -287,11 +302,15 @@ export class FormPage {
     await this.page.getByRole('checkbox', { name: 'ODS' }).check()
 
     // Click Save and Continue
-    await this.saveAndContinueButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.saveAndContinueButton.click()
+    )
   }
 
   async addAnotherQuestion() {
-    await this.addAnotherQuestionButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.addAnotherQuestionButton.click()
+    )
   }
 
   async checkErrorIsDisplayed() {
@@ -309,11 +328,15 @@ export class FormPage {
   }
 
   async clickChangeTeamNameLink() {
-    await this.changeTeamNameLink.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.changeTeamNameLink.click()
+    )
   }
 
   async setPageHeading(_headingText: string) {
     await this.pageHeadingAndGuidanceCheckbox.check()
-    await this.saveChangesButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.saveChangesButton.click()
+    )
   }
 }

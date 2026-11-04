@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { test, expect } from '~/fixtures/main.js'
 import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
 import { createDraftForm } from '~/tests/utils/createDraftForm.js'
 

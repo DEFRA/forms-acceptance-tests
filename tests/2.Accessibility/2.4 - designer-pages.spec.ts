@@ -1,4 +1,4 @@
-import { test } from '~/fixtures/main.js'
+import { test, expect } from '~/fixtures/main.js'
 import { runAccessibilityCheck } from '~/tests/2.Accessibility/accessibilityChecker.js'
 import {
   DESIGNER_BASE_URL,
@@ -9,7 +9,6 @@ import {
   assertNoHiddenFocusableElementsInTabOrder,
   assertNoOrphanedHeadingAnchors
 } from '~/tests/2.Accessibility/customA11yAssertions.js'
-import { expect } from '@playwright/test'
 
 test.describe('Accessibility - designer pages', () => {
   for (const { path, description } of DESIGNER_PAGES) {

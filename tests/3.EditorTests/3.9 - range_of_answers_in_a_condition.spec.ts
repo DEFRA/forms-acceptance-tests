@@ -1,4 +1,5 @@
-import { test, expect, Page } from '@playwright/test'
+import { test, expect } from '~/fixtures/main.js'
+import type { Page } from '@playwright/test'
 import { FormPage } from '~/pages/FormPage.js'
 import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
 import { SelectQuestionTypePage } from '~/pages/SelectQuestionTypePage.js'
@@ -104,9 +105,9 @@ async function addListQuestion(
   await formPage.shortDescriptionInput.fill(spec.shortDescription)
 
   if (spec.subtype === 'autocomplete') {
-    await editQuestionPage.addAutoCompleteOptions([...spec.options])
+    await editQuestionPage.listFields.addAutoCompleteOptions([...spec.options])
   } else {
-    await editQuestionPage.addListItems([...spec.options])
+    await editQuestionPage.listFields.addItems([...spec.options])
   }
 
   await editQuestionPage.clickSaveAndContinue()
@@ -222,12 +223,16 @@ async function answerAutocomplete(page: Page, value: string) {
   const enhancedInput = page.locator('input.autocomplete__input')
   await enhancedInput
     .waitFor({ state: 'visible', timeout: 3000 })
-    .catch(() => {})
+    .catch((error: Error) => {
+      // A timeout just means the enhancement hasn't run — fall through to the
+      // native <select> path below. Any other error should still surface.
+      if (error.name !== 'TimeoutError') throw error
+    })
 
   if (await enhancedInput.count()) {
     await enhancedInput.fill(value)
     const option = page.locator('li[role="option"]', { hasText: value }).first()
-    await option.waitFor({ state: 'visible' })
+    await expect(option).toBeVisible()
     await option.click()
   } else {
     await page.getByLabel(/Which country/i).selectOption({ label: value })

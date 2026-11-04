@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 export class ManagerConditionsPage {
   readonly page: Page
@@ -34,12 +35,16 @@ export class ManagerConditionsPage {
   }
 
   async goToCreateNewCondition() {
-    await this.conditionsManagerLink.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.conditionsManagerLink.click()
+    )
     await this.clickCreateNewConditions()
   }
 
   async clickCreateNewConditions() {
-    await this.createNewConditionLink.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.createNewConditionLink.click()
+    )
   }
 
   async getPageHeadingText(): Promise<string> {

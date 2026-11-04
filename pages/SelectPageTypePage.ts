@@ -1,7 +1,8 @@
 import { Page, Locator, expect } from '@playwright/test'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 export class SelectPageTypePage {
-  readonly readonly: Page
+  readonly page: Page
 
   // Locators
   readonly saveAndContinueButton: Locator
@@ -17,7 +18,7 @@ export class SelectPageTypePage {
   readonly guidancePageHint: Locator
 
   constructor(page: Page) {
-    this.readonly = page
+    this.page = page
 
     this.saveAndContinueButton = page.getByRole('button', {
       name: 'Save and continue'
@@ -45,7 +46,9 @@ export class SelectPageTypePage {
   }
 
   async clickSaveAndContinue() {
-    await this.saveAndContinueButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.saveAndContinueButton.click()
+    )
   }
 
   async chooseQuestionPage() {
@@ -63,7 +66,9 @@ export class SelectPageTypePage {
       pageType === 'question' ? this.questionPageRadio : this.guidancePageRadio
 
     await radioButton.check()
-    await this.saveAndContinueButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.saveAndContinueButton.click()
+    )
   }
 
   async checkErrorIsDisplayed() {

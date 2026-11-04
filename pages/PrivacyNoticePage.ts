@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 export class PrivacyNoticePage {
   readonly page: Page
@@ -48,11 +49,13 @@ export class PrivacyNoticePage {
   }
 
   async clickSaveAndContinue() {
-    await this.saveAndContinueButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.saveAndContinueButton.click()
+    )
   }
 
   async clickCancel() {
-    await this.cancelButton.click()
+    await raceAgainstAccessDenied(this.page, () => this.cancelButton.click())
   }
 
   async expectOnPage() {

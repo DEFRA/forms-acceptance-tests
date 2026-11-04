@@ -1,4 +1,4 @@
-import { test } from '~/fixtures/main.js'
+import { test, expect } from '~/fixtures/main.js'
 import { runAccessibilityCheck } from './accessibilityChecker.js'
 
 test.describe('Accessibility - full form creation and publish journey', () => {
@@ -19,7 +19,7 @@ test.describe('Accessibility - full form creation and publish journey', () => {
 
       // Step 2 – Click create form and check accessibility of the first step of the form creation flow
       await libraryPage.clickCreateForm()
-      await page.waitForURL('**/create/title')
+      await page.waitForURL('**/create/title', { timeout: 5000 })
       await runAccessibilityCheck(page, testInfo, 'create-title')
 
       await page
@@ -28,14 +28,14 @@ test.describe('Accessibility - full form creation and publish journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // Step 3 – Organisation details
-      await page.waitForURL('**/create/organisation')
+      await page.waitForURL('**/create/organisation', { timeout: 5000 })
       await runAccessibilityCheck(page, testInfo, 'create-organisation')
 
       await page.getByRole('radio', { name: 'Defra' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // Step 4 – Team details
-      await page.waitForURL('**/create/team')
+      await page.waitForURL('**/create/team', { timeout: 5000 })
       await runAccessibilityCheck(page, testInfo, 'create-team-details')
 
       await page
@@ -47,25 +47,25 @@ test.describe('Accessibility - full form creation and publish journey', () => {
       await page.getByRole('button', { name: 'Save and continue' }).click()
 
       // Step 5 – Form overview
-      await page.waitForURL('**/library/**')
-      await page.getByRole('heading', { name: formName }).waitFor()
+      await page.waitForURL('**/library/**', { timeout: 5000 })
+      await expect(page.getByRole('heading', { name: formName })).toBeVisible()
       await runAccessibilityCheck(page, testInfo, 'form-overview-draft')
 
       // Step 6 – Edit draft → editor pages
       await page.getByRole('button', { name: 'Edit draft' }).click()
-      await page.waitForURL('**/editor-v2/pages**')
+      await page.waitForURL('**/editor-v2/pages**', { timeout: 5000 })
       await runAccessibilityCheck(page, testInfo, 'editor-add-edit-pages')
 
       // Step 7 – Add new question page
       await page.getByRole('button', { name: 'Add new page' }).click()
-      await page.waitForURL('**/editor-v2/page')
+      await page.waitForURL('**/editor-v2/page', { timeout: 5000 })
       await runAccessibilityCheck(page, testInfo, 'select-page-type')
 
       await page.getByRole('radio', { name: 'Question page' }).check()
       await page.getByRole('button', { name: 'Save and continue' }).click()
 
       // Step 8 – Select question type
-      await page.waitForURL('**/question/**/type/**')
+      await page.waitForURL('**/question/**/type/**', { timeout: 5000 })
       await runAccessibilityCheck(page, testInfo, 'select-question-type')
 
       await page.getByRole('radio', { name: 'Written answer' }).check()
@@ -75,7 +75,7 @@ test.describe('Accessibility - full form creation and publish journey', () => {
       await page.getByRole('button', { name: 'Save and continue' }).click()
 
       // Step 9 – Edit question details
-      await page.waitForURL('**/question/**/details/**')
+      await page.waitForURL('**/question/**/details/**', { timeout: 5000 })
       await runAccessibilityCheck(page, testInfo, 'edit-question-details')
 
       await page.locator('#question').fill('What is your name?')
@@ -85,7 +85,7 @@ test.describe('Accessibility - full form creation and publish journey', () => {
       await page.getByRole('button', { name: 'Save and continue' }).click()
 
       // Step 10 – Page overview (question saved)
-      await page.waitForURL('**/questions')
+      await page.waitForURL('**/questions', { timeout: 5000 })
       await runAccessibilityCheck(page, testInfo, 'page-overview-saved')
 
       // Step 11 – Fill required overview fields
@@ -93,7 +93,7 @@ test.describe('Accessibility - full form creation and publish journey', () => {
       // get the top nav
       const nav = page.getByRole('navigation')
       await nav.getByRole('link', { name: 'Overview' }).click()
-      await page.waitForURL('**/library/**')
+      await page.waitForURL('**/library/**', { timeout: 5000 })
 
       await test.step(' Form Overview – fill required fields', async () => {
         await page
@@ -155,7 +155,7 @@ test.describe('Accessibility - full form creation and publish journey', () => {
         await page
           .getByRole('link', { name: 'Enter phone number for support' })
           .click()
-        await page.waitForURL('**/contact/**')
+        await page.waitForURL('**/contact/**', { timeout: 5000 })
         await runAccessibilityCheck(page, testInfo, 'edit-contact-phone')
 
         await page
@@ -169,7 +169,7 @@ test.describe('Accessibility - full form creation and publish journey', () => {
         await page
           .getByRole('link', { name: 'Enter online contact link for support' })
           .click()
-        await page.waitForURL('**/contact/**')
+        await page.waitForURL('**/contact/**', { timeout: 5000 })
         await runAccessibilityCheck(page, testInfo, 'edit-contact-online')
 
         await page
@@ -179,7 +179,7 @@ test.describe('Accessibility - full form creation and publish journey', () => {
           .getByRole('textbox', { name: 'Text to describe the contact link' })
           .fill('Online contact form')
         await page.getByRole('button', { name: 'Save and continue' }).click()
-        await page.waitForURL('**/library/**')
+        await page.waitForURL('**/library/**', { timeout: 5000 })
 
         // main overview page after filling all required fields
         await runAccessibilityCheck(
@@ -190,7 +190,7 @@ test.describe('Accessibility - full form creation and publish journey', () => {
       })
       // ── Step 13: Make draft live – confirmation page ───────────
       await page.getByRole('button', { name: 'Make draft live' }).click()
-      await page.waitForURL('**/make-draft-live**')
+      await page.waitForURL('**/make-draft-live**', { timeout: 5000 })
       await runAccessibilityCheck(
         page,
         testInfo,
@@ -201,8 +201,8 @@ test.describe('Accessibility - full form creation and publish journey', () => {
       await page.getByRole('button', { name: 'Make draft live' }).click()
 
       // ── Step 15: Form overview – Live ──────────────────────────
-      await page.waitForURL('**/library/**')
-      await page.getByText('Live').first().waitFor()
+      await page.waitForURL('**/library/**', { timeout: 5000 })
+      await expect(page.getByText('Live').first()).toBeVisible()
       await runAccessibilityCheck(page, testInfo, 'form-overview-live')
     }
   )

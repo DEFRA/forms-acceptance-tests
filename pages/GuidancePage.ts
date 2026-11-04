@@ -1,5 +1,6 @@
 import { Page, Locator, expect } from '@playwright/test'
 import { BasePage } from '~/pages/BasePage.js'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 export class GuidancePage extends BasePage {
   readonly mainHeading: Locator
@@ -56,15 +57,17 @@ export class GuidancePage extends BasePage {
   }
 
   async save() {
-    await this.saveButton.click()
+    await raceAgainstAccessDenied(this.page, () => this.saveButton.click())
   }
 
   async deletePage() {
-    await this.deleteLink.click()
+    await raceAgainstAccessDenied(this.page, () => this.deleteLink.click())
   }
 
   async manageConditions() {
-    await this.manageConditionsButton.click()
+    await raceAgainstAccessDenied(this.page, () =>
+      this.manageConditionsButton.click()
+    )
   }
 
   async isExitPageChecked(): Promise<boolean> {
@@ -72,7 +75,6 @@ export class GuidancePage extends BasePage {
   }
 
   async verifyStructureBeforeSaving() {
-    await this.waitForNetworkIdle()
     await expect(this.getMainHeadingLocator()).toBeVisible()
     await expect(this.pageHeadingInput).toBeVisible()
     await expect(this.pageHeadingHint).toBeVisible()
@@ -87,7 +89,6 @@ export class GuidancePage extends BasePage {
   }
 
   async verifyStructureAfterSaving() {
-    await this.waitForNetworkIdle()
     await expect(this.getMainHeadingLocator()).toBeVisible()
     await expect(this.pageHeadingInput).toBeVisible()
     await expect(this.pageHeadingHint).toBeVisible()

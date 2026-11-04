@@ -1,4 +1,6 @@
 import { Page, Locator, expect } from '@playwright/test'
+import { selectOptionOrFailFast } from '~/tests/utils/selectOptionSafely.js'
+import { raceAgainstAccessDenied } from '~/tests/utils/raceAgainstAccessDenied.js'
 
 /**
  * The page reached from a page's "Manage conditions" button, used to control
@@ -23,8 +25,12 @@ export class PageConditionsPage {
 
   async addExistingCondition(conditionName: string) {
     await this.addExistingRadio.check()
-    await this.conditionSelect.selectOption({ label: conditionName })
-    await this.addExistingButton.click()
+    await selectOptionOrFailFast(this.page, this.conditionSelect, {
+      label: conditionName
+    })
+    await raceAgainstAccessDenied(this.page, () =>
+      this.addExistingButton.click()
+    )
   }
 
   async assertConditionApplied(conditionName: string) {
