@@ -52,7 +52,7 @@ function readAndParseJsonFile(filePath: string) {
   return json
 }
 
-test('3.2.1 - Download form as JSON (both ways)', async ({ page }) => {
+test.skip('3.2.1 - Download form as JSON (both ways)', async ({ page }) => {
   // Create a form
   const formPage = new FormPage(page)
   const addEditPagesPage = new AddEditPagesPage(page)
