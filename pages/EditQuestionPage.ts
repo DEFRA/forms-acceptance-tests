@@ -1,6 +1,23 @@
 import { Page, Locator } from '@playwright/test'
 import { BasePage } from '~/pages/BasePage.js'
 
+/**
+ * Labels of the minimum, maximum and exact count settings. Checkboxes and map
+ * questions call them "items", file upload calls them "file count".
+ */
+export const COUNT_LIMIT_LABELS = {
+  items: {
+    min: 'Minimum items (optional)',
+    max: 'Maximum items (optional)',
+    exact: 'Exact items (optional)'
+  },
+  files: {
+    min: 'Minimum file count (optional)',
+    max: 'Maximum file count (optional)',
+    exact: 'Exact file count (optional)'
+  }
+} as const
+
 export class EditQuestionPage extends BasePage {
   // Locators for page elements
   readonly pageHeading: Locator
@@ -162,18 +179,7 @@ export class EditQuestionPage extends BasePage {
   }
 
   countLimitInputs(unit: 'items' | 'files') {
-    const labels =
-      unit === 'items'
-        ? {
-            min: 'Minimum items (optional)',
-            max: 'Maximum items (optional)',
-            exact: 'Exact items (optional)'
-          }
-        : {
-            min: 'Minimum file count (optional)',
-            max: 'Maximum file count (optional)',
-            exact: 'Exact file count (optional)'
-          }
+    const labels = COUNT_LIMIT_LABELS[unit]
 
     return {
       min: this.page.getByLabel(labels.min, { exact: true }),

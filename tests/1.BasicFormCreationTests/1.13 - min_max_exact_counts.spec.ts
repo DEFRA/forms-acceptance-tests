@@ -3,7 +3,10 @@ import { FormPage } from '~/pages/FormPage.js'
 import { SelectPageTypePage } from '~/pages/SelectPageTypePage.js'
 import { SelectQuestionTypePage } from '~/pages/SelectQuestionTypePage.js'
 import { PageOverview } from '~/pages/PageOverview.js'
-import { EditQuestionPage } from '~/pages/EditQuestionPage.js'
+import {
+  COUNT_LIMIT_LABELS,
+  EditQuestionPage
+} from '~/pages/EditQuestionPage.js'
 
 /**
  * Covers the minimum, maximum and exact count settings on every question type
@@ -81,7 +84,7 @@ interface CountQuestionType {
 
 const questionTypes: CountQuestionType[] = [
   {
-    name: 'checkboxes',
+    name: 'Checkboxes',
     question: 'Which fruit do you grow?',
     unit: 'items',
     addQuestion: async ({
@@ -113,7 +116,7 @@ const questionTypes: CountQuestionType[] = [
     }
   },
   {
-    name: 'supporting evidence',
+    name: 'Supporting evidence (file upload)',
     question: 'Upload your site plans',
     unit: 'files',
     addQuestion: async ({
@@ -139,7 +142,7 @@ const questionTypes: CountQuestionType[] = [
     }
   },
   {
-    name: 'map',
+    name: 'Map (area, line or points)',
     question: 'Mark the barn locations on a map',
     unit: 'items',
     addQuestion: async ({
@@ -186,15 +189,23 @@ function errorSummary(page: Page) {
   return page.locator('[data-module="govuk-error-summary"]')
 }
 
+/** The setting's label without "(optional)", for use in test titles */
+function fieldName(unit: 'items' | 'files', key: 'min' | 'max' | 'exact') {
+  return `"${COUNT_LIMIT_LABELS[unit][key].replace(' (optional)', '')}"`
+}
+
 for (const [index, type] of questionTypes.entries()) {
   const id = `1.13.${index + 1}`
+  const min = fieldName(type.unit, 'min')
+  const max = fieldName(type.unit, 'max')
+  const exact = fieldName(type.unit, 'exact')
 
-  test.describe(`${id} - ${type.name} minimum, maximum and exact counts`, () => {
+  test.describe(`${id} - ${type.name} question: ${min}, ${max} and ${exact} settings`, () => {
     test.beforeEach(() => {
       test.setTimeout(60_000)
     })
 
-    test(`${id}.1 - minimum and maximum persist`, async ({
+    test(`${id}.1 - ${type.name}: ${min} = ${type.valid.min} and ${max} = ${type.valid.max} are saved`, async ({
       formPage,
       selectPageTypePage,
       selectQuestionTypePage,
@@ -225,7 +236,7 @@ for (const [index, type] of questionTypes.entries()) {
       await expect(fields.exact).toHaveValue('')
     })
 
-    test(`${id}.2 - exact count persists`, async ({
+    test(`${id}.2 - ${type.name}: ${exact} = ${type.valid.exact} is saved`, async ({
       formPage,
       selectPageTypePage,
       selectQuestionTypePage,
@@ -254,7 +265,7 @@ for (const [index, type] of questionTypes.entries()) {
       await expect(fields.max).toHaveValue('')
     })
 
-    test(`${id}.3 - exact count cannot be combined with minimum or maximum`, async ({
+    test(`${id}.3 - ${type.name}: ${exact} cannot be set together with ${min} or ${max}`, async ({
       page,
       formPage,
       selectPageTypePage,
@@ -287,7 +298,7 @@ for (const [index, type] of questionTypes.entries()) {
       await expect(errorSummary(page)).toContainText(MINMAX_OR_EXACT_ERROR)
     })
 
-    test(`${id}.4 - minimum cannot be greater than maximum`, async ({
+    test(`${id}.4 - ${type.name}: ${min} = ${type.valid.minAboveMax} is rejected when ${max} = ${type.valid.max}`, async ({
       page,
       formPage,
       selectPageTypePage,
@@ -312,7 +323,7 @@ for (const [index, type] of questionTypes.entries()) {
       await expect(errorSummary(page)).toContainText(type.errors.minAboveMax)
     })
 
-    test(`${id}.5 - out of range and non whole numbers are rejected`, async ({
+    test(`${id}.5 - ${type.name}: invalid values are rejected (${min} = ${type.invalid.min}, ${max} = ${type.invalid.max}, ${exact} = ${type.invalid.exact})`, async ({
       page,
       formPage,
       selectPageTypePage,
@@ -373,12 +384,12 @@ async function selectAndContinue(page: Page, items: string[]) {
   await page.getByRole('button', { name: 'Continue' }).click()
 }
 
-test.describe('1.13.4 - checkbox counts are enforced in the form', () => {
+test.describe('1.13.4 - Checkboxes question: count settings are enforced when filling in the form', () => {
   test.beforeEach(() => {
     test.setTimeout(90_000)
   })
 
-  test('1.13.4.1 - minimum and maximum are enforced', async ({
+  test('1.13.4.1 - Checkboxes in the form: with "Minimum items" = 2 and "Maximum items" = 3, selecting 1 or 4 shows an error and 3 continues', async ({
     page,
     formPage,
     selectPageTypePage,
@@ -421,7 +432,7 @@ test.describe('1.13.4 - checkbox counts are enforced in the form', () => {
     ).toBeHidden()
   })
 
-  test('1.13.4.2 - exact count is enforced', async ({
+  test('1.13.4.2 - Checkboxes in the form: with "Exact items" = 2, selecting 1 or 3 shows an error and 2 continues', async ({
     page,
     formPage,
     selectPageTypePage,
