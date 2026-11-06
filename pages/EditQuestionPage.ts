@@ -119,13 +119,67 @@ export class EditQuestionPage extends BasePage {
   }
 
   async expandAdditionalSettings() {
-    await this.page.getByText('Additional settings (optional)').click()
+    const summary = this.page.getByText('Additional settings (optional)')
+    const details = this.page.locator('details').filter({ has: summary })
+
+    // Some question types (for example map questions) open the section by
+    // default, and clicking it again would close it. Wait for the page to
+    // render it before checking.
+    await summary.waitFor()
+    if (
+      (await details.count()) === 1 &&
+      (await details.evaluate((el: HTMLDetailsElement) => el.open))
+    ) {
+      return
+    }
+
+    await summary.click()
   }
 
   async setAnswerLimits(minLength: string, maxLength: string, regex: string) {
     await this.minLengthInput.fill(minLength)
     await this.maxLengthInput.fill(maxLength)
     await this.regexInput.fill(regex)
+  }
+
+  /**
+   * Fills the minimum, maximum and exact count settings. Checkboxes and map
+   * questions label these "items", file upload labels them "file count".
+   * Pass undefined to leave a field untouched, or '' to clear it.
+   */
+  async setCountLimits(
+    unit: 'items' | 'files',
+    limits: { min?: string; max?: string; exact?: string }
+  ) {
+    const fields = this.countLimitInputs(unit)
+
+    for (const key of ['min', 'max', 'exact'] as const) {
+      const value = limits[key]
+      if (value !== undefined) {
+        await fields[key].fill(value)
+      }
+    }
+  }
+
+  countLimitInputs(unit: 'items' | 'files') {
+    const labels =
+      unit === 'items'
+        ? {
+            min: 'Minimum items (optional)',
+            max: 'Maximum items (optional)',
+            exact: 'Exact items (optional)'
+          }
+        : {
+            min: 'Minimum file count (optional)',
+            max: 'Maximum file count (optional)',
+            exact: 'Exact file count (optional)'
+          }
+
+    return {
+      min: this.page.getByLabel(labels.min, { exact: true }),
+      max: this.page.getByLabel(labels.max, { exact: true }),
+      exact: this.page.getByLabel(labels.exact, { exact: true })
+    }
   }
 
   async enterDeclarationText(declarationText: string) {
