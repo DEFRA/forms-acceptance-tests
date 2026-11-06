@@ -137,9 +137,13 @@ export class PageOverview {
     await this.guidanceTextInput.fill(guidanceText)
   }
 
+  /**
+   * Accepts strings as well as numbers so tests can enter blank or invalid
+   * values
+   */
   async configureRepeater(
-    minItems: number,
-    maxItems: number,
+    minItems: number | string,
+    maxItems: number | string,
     questionSetName: string
   ) {
     await this.repeaterCheckbox.check()
